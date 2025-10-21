@@ -11,7 +11,6 @@ public class User {
     //Constructors
 
     //getters & setters
-
     public int getId() {
         return id;
     }
