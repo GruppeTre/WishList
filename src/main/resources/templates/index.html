@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Frontpage</title>
@@ -12,7 +12,7 @@
             <a href="login.html">Login</a>
         </article>
         <article>
-            <a href="register.html">Register</a>
+            <a href="/user/register">Register</a>
         </article>
     </section>
     <footer th:replace="~{/fragments/_commonElements :: footer}"></footer>
