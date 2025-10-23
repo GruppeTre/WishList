@@ -1,6 +1,8 @@
 package com.mavi.wishlist.repository;
 
 import com.mavi.wishlist.model.User;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,19 +29,25 @@ public class UserRepository {
         return user;
     });
 
+    //Get user object by mail
     public User getUser(String mail){
         String checkUser = "SELECT * FROM User WHERE mail = ?";
 
-        return jdbcTemplate.queryForObject(checkUser, userRowMapper, mail);
+        try{
+            return jdbcTemplate.queryForObject(checkUser, userRowMapper, mail);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
-    public User getPassword(String mail, String password){
+    //Get password as String by user id
+    public String getPassword(int id){
         String checkPassword = "SELECT password FROM user WHERE id = ?";
 
-        return jdbcTemplate.queryForObject(checkPassword, userRowMapper, mail);
-    }
-
-    public User userLogin(User user){
-        return user;
+        try{
+            return jdbcTemplate.queryForObject(checkPassword, String.class, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }
