@@ -22,7 +22,7 @@ public class UserRepository {
         User user = new User();
         user.setId(rs.getInt("id"));
         user.setMail(rs.getString("mail"));
-        user.setPasswordHash(rs.getString("password"));
+        user.setPassword(rs.getString("password"));
         user.setFirstName(rs.getString("firstname"));
         user.setLastName(rs.getString("lastname"));
 

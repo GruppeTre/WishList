@@ -21,7 +21,7 @@ public class UserService {
             return false;
         }
 
-        return user.getPasswordHash().equals(this.userRepository.getPassword(user.getId()));
+        return user.getPassword().equals(this.userRepository.getPassword(user.getId()));
     }
 
     public User getUserByMail(String mail) {

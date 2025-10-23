@@ -15,6 +15,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/user")
 public class UserController {
 
+    UserService service;
+
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
     @GetMapping("/register")
     public String getRegisterForm(Model model) {
         User userToAdd = new User();
