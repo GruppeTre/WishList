@@ -17,7 +17,7 @@ public class UserService {
 
         User user = this.getUserByMail(userToCheck.getMail());
 
-        if(user == null) {
+        if (user == null) {
             return false;
         }
 
@@ -33,5 +33,9 @@ public class UserService {
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new RuntimeException("Multiple users found with email: " + mail);
         }
+    }
+
+    public boolean mailIsAvailable(String mail) {
+        return getUserByMail(mail) != null;
     }
 }
