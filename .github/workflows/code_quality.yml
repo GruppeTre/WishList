@@ -22,7 +22,7 @@ jobs:
 
       - name: Build with Maven
         env:
-          DEV_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
+          DEV_DATABASE_URL: jdbc:mysql://localhost:3306/database
           DEV_USERNAME: user
           DEV_PASSWORD: 1234
         run: mvn -B package --file pom.xml
