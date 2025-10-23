@@ -27,16 +27,16 @@ public class UserRepository {
         return user;
     });
 
-    public List<User> getUser(String mail){
+    public User getUser(String mail){
         String checkUser = "SELECT * FROM User WHERE mail = ?";
 
-        return jdbcTemplate.query(checkUser, userRowMapper, mail);
+        return jdbcTemplate.queryForObject(checkUser, userRowMapper, mail);
     }
 
-    public List<User> getPassword(String mail, String password){
-        String checkPassword = "SELECT password FROM user WHERE mail = ?";
+    public User getPassword(String mail, String password){
+        String checkPassword = "SELECT password FROM user WHERE id = ?";
 
-        return jdbcTemplate.query(checkPassword, userRowMapper, mail);
+        return jdbcTemplate.queryForObject(checkPassword, userRowMapper, mail);
     }
 
     public User userLogin(User user){

@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String getLogin(@ModelAttribute Model model){
+    public String getLogin(Model model){
         User userLogin = new User();
         model.addAttribute("userLogin", userLogin);
 
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String postLogin(RedirectAttributes redirectAttributes, @ModelAttribute User user){
+    public String postLogin(@ModelAttribute User user){
 
         service.userLogin(user);
 

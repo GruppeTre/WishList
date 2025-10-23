@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private UserRepository userRepository;
 
-    public User userLogin(User user){
+    public boolean userLogin(User userToCheck){
 
-        this.userRepository.userLogin(user);
+        User user = this.userRepository.getUser(userToCheck.getMail());
+
+
 
         return user;
     }
