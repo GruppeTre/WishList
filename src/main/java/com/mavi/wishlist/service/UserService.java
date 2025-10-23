@@ -35,7 +35,7 @@ public class UserService {
         }
     }
 
-    public boolean mailIsAvailable(String mail) {
+    public boolean mailIsTaken(String mail) {
         return getUserByMail(mail) != null;
     }
 }
