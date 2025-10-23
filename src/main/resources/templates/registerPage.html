@@ -9,28 +9,28 @@
 <nav th:replace="~{fragments/_commonElements :: topnav}"></nav>
 <main>
     <div id="newUserFormWrapper" th:object="${newUser}">
-        <form action="#" th:action="@{/user/add}" method="post">
+        <form action="#" th:action="@{/user/register}" method="post">
             <h2>Register User</h2>
 
             <!-- INPUTS -->
 
             <div>
-                <label for="email", class="form-label">Email</label>
+                <label for="email" class="form-label">Email</label>
                 <input id="email" type="email" th:field="*{mail}" placeholder="Email" required>
             </div>
 
             <div>
-                <label for="first-name", class="form-label">First Name</label>
-                <input id="first-name" type="text" th:field="*{firstName}" placeholder="First Name" required maxlength="50">
+                <label for="first-name" class="form-label">First Name</label>
+                <input id="first-name" type="text" th:field="*{firstName}" placeholder="First Name" maxlength="50" required pattern="\S(.*\S)?" title="This field cannot be empty">
             </div>
 
             <div>
-                <label for="last-name", class="form-label">Last Name</label>
-                <input id="last-name" type="text" th:field="*{lastName}" placeholder="Last Name" required maxlength="50">
+                <label for="last-name" class="form-label">Last Name</label>
+                <input id="last-name" type="text" th:field="*{lastName}" placeholder="Last Name" maxlength="50" required pattern="\S(.*\S)?" title="This field cannot be empty">
             </div>
 
             <div>
-                <label for="password", class="form-label">Password (8 character minimum)</label>
+                <label for="password" class="form-label">Password (8 character minimum)</label>
                 <input id="password" type="password" th:field="*{password}" placeholder="Password" required minlength="8" maxlength="20">
             </div>
 
