@@ -1,5 +1,7 @@
 package com.mavi.wishlist.controller.interfaces;
 
+import jakarta.servlet.http.HttpSession;
+
 public interface IController {
-    void checkSession();
+    boolean isLoggedIn(HttpSession session);
 }
