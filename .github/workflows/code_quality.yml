@@ -12,13 +12,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+
       - name: Build with Maven
+        env:
+          PROD_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
+          PROD_USERNAME: user
+          PROD_PASSWORD: 1234
         run: mvn -B package --file pom.xml
 
   qodana:
