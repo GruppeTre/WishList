@@ -1,3 +1,8 @@
-# WishList
+# WishList Gruppe 3:
 
-- test
+**Medlemmer:**
+- Jacob Klitgaard
+- Magnus Sørensen
+- Jens Gotfredsen
+
+Google Docs:
