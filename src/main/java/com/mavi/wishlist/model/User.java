@@ -6,12 +6,11 @@ public class User {
     private String firstName;
     private String lastName;
     private String mail;
-    private String passwordHash;
+    private String password;
 
     //Constructors
 
     //getters & setters
-
     public int getId() {
         return id;
     }
@@ -44,11 +43,11 @@ public class User {
         this.mail = mail;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String passwordHash) {
+        this.password = passwordHash;
     }
 }
