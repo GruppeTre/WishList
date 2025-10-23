@@ -12,7 +12,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class UserController {
 
-    private UserService userService;
+    private UserService service;
+
+    public UserController (UserService service) {
+        this.service = service;
+    }
 
     @GetMapping("/")
     public String getIndex(){
@@ -30,7 +34,7 @@ public class UserController {
     @PostMapping("/login")
     public String postLogin(RedirectAttributes redirectAttributes, @ModelAttribute User user){
 
-        userService.userLogin(user);
+        service.userLogin(user);
 
         return "redirect:/wishlist";
     }
