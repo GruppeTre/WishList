@@ -5,8 +5,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -49,5 +53,34 @@ public class UserRepository {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    public User addUser(User user) {
+        String query = "INSERT IGNORE INTO User (password, mail, firstname, lastName) VALUES (?,?,?,?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        try{
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, user.getPassword());
+                ps.setString(2, user.getMail());
+                ps.setString(3, user.getFirstName());
+                ps.setString(4, user.getLastName());
+                return ps;
+            }, keyHolder);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        //check if generated key is null, otherwise assign it to user object
+        Number generatedKey = keyHolder.getKey();
+
+        if (generatedKey == null) {
+            throw new RuntimeException("Failed to obtain generated key for new user");
+        }
+
+        user.setId(generatedKey.intValue());
+
+        return user;
     }
 }
