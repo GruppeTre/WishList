@@ -22,9 +22,9 @@ jobs:
 
       - name: Build with Maven
         env:
-          PROD_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
-          PROD_USERNAME: user
-          PROD_PASSWORD: 1234
+          DEV_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
+          DEV_USERNAME: user
+          DEV_PASSWORD: 1234
         run: mvn -B package --file pom.xml
 
   qodana:
