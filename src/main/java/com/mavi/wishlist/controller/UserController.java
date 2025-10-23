@@ -1,5 +1,6 @@
 package com.mavi.wishlist.controller;
 
+import com.mavi.wishlist.controller.interfaces.IController;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -13,12 +14,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
-
-    UserService service;
+public class UserController implements IController {
+    private final UserService service;
 
     public UserController(UserService service) {
         this.service = service;
+    }
+
+    @Override
+    public boolean isLoggedIn(HttpSession session){
+        return session.getAttribute("user") != null;
     }
 
     @GetMapping("/register")

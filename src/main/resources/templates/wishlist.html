@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Wish List</title>
@@ -7,7 +7,13 @@
 <body>
 <header th:replace="~{/fragments/_commonElements :: header}"></header>
 <nav th:replace="~{/fragments/_commonElements :: topnav}"></nav>
-<h1>Wish List</h1>
+<section>
+    <article th:object="${user}">
+        <h1>Wish List</h1>
+        <p th:text="'Successful session: UserID' + *{id}"></p>
+        <p th:text="*{firstName} + ' ' + *{lastName}"></p>
+    </article>
+</section>
 <footer th:replace="~{/fragments/_commonElements :: footer}"></footer>
 </body>
 </html>
