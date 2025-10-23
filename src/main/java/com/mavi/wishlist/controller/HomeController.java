@@ -4,10 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class WishlistController {
+public class HomeController {
 
-    @GetMapping("/wishlist")
-    public String getWishlist(){
-        return "wishlist";
+    @GetMapping("/")
+    public String getIndex(){
+        return "index";
     }
 }

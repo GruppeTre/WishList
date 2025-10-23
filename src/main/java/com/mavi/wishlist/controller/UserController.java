@@ -11,14 +11,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller()
+@Controller
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService service;
+    @GetMapping("/register")
+    public String getRegisterForm(Model model) {
+        User userToAdd = new User();
+        model.addAttribute("newUser", userToAdd);
 
-    public UserController (UserService service) {
-        this.service = service;
+        return "registerPage";
+    }
+
+    @PostMapping("/register")
+    public String addNewUser(@ModelAttribute User newUser) {
+        //add user in backend (should salt and hash password before inserting into database
+
+        return "loginPage";
     }
 
 
