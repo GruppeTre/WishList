@@ -17,8 +17,8 @@ public class WishlistController implements IController {
     }
 
     @GetMapping("/wishlist")
-    public String getWishlist(Model model, @ModelAttribute User user){
-        model.addAttribute("user", user);
+    public String getWishlist(Model model, HttpSession session, @ModelAttribute User user){
+        model.addAttribute("user", session.getAttribute("user"));
 
         return "wishlist";
     }
