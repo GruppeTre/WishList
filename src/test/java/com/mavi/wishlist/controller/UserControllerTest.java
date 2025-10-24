@@ -94,9 +94,9 @@ class UserControllerTest {
                         .param("passwordHash", wrongPassword))
                 //Checks that it redirects
                 .andExpect(status().is3xxRedirection())
-                //Checks that the redirected url is /wishlist
+                //Checks that the redirected url is /user/login
                 .andExpect(redirectedUrl("/user/login"))
-                //Checks that no attributes are left behind
+                //Checks that one attributes are left behind
                 .andExpect(flash().attributeCount(1))
                 .andExpect(flash().attributeExists("badCredentials"));
     }
