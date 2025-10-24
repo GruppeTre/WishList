@@ -3,14 +3,18 @@ package com.mavi.wishlist.service;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
     public UserService(UserRepository repository) {
         this.userRepository = repository;
+        this.encoder = new BCryptPasswordEncoder(10);
     }
 
     public boolean userLogin(User userToCheck){
@@ -21,7 +25,7 @@ public class UserService {
             return false;
         }
 
-        return userToCheck.getPassword().equals(this.userRepository.getPassword(user.getId()));
+        return encoder.matches(userToCheck.getPassword(), user.getPassword());
     }
 
     public User getUserByMail(String mail) {
@@ -48,6 +52,10 @@ public class UserService {
         if (!isValidNewUser(user)) {
             return null;
         }
+
+        String rawPassword = user.getPassword();
+
+        user.setPassword(encoder.encode(rawPassword));
 
         return userRepository.addUser(user);
     }
