@@ -86,6 +86,4 @@ public class UserController implements IController {
 
         return "redirect:/wishlist";
     }
-
-
 }

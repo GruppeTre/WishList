@@ -2,7 +2,7 @@ package com.mavi.wishlist.model;
 
 public class User {
 
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String mail;
@@ -11,11 +11,11 @@ public class User {
     //Constructors
 
     //getters & setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,5 +49,24 @@ public class User {
 
     public void setPassword(String passwordHash) {
         this.password = passwordHash;
+    }
+
+    //Equals and HashCode methods to reliably use Maps, HashMaps etc and prevent duplications
+    //Ensures that two objects referencing the same database entry can be identified preventing duplicate memory should the both be loaded.
+    //Allow us to compare objects during integration tests for better test cases.
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+
+        if(o == null || getClass() != o.getClass()) return false;
+        User that = (User) o;
+
+        return this.getId() != null && this.getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode(){
+        Integer userID = getId();
+        return userID != null ? userID.hashCode() : 0;
     }
 }
