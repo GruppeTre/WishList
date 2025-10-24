@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:replace="~{fragments/_commonElements :: header}"></header>
+<nav th:replace="~{fragments/_commonElements :: topnav}"></nav>
+
+<div>
+    <form th:action="@{/user/profile}" th:object="${user}" method="post">
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="*{firstName}" />
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{lastName}" />
+
+        <label for="mail">Email:</label>
+        <input type="email" id="mail" th:field="*{mail}" />
+
+        <button type="submit">Save</button>
+    </form>
+
+    <a href="/wishlist">
+        <button>Back</button>
+    </a>
+</div>
+
+</body>
+    <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
+</html>

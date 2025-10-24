@@ -86,4 +86,12 @@ public class UserController implements IController {
 
         return "redirect:/wishlist";
     }
+
+    @GetMapping("/profile")
+    public String showProfile(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        return "profilePage";
+    }
+
 }

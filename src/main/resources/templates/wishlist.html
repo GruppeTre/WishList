@@ -13,6 +13,9 @@
         <p th:text="'Successful session: UserID' + *{id}"></p>
         <p th:text="*{firstName} + ' ' + *{lastName}"></p>
     </article>
+    <article>
+        <a href="/user/profile">Profile</a>
+    </article>
 </section>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
 </body>
