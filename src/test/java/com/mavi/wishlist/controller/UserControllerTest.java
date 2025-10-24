@@ -37,11 +37,25 @@ class UserControllerTest {
         testLogin = new User();
     }
 
+    /*
+    ===========================================
+    ==               GET TESTS               ==
+    ===========================================
+     */
     @Test
-    void shouldLogin() throws Exception {
+    void shouldShowLoginPage() throws Exception {
         mvc.perform(get("/user/login"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("loginPage"))
                 .andExpect(model().attribute("userLogin", testLogin));
     }
+
+    /*
+    ===========================================
+    ==              POST TESTS               ==
+    ===========================================
+     */
+
+    @Test
+    void should
 }
