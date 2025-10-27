@@ -12,21 +12,32 @@
 <div>
     <form th:action="@{/user/profile}" th:object="${user}" method="post">
 
+        <label for="mail">Email:</label>
+        <input type="email" id="mail" th:field="*{mail}" th:readonly="${viewMode == 'view'}"/>
+
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" th:field="*{firstName}" />
+        <input type="text" id="firstName" th:field="*{firstName}" th:readonly="${viewMode == 'view'}" />
 
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" th:field="*{lastName}" />
+        <input type="text" id="lastName" th:field="*{lastName}" th:readonly="${viewMode == 'view'}"/>
 
-        <label for="mail">Email:</label>
-        <input type="email" id="mail" th:field="*{mail}" />
+        <div th:if="${viewMode == 'edit'}">
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}"/>
+        </div>
 
-        <button type="submit">Save</button>
+        <button th:if="${viewMode == 'edit'}" type="submit">Save</button>
     </form>
-
-    <a href="/wishlist">
-        <button>Back</button>
-    </a>
+    <div th:if="${viewMode == 'view'}">
+        <a th:href="@{/user/profile(viewMode='edit')}">
+            <button>Edit Profile</button>
+        </a>
+    </div>
+    <div>
+        <a href="/wishlist">
+            <button>Back</button>
+        </a>
+    </div>
 </div>
 
 </body>
