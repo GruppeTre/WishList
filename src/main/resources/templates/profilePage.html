@@ -31,6 +31,11 @@
             <button>Edit Profile</button>
         </a>
     </div>
+    <div id="delete-button" th:if="${viewMode == 'edit'}">
+        <form onsubmit="return confirm('Do you want to permanently delete your account?');" th:action="@{/user/profile/delete}" method="post" th:object="${user}">
+            <button type="submit">Delete User</button>
+        </form>
+    </div>
     <div>
         <a th:href="${viewMode == 'view'} ? '/wishlist' : '/user/profile'">
             <button>Back</button>
