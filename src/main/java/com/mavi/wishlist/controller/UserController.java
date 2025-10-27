@@ -96,7 +96,7 @@ public class UserController implements IController {
     }
 
     @PostMapping("/profile/update")
-    public String postUserUpdate(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
+    public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
 
         if ((updatedUser = service.updateUser(updatedUser)) == null) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
@@ -106,7 +106,7 @@ public class UserController implements IController {
             session.setAttribute("user", updatedUser);
         }
 
-        return "redirect:/profile";
+        return "redirect:/user/profile";
     }
 
 }
