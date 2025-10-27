@@ -1,5 +1,7 @@
 package com.mavi.wishlist.model;
 
+import java.util.Objects;
+
 public class User {
 
     private Integer id;
@@ -61,7 +63,13 @@ public class User {
         if(o == null || getClass() != o.getClass()) return false;
         User that = (User) o;
 
-        return this.getId() != null && this.getId().equals(that.getId());
+        //Checks for persistent objects
+        if(this.getId() != null && that.getId() != null) {
+           return this.getId().equals(that.getId());
+        }
+
+        //Compares new objects without IDs
+        return Objects.equals(getMail(), that.getMail()) && Objects.equals(getPassword(), that.getPassword());
     }
 
     @Override

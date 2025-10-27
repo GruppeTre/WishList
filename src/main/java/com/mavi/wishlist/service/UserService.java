@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
+    private final Argon2PasswordEncoder encoder;
 
     public UserService(UserRepository repository) {
         this.userRepository = repository;
-        this.encoder = new BCryptPasswordEncoder(10);
+        this.encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
 
     public boolean userLogin(User userToCheck){

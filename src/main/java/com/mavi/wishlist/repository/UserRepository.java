@@ -72,14 +72,11 @@ public class UserRepository {
             throw new RuntimeException(e);
         }
 
-        //check if generated key is null, otherwise assign it to user object
-        Number generatedKey = keyHolder.getKey();
-
-        if (generatedKey == null) {
+        if (keyHolder.getKey() == null) {
             throw new RuntimeException("Failed to obtain generated key for new user");
         }
 
-        user.setId(generatedKey.intValue());
+        user.setId(keyHolder.getKey().intValue());
 
         return user;
     }
