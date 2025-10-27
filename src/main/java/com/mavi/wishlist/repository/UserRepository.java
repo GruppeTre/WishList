@@ -80,4 +80,33 @@ public class UserRepository {
 
         return user;
     }
+
+    public User updateUser(User user) {
+        String query = "UPDATE User SET firstname = ?, lastname = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(query, user.getFirstName(), user.getLastName(), user.getId());
+
+        if(rowsAffected > 1){
+            throw new RuntimeException("Multiple users with same ID found!");
+        }
+
+        if(rowsAffected == 0){
+            return null;
+        }
+
+        return user;
+    }
+
+    public User deleteUser(User userToDelete) {
+        String query = "DELETE FROM User WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(query, userToDelete.getId());
+
+        if (rowsAffected == 0) {
+            return null;
+        }
+
+        return userToDelete;
+    }
+
 }

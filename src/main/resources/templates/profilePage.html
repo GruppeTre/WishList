@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:replace="~{fragments/_commonElements :: header}"></header>
+<nav th:replace="~{fragments/_commonElements :: topnav}"></nav>
+
+<div>
+    <form th:action="@{/user/profile/update}" th:object="${user}" method="post">
+
+        <h2 th:text="${viewMode == 'view'} ? 'Profile' : 'Edit Profile'"></h2>
+
+        <input hidden="hidden" th:field="*{password}">
+
+        <label for="mail">Email:</label>
+        <input type="email" id="mail" th:field="*{mail}" readonly/>
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="*{firstName}" th:readonly="${viewMode == 'view'}" />
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{lastName}" th:readonly="${viewMode == 'view'}"/>
+
+        <button th:if="${viewMode == 'edit'}" type="submit">Save</button>
+    </form>
+    <div th:if="${viewMode == 'view'}">
+        <a th:href="@{/user/profile(viewMode='edit')}">
+            <button>Edit Profile</button>
+        </a>
+    </div>
+    <div id="delete-button" th:if="${viewMode == 'edit'}">
+        <form onsubmit="return confirm('Do you want to permanently delete your account?');" th:action="@{/user/profile/delete}" method="post" th:object="${user}">
+            <button type="submit">Delete User</button>
+        </form>
+    </div>
+    <div>
+        <a th:href="${viewMode == 'view'} ? '/wishlist' : '/user/profile'">
+            <button>Back</button>
+        </a>
+    </div>
+</div>
+
+</body>
+    <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
+</html>

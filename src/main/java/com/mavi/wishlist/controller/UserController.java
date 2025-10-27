@@ -6,10 +6,7 @@ import com.mavi.wishlist.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -19,6 +16,10 @@ public class UserController {
 
     public UserController(UserService service) {
         this.service = service;
+    }
+
+    private Integer getUserIdFromSession(HttpSession session) {
+        return ((User)session.getAttribute("user")).getId();
     }
 
     @GetMapping("/register")
@@ -81,4 +82,42 @@ public class UserController {
 
         return "redirect:/wishlist";
     }
+
+    @GetMapping("/profile")
+    public String showProfile(@RequestParam(required = false, defaultValue = "view") String viewMode, Model model, HttpSession session){
+        if (!isLoggedIn(session)) {
+            return "redirect:/";
+        }
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("viewMode", viewMode);
+        return "profilePage";
+    }
+
+    @PostMapping("/profile/update")
+    public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
+
+        updatedUser.setId(this.getUserIdFromSession(session));
+
+        if ((updatedUser = service.updateUser(updatedUser)) == null) {
+            redirectAttributes.addFlashAttribute("showErrorMessage", true);
+            redirectAttributes.addFlashAttribute("errorMessageText", "Failed to update user, please try again");
+            System.out.println("controller: updateUser call returned null!");
+        } else {
+            session.setAttribute("user", updatedUser);
+        }
+
+        return "redirect:/user/profile";
+    }
+
+    @PostMapping("profile/delete")
+    public String deleteUser(HttpSession session, @ModelAttribute User userToDelete) {
+
+        userToDelete.setId(this.getUserIdFromSession(session));
+
+        this.service.deleteUser(userToDelete);
+
+        return "redirect:/";
+    }
+
 }
