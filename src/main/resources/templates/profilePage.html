@@ -9,7 +9,7 @@
 <nav th:replace="~{fragments/_commonElements :: topnav}"></nav>
 
 <div>
-    <form th:action="@{/user/profile}" th:object="${user}" method="post">
+    <form th:action="@{/user/profile/update}" th:object="${user}" method="post">
 
         <h2 th:text="${viewMode == 'view'} ? 'Profile' : 'Edit Profile'"></h2>
 
