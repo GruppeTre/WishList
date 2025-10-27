@@ -60,6 +60,18 @@ public class UserService {
         return userRepository.addUser(user);
     }
 
+    public User updateUser(User user){
+
+        //trim mail for leading and trailing whitespaces
+        user.setMail(user.getMail().trim());
+
+        //check for validity (no empty fields)
+        if (!isValidNewUser(user)) {
+            return null;
+        }
+        return userRepository.updateUser(user);
+    }
+
     //collection of guard clauses to run before adding new user to database
     private boolean isValidNewUser(User user) {
 
