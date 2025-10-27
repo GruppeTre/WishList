@@ -1,0 +1,53 @@
+/* PALETTE */
+:root {
+    --green: #558B6E;
+    --dark-blue: #233D4D;
+    --orange: #FE7F2D;
+    --cream: #F2E9DC;
+    --light: #E8F1F2;
+    --bg-color: var(--cream);
+}
+
+/* ELEMENTS */
+
+body {
+    margin: 0;
+}
+
+header {
+    background-color: var(--green);
+    height: 7em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-title {
+    color: var(--orange);
+    display: inline;
+    padding-left: 1.5em;
+    margin-bottom: 0;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 4em;
+    width: 18em;
+}
+
+header .button {
+    width: 12em;
+    margin-bottom: 0;
+}
+
+.button.button-primary {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    border-radius: 100px;
+}
+
+a {
+    color: var(--dark-blue);
+}
