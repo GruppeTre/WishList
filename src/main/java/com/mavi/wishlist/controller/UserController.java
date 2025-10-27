@@ -1,6 +1,5 @@
 package com.mavi.wishlist.controller;
 
-import com.mavi.wishlist.controller.interfaces.IController;
 import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.service.UserService;
