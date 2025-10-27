@@ -33,7 +33,7 @@
         </a>
     </div>
     <div>
-        <a href="/wishlist">
+        <a th:href="${viewMode == 'view'} ? '/wishlist' : '/user/profile'">
             <button>Back</button>
         </a>
     </div>
