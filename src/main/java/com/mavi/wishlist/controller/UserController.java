@@ -95,4 +95,18 @@ public class UserController implements IController {
         return "profilePage";
     }
 
+    @PostMapping("/profile/update")
+    public String postUserUpdate(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
+
+        if ((updatedUser = service.updateUser(updatedUser)) == null) {
+            redirectAttributes.addFlashAttribute("showErrorMessage", true);
+            redirectAttributes.addFlashAttribute("errorMessageText", "Failed to update user, please try again");
+            System.out.println("controller: updateUser call returned null!");
+        } else {
+            session.setAttribute("user", updatedUser);
+        }
+
+        return "redirect:/profile";
+    }
+
 }
