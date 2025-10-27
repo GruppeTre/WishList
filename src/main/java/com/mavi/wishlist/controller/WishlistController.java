@@ -13,6 +13,10 @@ public class WishlistController {
 
     @GetMapping("/wishlist")
     public String getWishlist(Model model, HttpSession session, @ModelAttribute User user){
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
         model.addAttribute("user", session.getAttribute("user"));
 
         return "wishlist";
