@@ -49,7 +49,7 @@ public class UserService {
         user.setMail(user.getMail().trim());
 
         //check for validity (no empty fields)
-        if (!isValidNewUser(user)) {
+        if (!isValidNewUser(user) || mailIsTaken(user.getMail())) {
             return null;
         }
 
@@ -99,11 +99,6 @@ public class UserService {
 
         boolean passwordIsTooShort = user.getPassword().length() < passwordMinLength;
         if (passwordIsTooShort) {
-            return false;
-        }
-
-        boolean mailIsTaken = mailIsTaken(user.getMail());
-        if (mailIsTaken) {
             return false;
         }
 
