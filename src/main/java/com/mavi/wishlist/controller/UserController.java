@@ -98,6 +98,8 @@ public class UserController implements IController {
     @PostMapping("/profile/update")
     public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
 
+        updatedUser.setId(((User)session.getAttribute("user")).getId());
+
         if ((updatedUser = service.updateUser(updatedUser)) == null) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "Failed to update user, please try again");
