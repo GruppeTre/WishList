@@ -4,7 +4,6 @@ import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
