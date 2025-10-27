@@ -85,7 +85,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String showProfile(@RequestParam(required = false, defaultValue = "view") String viewMode, Model model, HttpSession session){
-        if (!isLoggedIn(session)) {
+        if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
         User user = (User) session.getAttribute("user");
