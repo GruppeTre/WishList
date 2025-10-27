@@ -86,6 +86,9 @@ public class UserController implements IController {
 
     @GetMapping("/profile")
     public String showProfile(@RequestParam(required = false, defaultValue = "view") String viewMode, Model model, HttpSession session){
+        if (!isLoggedIn(session)) {
+            return "redirect:/";
+        }
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
         model.addAttribute("viewMode", viewMode);
