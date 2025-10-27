@@ -5,7 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<header th:fragment="header"></header>
+<header th:fragment="header" class="u-full-width">
+    <h1 class="header-title"><strong>WISHLIST</strong></h1>
+    <div class="header-buttons">
+        <a class="button button-primary" href="/user/register">Register</a>
+        <a class="button button-primary" href="/user/login">Login</a>
+    </div>
+</header>
 <nav th:fragment="topnav"></nav>
 <footer th:fragment="footer"></footer>
 
