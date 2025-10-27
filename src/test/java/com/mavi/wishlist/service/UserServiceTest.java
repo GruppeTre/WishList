@@ -56,6 +56,7 @@ class UserServiceTest {
         dbUser.setPassword(encoder.encode(password));
     }
 
+    //Log In tests
     @Test
     void logInShouldReturnTrueOnCorrectPassword() {
         when(repository.getUser(logInUser.getMail())).thenReturn(dbUser);
@@ -72,6 +73,16 @@ class UserServiceTest {
         assertFalse(this.userService.userLogin(logInUser));
     }
 
+    @Test
+    void logInShouldReturnFalseOnIncorrectMail() {
+        when(repository.getUser(logInUser.getMail())).thenReturn(dbUser);
+
+        logInUser.setMail("Wrong@mail.com");
+
+        assertFalse(this.userService.userLogin(logInUser));
+    }
+
+    //Register tests
     @Test
     void registerUserShouldHashPassword() {
         when(repository.addUser(registerUser)).thenReturn(dbUser);
@@ -126,6 +137,35 @@ class UserServiceTest {
         registerUser.setPassword("");
 
         assertNull(this.userService.registerUser(registerUser));
+    }
+
+    //update tests
+
+    @Test
+    void updateUserShouldReturnNullOnEmptyMail() {
+        when(repository.updateUser(registerUser)).thenReturn(dbUser);
+
+        registerUser.setMail(" ");
+
+        assertNull(this.userService.updateUser(registerUser));
+    }
+
+    @Test
+    void updateUserShouldReturnNullOnEmptyFirstName() {
+        when(repository.updateUser(registerUser)).thenReturn(dbUser);
+
+        registerUser.setFirstName(" ");
+
+        assertNull(this.userService.updateUser(registerUser));
+    }
+
+    @Test
+    void updateUserShouldReturnNullOnEmptyLastName() {
+        when(repository.updateUser(registerUser)).thenReturn(dbUser);
+
+        registerUser.setLastName(" ");
+
+        assertNull(this.userService.updateUser(registerUser));
     }
 
 }
