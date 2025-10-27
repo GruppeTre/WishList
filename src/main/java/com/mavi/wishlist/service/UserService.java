@@ -48,7 +48,7 @@ public class UserService {
         user.setMail(user.getMail().trim());
 
         //check for validity (no empty fields)
-        if (!isValidNewUser(user) || mailIsTaken(user.getMail())) {
+        if (userHasInvalidFields(user) || mailIsTaken(user.getMail())) {
             return null;
         }
 
@@ -65,7 +65,7 @@ public class UserService {
         user.setMail(user.getMail().trim());
 
         //check for validity (no empty fields)
-        if (!isValidNewUser(user)) {
+        if (userHasInvalidFields(user)) {
             return null;
         }
         return userRepository.updateUser(user);
@@ -76,35 +76,35 @@ public class UserService {
     }
 
     //collection of guard clauses to run before adding new user to database
-    private boolean isValidNewUser(User user) {
+    private boolean userHasInvalidFields(User user) {
 
         int passwordMinLength = 4;
 
         boolean mailIsBlank = user.getMail().isBlank();
         if (mailIsBlank) {
-            return false;
+            return true;
         }
 
         boolean passwordIsBlank = user.getPassword().isBlank();
         if (passwordIsBlank) {
-            return false;
+            return true;
         }
 
         boolean firstNameIsBlank = user.getFirstName().isBlank();
         if (firstNameIsBlank) {
-            return false;
+            return true;
         }
 
         boolean lastNameIsBlank = user.getLastName().isBlank();
         if (lastNameIsBlank) {
-            return false;
+            return true;
         }
 
         boolean passwordIsTooShort = user.getPassword().length() < passwordMinLength;
         if (passwordIsTooShort) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
