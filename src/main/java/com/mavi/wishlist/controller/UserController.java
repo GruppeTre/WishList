@@ -23,6 +23,10 @@ public class UserController implements IController {
         return session.getAttribute("user") != null;
     }
 
+    private Integer getUserIdFromSession(HttpSession session) {
+        return ((User)session.getAttribute("user")).getId();
+    }
+
     @GetMapping("/register")
     public String getRegisterForm(Model model) {
         User userToAdd = new User();
@@ -98,7 +102,7 @@ public class UserController implements IController {
     @PostMapping("/profile/update")
     public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
 
-        updatedUser.setId(((User)session.getAttribute("user")).getId());
+        updatedUser.setId(this.getUserIdFromSession(session));
 
         if ((updatedUser = service.updateUser(updatedUser)) == null) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
@@ -109,6 +113,16 @@ public class UserController implements IController {
         }
 
         return "redirect:/user/profile";
+    }
+
+    @PostMapping("profile/delete")
+    public String deleteUser(HttpSession session, @ModelAttribute User userToDelete) {
+
+        userToDelete.setId(this.getUserIdFromSession(session));
+
+        this.service.deleteUser(userToDelete);
+
+        return "redirect:/";
     }
 
 }

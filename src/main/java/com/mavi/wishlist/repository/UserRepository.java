@@ -100,4 +100,16 @@ public class UserRepository {
         return user;
     }
 
+    public User deleteUser(User userToDelete) {
+        String query = "DELETE FROM User WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(query, userToDelete.getId());
+
+        if (rowsAffected == 0) {
+            return null;
+        }
+
+        return userToDelete;
+    }
+
 }

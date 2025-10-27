@@ -72,6 +72,10 @@ public class UserService {
         return userRepository.updateUser(user);
     }
 
+    public User deleteUser(User userToDelete) {
+        return this.userRepository.deleteUser(userToDelete);
+    }
+
     //collection of guard clauses to run before adding new user to database
     private boolean isValidNewUser(User user) {
 
