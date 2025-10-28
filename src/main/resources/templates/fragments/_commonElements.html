@@ -7,7 +7,7 @@
 
 <body>
 <header th:fragment="header(view)" class="u-full-width">
-    <a th:href="${view == 'loggedIn'} ? '/wishlist' : '/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
+    <a th:href="${view == 'loggedIn'} ? '/wishlist/' : '/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
     <div class="header-buttons">
         <a class="button button-primary" th:if="${#ctx.session.isEmpty()}" href="/user/register">Register</a>
         <a class="button button-primary" th:if="${#ctx.session.isEmpty()}" href="/user/login">Login</a>

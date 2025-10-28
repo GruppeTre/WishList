@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 @Repository
-public class UserRepository {
+public class  UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
