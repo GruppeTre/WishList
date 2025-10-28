@@ -18,7 +18,7 @@ public class WishlistController {
             return "redirect:/";
         }
 
-        //model.addAttribute("user", session.getAttribute("user"));
+        model.addAttribute("user", session.getAttribute("user"));
 
         return "wishlist";
     }

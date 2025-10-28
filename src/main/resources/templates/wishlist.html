@@ -10,12 +10,10 @@
 
 <body>
 <header th:replace="~{fragments/_commonElements :: header('loggedIn')}"></header>
-<main class="container wishlist-container" th:object="${}">
+<main class="container wishlist-container">
 
     <h2 th:text="${user.getFirstName} + ' Wishlist'"></h2>
-    <h3 th:text="New Wish" class="button">
-        <a th
-    </h3>
+    <a class="button button-primary" th:href="@{/addWish}">New Wish</a>
 
     <div class="wishlist">
 
