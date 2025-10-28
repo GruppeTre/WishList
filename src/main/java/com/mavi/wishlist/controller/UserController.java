@@ -120,4 +120,9 @@ public class UserController {
         return "redirect:/";
     }
 
+    @PostMapping("profile/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
 }
