@@ -73,7 +73,7 @@ header .button, .button-container-form input {
 #profile_dropdown:hover #show_dropdown {
     opacity: 1;
     visibility: visible;
-    max-height: 100px;
+    max-height: 200px;
     width:200px;
 }
 
@@ -103,6 +103,7 @@ header .button, .button-container-form input {
 #show_dropdown ul li {
     list-style: none;
     padding: 0;
+    margin-top: 1em;
 }
 
 #delete-button {

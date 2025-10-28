@@ -13,10 +13,7 @@
         <a class="button button-primary" th:if="${#ctx.session.isEmpty()}" href="/user/login">Login</a>
         <div id="profile_dropdown" th:if="${!#ctx.session.isEmpty()}">
             <div class="inline">
-                <img src="/images/menu_dashes.png" alt="profile options"/>
-            </div>
-            <div class="inline">
-                <p>My Profile</p>
+                <a class="button button-primary" href="#">Profile</a>
             </div>
             <div id="show_dropdown">
                 <ul>
