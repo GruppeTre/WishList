@@ -23,7 +23,7 @@ public class WishlistController {
 
 
     @GetMapping("/")
-    public String getWishlist(Model model, HttpSession session, @ModelAttribute User user){
+    public String getWishlist(Model model, HttpSession session){
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
