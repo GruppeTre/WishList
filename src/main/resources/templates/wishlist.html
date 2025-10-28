@@ -13,6 +13,7 @@
 <main class="container wishlist-container">
 
     <h2 th:text="${user.getFirstName} + ' Wishlist'"></h2>
+    <a class="button button-primary" th:href="@{/addWish}">New Wish</a>
 
     <div class="wishlist">
 
