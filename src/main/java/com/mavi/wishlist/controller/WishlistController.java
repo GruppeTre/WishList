@@ -31,6 +31,7 @@ public class WishlistController {
 
         Wish newWish = new Wish();
         model.addAttribute("newWish", newWish);
+        model.addAttribute("user", session.getAttribute("user"));
 
         return "newWishPage";
     }
