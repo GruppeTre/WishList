@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<header th:replace="~{fragments/_commonElements :: header('notLoggedIn')}"></header>
+<header th:replace="~{fragments/_commonElements :: header}"></header>
 <main class="container wishlist-form">
 
     <form th:object="${userLogin}" th:action="@{/user/login}" method="post">

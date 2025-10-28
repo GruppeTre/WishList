@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/style/custom.css}">
 </head>
 <body>
-<header th:replace="~{fragments/_commonElements :: header('loggedIn')}"></header>
+<header th:replace="~{fragments/_commonElements :: header}"></header>
 <main class="container wishlist-form">
 
     <form th:action="@{/wishlist/add}" th:object="${wish}" method="post">
