@@ -59,10 +59,11 @@ class WishlistControllerTest {
             mockedStatic.when(() -> SessionUtils.isLoggedIn(session))
                     .thenReturn(true);
 
-            mvc.perform(get("/addWish").session(session))
+
+            mvc.perform(get("/wishlist/add").session(session))
                     .andExpect(status().isOk())
-                    .andExpect(view().name("newWishPage"))
-                    .andExpect(model().attribute("newWish", instanceOf(Wish.class)));
+                    .andExpect(view().name("wishPage"))
+                    .andExpect(model().attribute("wish", instanceOf(Wish.class)));
         }
     }
 }
