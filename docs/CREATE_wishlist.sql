@@ -22,7 +22,7 @@ CREATE TABLE wish (
 );
 
 CREATE TABLE wishlist (
-	user_id INT NOT NULL UNIQUE,
+	user_id INT NOT NULl,
     wish_id INT NOT NULL UNIQUE,
     
     PRIMARY KEY(user_id, wish_id),
