@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/style/normalize.css}">
+    <link rel="stylesheet" th:href="@{/style/skeleton.css}">
+    <link rel="stylesheet" th:href="@{/style/custom.css}">
 </head>
 <body>
+<header th:replace="~{fragments/_commonElements :: header('loggedIn')}"></header>
+<main class="container wishlist-form">
 
+    <form th:action="@{/wishlist}" th:object="${wish}" method="post">
+
+        <div>
+            <h2 th:text="${viewMode == 'view'} ? 'Wish' : 'Add Wish'"></h2>
+        </div>
+
+        <!-- INPUTS -->
+        <div class="row">
+            <label for="name">Wish:</label>
+            <input type="text" id="name" th:field="*{name}" th:readonly="${viewMode == 'view'}" />
+        </div>
+
+        <div class="row">
+            <label for="link">Link:</label>
+            <input type="text" id="link" th:field="*{link}" th:readonly="${viewMode == 'view'}" />
+        </div>
+
+        <!-- BUTTONS -->
+
+        <div class="row">
+            <a class="button" th:href="${viewMode == 'view'} ? '/wishlist' : '/wishlist/new'">Back</a>
+            <button th:if="${viewMode == 'edit' or viewMode == 'add'}" type="submit">Save</button>
+            <a class="button" th:if="${viewMode == 'view'}" th:href="@{/wishlist(viewMode='edit')}">Edit</a>
+        </div>
+
+    </form>
+</main>
+<footer th:replace="~{fragments/_commonElements :: footer}"></footer>
 </body>
 </html>
