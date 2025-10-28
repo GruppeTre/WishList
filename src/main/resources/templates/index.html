@@ -7,10 +7,12 @@
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
 </head>
+
 <body>
-    <header th:replace="~{fragments/_commonElements :: header('notLoggedIn')}"></header>
+<header th:replace="~{fragments/_commonElements :: header('notLoggedIn')}"></header>
     <main class="container">
         <div class="twelve columns" id="hero-text">
+
             <div class="hero-block">
                 <article>
                     <h3>Quickly & Easily</h3>
@@ -18,8 +20,9 @@
                         easy as finding the product you want online, and adding it to your list!
                     </p>
                 </article>
-                <img class="hero-img" src="/images/gifts.png">
+                <img class="hero-img" src="/images/gifts.png" alt="Illustration of wrapped gifts">
             </div>
+
             <div class="hero-block">
                 <article>
                     <h3>Ask your friends</h3>
@@ -27,8 +30,9 @@
                         friend, partner or family member
                     </p>
                 </article>
-                <img class="hero-img" src="/images/friends.png">
+                <img class="hero-img" src="/images/friends.png" alt="Illustration of friends fist bumping">
             </div>
+
             <div class="hero-block">
                 <article>
                     <h3>Found the perfect gift?</h3>
@@ -37,10 +41,8 @@
                     </p>
                     <a class="button button-primary" href="/user/register">Get Started Now</a>
                 </article>
-                <img class="hero-img" src="/images/reserve.png">
-
+                <img class="hero-img" src="/images/reserve.png" alt="Illustration of woman with a large checklist">
             </div>
-
         </div>
     </main>
     <footer th:replace="~{fragments/_commonElements :: footer}"></footer>

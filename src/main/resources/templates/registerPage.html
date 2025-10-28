@@ -7,9 +7,11 @@
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
 </head>
+
 <body>
 <header th:replace="~{fragments/_commonElements :: header('notLoggedIn')}"></header>
 <main class="container wishlist-form">
+
     <form action="#" th:object="${newUser}" th:action="@{/user/register}" method="post">
         <div>
             <h2>Register</h2>
