@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
 <body>
 <header th:fragment="header(view)" class="u-full-width">
-    <h1 class="header-title"><strong>WISHLIST</strong></h1>
+    <a th:href="${view == 'loggedIn'} ? '/wishlist' : '/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
     <div class="header-buttons">
         <a class="button button-primary" th:if="${view == 'notLoggedIn'}" href="/user/register">Register</a>
         <a class="button button-primary" th:if="${view == 'notLoggedIn'}" href="/user/login">Login</a>
@@ -14,8 +15,10 @@
         <a class="button button-primary" th:if="${view == 'loggedIn'}" href="/user/login">Log Out</a>
     </div>
 </header>
-<nav th:fragment="topnav"></nav>
-<footer th:fragment="footer"></footer>
+
+<footer th:fragment="footer">
+
+</footer>
 
 </body>
 </html>

@@ -38,6 +38,11 @@ header {
     margin-bottom: 5em;
 }
 
+header a, a:hover {
+    color: transparent;
+    background-color: transparent;
+}
+
 .header-title {
     color: var(--orange);
     display: inline;
