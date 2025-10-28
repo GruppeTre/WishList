@@ -9,11 +9,11 @@
 <header th:fragment="header(view)" class="u-full-width">
     <a th:href="${view == 'loggedIn'} ? '/wishlist' : '/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
     <div class="header-buttons">
-        <a class="button button-primary" th:if="${#ctx.session.isEmpty}" href="/user/register">Register</a>
-        <a class="button button-primary" th:if="${#ctx.session.isEmpty}" href="/user/login">Login</a>
-        <div id="profile_dropdown">
+        <a class="button button-primary" th:if="${#ctx.session.isEmpty()}" href="/user/register">Register</a>
+        <a class="button button-primary" th:if="${#ctx.session.isEmpty()}" href="/user/login">Login</a>
+        <div id="profile_dropdown" th:if="${!#ctx.session.isEmpty()}">
             <div class="inline">
-                <img src="/images/menu_dashes.png" alt="profile options">
+                <img src="/images/menu_dashes.png" alt="profile options"/>
             </div>
             <div class="inline">
                 <p>My Profile</p>
@@ -24,7 +24,7 @@
                         <a class="button button-primary" th:href="@{/user/profile}">See Profile</a>
                     </li>
                     <li>
-                        <form class="button-container-form" th:if="${!#ctx.session.isEmpty}" th:action="@{/user/profile/logout}" method="post">
+                        <form class="button-container-form" th:action="@{/user/profile/logout}" method="post">
                             <input class="button-primary" type="submit" value="Log Out">
                         </form>
                     </li>

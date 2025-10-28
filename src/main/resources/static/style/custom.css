@@ -74,6 +74,11 @@ header .button, .button-container-form input {
     opacity: 1;
     visibility: visible;
     max-height: 100px;
+    width:200px;
+}
+
+.inline {
+    display: inline-block;
 }
 
 #profile_dropdown .inline p {
@@ -89,6 +94,15 @@ header .button, .button-container-form input {
     z-index: 5;
     transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, visibility 0.3s;
     overflow: hidden;
+}
+
+#profile_dropdown {
+    width: 200px;
+}
+
+#show_dropdown ul li {
+    list-style: none;
+    padding: 0;
 }
 
 #delete-button {
