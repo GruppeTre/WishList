@@ -86,3 +86,32 @@ header .button {
 .wishlist-form input, label {
     width: 30em;
 }
+
+.wishlist-container {
+    max-width: 1300px
+}
+
+.wishlist {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.wishlist-card {
+    background-color: var(--green);
+    width: 15.5em;
+    height: 11em;
+    margin: 1.5em;
+    padding: 1.5em;
+    border-radius: 40px;
+    box-shadow: 3px 7px var(--dark-blue);
+}
+
+.wishlist-card .button {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+    color: var(--cream);
+    border-radius: 15px;
+}
