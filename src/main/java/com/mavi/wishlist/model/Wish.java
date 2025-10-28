@@ -2,7 +2,7 @@ package com.mavi.wishlist.model;
 
 public class Wish {
 
-    private int id;
+    private Integer id;
     private String name;
     private String link;
 

@@ -1,6 +1,14 @@
 package com.mavi.wishlist.repository;
 
+import com.mavi.wishlist.model.Wish;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 @Repository
 public class WishRepository {

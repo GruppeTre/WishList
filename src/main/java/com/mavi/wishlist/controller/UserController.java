@@ -55,7 +55,7 @@ public class UserController {
 
         session.setAttribute("user", newUser);
 
-        return "redirect:/wishlist";
+        return "redirect:/wishlist/";
     }
 
 
@@ -80,7 +80,7 @@ public class UserController {
 
         session.setAttribute("user", user);
 
-        return "redirect:/wishlist";
+        return "redirect:/wishlist/";
     }
 
     @GetMapping("/profile")
