@@ -48,7 +48,7 @@ public class WishRepository {
 
         int rowsAffected = jdbcTemplate.update(query, userId, wishId);
 
-        if (rowsAffected == 1) {
+        if (rowsAffected != 1) {
             throw new RuntimeException("Couldn't insert into junction table!");
         }
 
