@@ -7,11 +7,11 @@
 
 <body>
 <header th:fragment="header" class="u-full-width">
-    <a th:href="${#ctx.session.isEmpty()} ? '/' : '/wishlist/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
+    <a th:href="${session == null or session.get('user') == null} ? '/' : '/wishlist/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
     <div class="header-buttons">
-        <a class="button button-primary" th:if="${#ctx.session.isEmpty()}" href="/user/register">Register</a>
-        <a class="button button-primary" th:if="${#ctx.session.isEmpty()}" href="/user/login">Login</a>
-        <div id="profile_dropdown" th:if="${!#ctx.session.isEmpty()}">
+        <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/register">Register</a>
+        <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/login">Login</a>
+        <div id="profile_dropdown" th:if="${session != null and session.get('user') != null}">
             <div class="inline">
                 <a class="button button-primary" href="#">Profile</a>
             </div>
