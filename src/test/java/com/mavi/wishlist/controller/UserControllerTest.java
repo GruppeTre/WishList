@@ -2,6 +2,7 @@ package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.service.UserService;
+import com.mavi.wishlist.service.WishService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,11 +14,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
 @WebMvcTest
 class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockitoBean
+    private WishService wishService;
 
     @MockitoBean
     private UserService service;
@@ -72,7 +77,7 @@ class UserControllerTest {
                 //Checks that it redirects
                 .andExpect(status().is3xxRedirection())
                 //Checks that the redirected url is /wishlist
-                .andExpect(redirectedUrl("/wishlist"))
+                .andExpect(redirectedUrl("/wishlist/"))
                 //Checks that no attributes are left behind
                 .andExpect(flash().attributeCount(0))
                 //Checks that it sets a new session
