@@ -2,26 +2,39 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Log In</title>
+    <link rel="stylesheet" th:href="@{/style/normalize.css}">
+    <link rel="stylesheet" th:href="@{/style/skeleton.css}">
+    <link rel="stylesheet" th:href="@{/style/custom.css}">
 </head>
+
 <body>
-    <header th:replace="~{fragments/_commonElements :: header}"></header>
-    <nav th:replace="~{/fragments/_commonElements :: topnav}"></nav>
-    <section>
-        <article>
-            <form th:object="${userLogin}" th:action="@{/user/login}" method="post">
-                <h2>Log In</h2>
-                <label for="email">Email:</label>
-                <input id="email" th:field="*{mail}" placeholder="email">
-                <label for="password">Password</label>
-                <input id="password" type="password" th:field="*{password}" placeholder="password" minlength="4">
-                <button type="submit">Submit</button>
-            </form>
-            <a href="/">
-                <button>Back</button>
-            </a>
-        </article>
-    </section>
-    <header th:replace="~{fragments/_commonElements :: footer}"></header>
+<header th:replace="~{fragments/_commonElements :: header('notLoggedIn')}"></header>
+<main class="container wishlist-form">
+
+    <form th:object="${userLogin}" th:action="@{/user/login}" method="post">
+        <div>
+            <h2>Log In</h2>
+        </div>
+
+        <!-- INPUTS -->
+        <div class="row">
+            <label for="email">Email:</label>
+            <input id="email" type="email" th:field="*{mail}" placeholder="email">
+        </div>
+
+        <div class="row">
+            <label for="password">Password</label>
+            <input id="password" type="password" th:field="*{password}" placeholder="password" minlength="4">
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="row">
+            <a class="button" href="/">Back</a>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</main>
+<footer th:replace="~{fragments/_commonElements :: footer}"></footer>
 </body>
 </html>

@@ -3,20 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Wish List</title>
+    <link rel="stylesheet" th:href="@{/style/normalize.css}">
+    <link rel="stylesheet" th:href="@{/style/skeleton.css}">
+    <link rel="stylesheet" th:href="@{/style/custom.css}">
 </head>
+
 <body>
-<header th:replace="~{fragments/_commonElements :: header}"></header>
-<nav th:replace="~{fragments/_commonElements :: topnav}"></nav>
-<section>
-    <article th:object="${user}">
-        <h1>Wish List</h1>
-        <p th:text="'Successful session: UserID' + *{id}"></p>
-        <p th:text="*{firstName} + ' ' + *{lastName}"></p>
-    </article>
-    <article>
-        <a href="/user/profile">Profile</a>
-    </article>
-</section>
+<header th:replace="~{fragments/_commonElements :: header('loggedIn')}"></header>
+<main class="container wishlist-container">
+
+    <h2 th:text="${user.getFirstName} + ' Wishlist'"></h2>
+
+    <div class="wishlist">
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Uldsokker, 4stk</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt Ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+
+        <div class="wishlist-card">
+            <h5 class="wishlist-card-title">Indsæt ønske her</h5>
+            <a class="button" href="/">Visit site</a>
+            <a class="button" href="/">Delete</a>
+        </div>
+    </div>
+</main>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
 </body>
 </html>
