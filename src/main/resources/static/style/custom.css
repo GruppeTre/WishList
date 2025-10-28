@@ -70,6 +70,27 @@ header .button, .button-container-form input {
     border-radius: 100px;
 }
 
+#profile_dropdown:hover #show_dropdown {
+    opacity: 1;
+    visibility: visible;
+    max-height: 100px;
+}
+
+#profile_dropdown .inline p {
+    line-height: 20px;
+    margin: 0;
+}
+
+#show_dropdown {
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    position: absolute;
+    z-index: 5;
+    transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out, visibility 0.3s;
+    overflow: hidden;
+}
+
 #delete-button {
     background-color: var(--warning-red);
     border: var(--warning-red);
