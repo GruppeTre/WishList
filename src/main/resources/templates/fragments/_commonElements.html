@@ -5,11 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<header th:fragment="header" class="u-full-width">
+<header th:fragment="header(view)" class="u-full-width">
     <h1 class="header-title"><strong>WISHLIST</strong></h1>
     <div class="header-buttons">
-        <a class="button button-primary" href="/user/register">Register</a>
-        <a class="button button-primary" href="/user/login">Login</a>
+        <a class="button button-primary" th:if="${view == 'notLoggedIn'}" href="/user/register">Register</a>
+        <a class="button button-primary" th:if="${view == 'notLoggedIn'}" href="/user/login">Login</a>
+        <a class="button button-primary" th:if="${view == 'loggedIn'}" href="/user/profile">Profile</a>
+        <a class="button button-primary" th:if="${view == 'loggedIn'}" href="/user/login">Log Out</a>
     </div>
 </header>
 <nav th:fragment="topnav"></nav>
