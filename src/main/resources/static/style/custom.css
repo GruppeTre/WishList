@@ -5,6 +5,7 @@
     --orange: #FE7F2D;
     --cream: #F2E9DC;
     --light: #E8F1F2;
+    --warning-red: #C51E3A;
     --bg-color: var(--cream);
 }
 
@@ -58,20 +59,21 @@ header a, a:hover {
     width: 18em;
 }
 
-header .button {
+header .button, .button-container-form input {
     width: 12em;
     margin-bottom: 0;
 }
 
-.button.button-primary {
+.button.button-primary, input[type="submit"].button-primary {
     background-color: var(--dark-blue);
     border-color: var(--dark-blue);
     border-radius: 100px;
 }
 
 #delete-button {
-    background-color: red;
-    border: red;
+    background-color: var(--warning-red);
+    border: var(--warning-red);
+    color: var(--cream);
 }
 .hero-block {
     margin-bottom: 5em;

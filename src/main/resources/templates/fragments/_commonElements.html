@@ -12,7 +12,9 @@
         <a class="button button-primary" th:if="${view == 'notLoggedIn'}" href="/user/register">Register</a>
         <a class="button button-primary" th:if="${view == 'notLoggedIn'}" href="/user/login">Login</a>
         <a class="button button-primary" th:if="${view == 'loggedIn'}" href="/user/profile">Profile</a>
-        <a class="button button-primary" th:if="${view == 'loggedIn'}" href="/user/login">Log Out</a>
+        <form class="button-container-form" th:if="${view == 'loggedIn'}" th:action="@{/user/profile/logout}" method="post">
+            <input class="button-primary" type="submit" value="Log Out">
+        </form>
     </div>
 </header>
 
