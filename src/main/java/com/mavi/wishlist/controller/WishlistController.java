@@ -2,6 +2,7 @@ package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.model.User;
+import com.mavi.wishlist.model.Wish;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +18,20 @@ public class WishlistController {
             return "redirect:/";
         }
 
-        model.addAttribute("user", session.getAttribute("user"));
+        //model.addAttribute("user", session.getAttribute("user"));
 
         return "wishlist";
+    }
+
+    @GetMapping("/addWish")
+    public String addWish(Model model, HttpSession session){
+        if(!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        Wish newWish = new Wish();
+        model.addAttribute("newWish", newWish);
+
+        return "newWishPage";
     }
 }
