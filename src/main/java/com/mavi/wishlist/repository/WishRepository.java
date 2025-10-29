@@ -30,7 +30,9 @@ public class WishRepository {
     }
 
     public Wish getWish(Integer wishId){
-        String selectQuery = "SElECT * FROM Wish "
+        String selectQuery = "SElECT * FROM Wish WHERE id = ?";
+
+        return jdbcTemplate.queryForObject(selectQuery, rowMapper, wishId);
     }
 
     public Wish insertWish(Wish wish) {

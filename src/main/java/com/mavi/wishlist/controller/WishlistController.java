@@ -94,7 +94,7 @@ public class WishlistController {
         if (service.isInvalid(editWish)) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "Fields cannot be blank");
-            return "redirect:/wishlist/edit";
+            return "redirect:/wishlist/edit/" + editWish.getId();
         }
 
         service.editWish(editWish);
