@@ -2,11 +2,12 @@ package com.mavi.wishlist.service;
 
 import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.repository.WishRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class WishService {
@@ -27,11 +28,24 @@ public class WishService {
             return true;
         }
 
+        if (!linkContainsHttp(wishToCheck)) {
+            return true;
+        }
+
         return false;
     }
 
     public Wish getWish(Integer wishId){
         return repository.getWish(wishId);
+    }
+  
+    public boolean linkContainsHttp(Wish wish) {
+        String regex = "http[s]?:\\/\\/";
+        System.out.println(regex);
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(wish.getLink());
+
+        return matcher.find();
     }
 
     @Transactional
