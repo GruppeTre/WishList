@@ -28,6 +28,10 @@ public class WishService {
         return false;
     }
 
+    public Wish getWish(Integer wishId){
+        return repository.getWish(wishId);
+    }
+
     @Transactional
     public Wish addWish(Wish wish, Integer userId) {
 

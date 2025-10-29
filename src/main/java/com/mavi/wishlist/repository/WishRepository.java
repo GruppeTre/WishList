@@ -19,6 +19,10 @@ public class WishRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public Wish getWish(Integer wishId){
+        String selectQuery = "SElECT * FROM Wish "
+    }
+
     public Wish insertWish(Wish wish) {
         String query = "INSERT IGNORE INTO wish (name, link) VALUES (?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();

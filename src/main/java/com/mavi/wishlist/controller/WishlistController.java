@@ -46,12 +46,16 @@ public class WishlistController {
     }
 
     @GetMapping("/edit/{id}")
-    public String getEditWishPage(Model model, HttpSession session) {
+    public String getEditWishPage(@PathVariable int id, Model model, HttpSession session) {
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
-        service.
+        Wish wishToEdit = service.getWish(id);
+
+        model.addAttribute(wishToEdit);
+
+        return "editWishPage";
     }
 
     @PostMapping("/add")
