@@ -65,4 +65,21 @@ public class WishlistController {
         return "redirect:/wishlist/";
     }
 
+    @PostMapping("/edit")
+    public String editWish(@ModelAttribute Wish editWish, RedirectAttributes redirectAttributes, HttpSession session){
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        if (service.isInvalid(editWish)) {
+            redirectAttributes.addFlashAttribute("showErrorMessage", true);
+            redirectAttributes.addFlashAttribute("errorMessageText", "Fields cannot be blank");
+            return "redirect:/wishlist/edit";
+        }
+
+        service.editWish(editWish);
+
+        return "redirect:/wishlist/";
+    }
+
 }

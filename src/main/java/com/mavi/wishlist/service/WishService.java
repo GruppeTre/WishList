@@ -40,4 +40,12 @@ public class WishService {
         return insertedWish;
     }
 
+    public Wish editWish(Wish wish){
+        if(isInvalid(wish)){
+            return null;
+        }
+
+        return repository.editWish(wish);
+    }
+
 }

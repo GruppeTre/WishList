@@ -54,4 +54,16 @@ public class WishRepository {
 
         return rowsAffected;
     }
+
+    public Wish editWish(Wish wish){
+        String updateQuery = "UPDATE Wish SET name = ?, link = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(updateQuery, wish.getName(), wish.getLink(), wish.getId());
+
+        if (rowsAffected != 1) {
+            throw  new RuntimeException("Could not update the wish");
+        }
+
+        return wish;
+    }
 }
