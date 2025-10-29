@@ -7,6 +7,6 @@
 
 **Google Docs:**
 
-**Test Bruger**
-- Brugernavn: test@example.com
-- Password: 12345678
+**Test Bruger:**
+- Brugernavn: admin@admin
+- Password: admin
