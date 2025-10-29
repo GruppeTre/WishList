@@ -93,14 +93,14 @@ public class WishlistController {
             return "redirect:/";
         }
 
+        editWish.setId(((Wish) session.getAttribute("wish")).getId());
+        session.removeAttribute("wish");
+
         if (service.isInvalid(editWish)) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "Fields cannot be blank");
             return "redirect:/wishlist/edit/" + editWish.getId();
         }
-
-        editWish.setId(((Wish) session.getAttribute("wish")).getId());
-        session.removeAttribute("wish");
 
         service.editWish(editWish);
 
