@@ -1,2 +1,1 @@
-INSERT IGNORE INTO User (password, mail, firstname, lastName) VALUES ("1234", "somewhereinnowhere@live.dk", "Jens", "Gotfredsen"),
-	("4321", "jens_gotfredsen@icloud.com", "Luca", "Di Leo")
+INSERT IGNORE INTO User (password, mail, firstName, lastName) VALUES INSERT IGNORE INTO User (password, mail, firstName, lastName) VALUES ('$argon2id$v=19$m=16384,t=2,p=1$Hkk7F7M71WIJjuw8uym1wg$lMWg2Vv6DnISI6YlpKkC6CjzcF45iBKbfHck+kORYmg', 'admin@admin', 'Test', 'Name');

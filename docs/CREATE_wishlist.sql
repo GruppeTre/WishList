@@ -12,3 +12,22 @@ CREATE TABLE User (
     
     PRIMARY KEY(id)
 );
+
+CREATE TABLE wish (
+	id INT NOT NULL UNIQUE AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    link VARCHAR(255) NOT NULL,
+    
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE wishlist (
+	user_id INT NOT NULl,
+    wish_id INT NOT NULL UNIQUE,
+    
+    PRIMARY KEY(user_id, wish_id),
+    FOREIGN KEY(user_id) REFERENCES User(id)
+		ON DELETE CASCADE,
+	FOREIGN KEY(wish_id) REFERENCES Wish(id)
+		ON DELETE CASCADE
+);
