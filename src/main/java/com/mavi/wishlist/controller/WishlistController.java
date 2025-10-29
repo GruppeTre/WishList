@@ -102,4 +102,15 @@ public class WishlistController {
         return "redirect:/wishlist/";
     }
 
+    @PostMapping("/edit/delete")
+    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session) {
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        service.deleteWish(wishToDelete);
+
+        return "redirect:/wishlist/";
+    }
+
 }
