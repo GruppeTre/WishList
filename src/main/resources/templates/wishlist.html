@@ -20,7 +20,7 @@
         <div class="wishlist-card" th:each="wish : ${wishes}">
             <h3 th:text="${wish.name}">Name</h3>
             <a class="button" th:href="${wish.link}" target="_blank ">Visit Site</a>
-            <a class="button" href="#">Delete</a>
+            <a class="button" th:href="@{/wishlist/edit/{id}(id=${wish.id})}">Edit</a>
         </div>
     </div>
 

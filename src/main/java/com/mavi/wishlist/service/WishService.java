@@ -35,6 +35,10 @@ public class WishService {
         return false;
     }
 
+    public Wish getWish(Integer wishId){
+        return repository.getWish(wishId);
+    }
+  
     public boolean linkContainsHttp(Wish wish) {
         String regex = "http[s]?:\\/\\/";
         System.out.println(regex);
@@ -56,9 +60,15 @@ public class WishService {
         return insertedWish;
     }
 
-
     public List<Wish> showWishlistByUser(int userId) {
         return repository.showWishlistByUser(userId);
     }
 
+    public Wish editWish(Wish wish){
+        if(isInvalid(wish)){
+            return null;
+        }
+
+        return repository.editWish(wish);
+    }
 }

@@ -52,6 +52,19 @@ public class WishlistController {
         return "wishPage";
     }
 
+    @GetMapping("/edit/{id}")
+    public String getEditWishPage(@PathVariable int id, Model model, HttpSession session) {
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        Wish wishToEdit = service.getWish(id);
+
+        model.addAttribute(wishToEdit);
+
+        return "editWishPage";
+    }
+
     @PostMapping("/add")
     public String addWish(@ModelAttribute Wish newWish, RedirectAttributes redirectAttributes, HttpSession session){
 
@@ -68,6 +81,23 @@ public class WishlistController {
         Integer userId = ((User) session.getAttribute("user")).getId();
 
         service.addWish(newWish, userId);
+
+        return "redirect:/wishlist/";
+    }
+
+    @PostMapping("/edit")
+    public String editWish(@ModelAttribute Wish editWish, RedirectAttributes redirectAttributes, HttpSession session){
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        if (service.isInvalid(editWish)) {
+            redirectAttributes.addFlashAttribute("showErrorMessage", true);
+            redirectAttributes.addFlashAttribute("errorMessageText", "Fields cannot be blank");
+            return "redirect:/wishlist/edit/" + editWish.getId();
+        }
+
+        service.editWish(editWish);
 
         return "redirect:/wishlist/";
     }

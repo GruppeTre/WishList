@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Wish</title>
+    <link rel="stylesheet" th:href="@{/style/normalize.css}">
+    <link rel="stylesheet" th:href="@{/style/skeleton.css}">
+    <link rel="stylesheet" th:href="@{/style/custom.css}">
+</head>
+<body>
+<header th:replace="~{fragments/_commonElements :: header}"></header>
+<main class="container wishlist-form">
+
+    <form th:action="@{/wishlist/edit}" th:object="${wish}" method="post">
+
+        <div>
+            <h2>Edit Wish</h2>
+        </div>
+
+        <div>
+            <label for="id"></label>
+            <input id="id" type="hidden" th:field="*{id}">
+        </div>
+
+        <!-- INPUTS -->
+        <div class="row">
+            <label for="name">Description:</label>
+            <input type="text" id="name" th:field="*{name}" th:value="*{name}"/>
+        </div>
+
+        <div class="row">
+            <label for="link">Link:</label>
+            <input type="text" id="link" th:field="*{link}" th:value="*{link}"/>
+        </div>
+
+        <!-- BUTTONS -->
+
+        <div class="row">
+            <a class="button" href="/wishlist/">Back</a>
+            <button type="submit">Edit wish</button>
+        </div>
+
+    </form>
+</main>
+<footer th:replace="~{fragments/_commonElements :: footer}"></footer>
+</body>
+</html>
