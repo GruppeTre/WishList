@@ -71,4 +71,10 @@ public class WishService {
 
         return repository.editWish(wish);
     }
+
+    public Wish deleteWish(Wish wishToDelete) {
+        int rowsAffected = repository.deleteWish(wishToDelete);
+        System.out.println(rowsAffected);
+        return wishToDelete;
+    }
 }

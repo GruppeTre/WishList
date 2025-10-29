@@ -60,6 +60,8 @@ public class WishlistController {
 
         Wish wishToEdit = service.getWish(id);
 
+        session.setAttribute("wish", wishToEdit);
+
         model.addAttribute(wishToEdit);
 
         return "editWishPage";
@@ -97,6 +99,9 @@ public class WishlistController {
             return "redirect:/wishlist/edit/" + editWish.getId();
         }
 
+        editWish.setId(((Wish) session.getAttribute("wish")).getId());
+        session.removeAttribute("wish");
+
         service.editWish(editWish);
 
         return "redirect:/wishlist/";
@@ -108,6 +113,7 @@ public class WishlistController {
             return "redirect:/";
         }
 
+        wishToDelete.setId(((Wish) session.getAttribute("wish")).getId());
         service.deleteWish(wishToDelete);
 
         return "redirect:/wishlist/";

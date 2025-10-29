@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -87,5 +86,11 @@ public class WishRepository {
         }
 
         return wish;
+    }
+
+    public int deleteWish(Wish wish) {
+        String query = "DELETE FROM wish WHERE id = ?";
+
+        return jdbcTemplate.update(query, wish.getId());
     }
 }
