@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wish List</title>
+    <link rel="stylesheet" th:href="@{/style/normalize.css}">
+    <link rel="stylesheet" th:href="@{/style/skeleton.css}">
+    <link rel="stylesheet" th:href="@{/style/custom.css}">
+</head>
+
+<body>
+<header th:replace="~{fragments/_commonElements :: header}"></header>
+<main class="container wishlist-container">
+
+    <h2 th:text="${user.firstName} + ' Wishlist'">User Wishlist</h2>
+    <a class="button button-primary" th:href="@{/wishlist/add}">Add Wish</a>
+
+    <div class="wishlist">
+        <h3 th:if="${wishes.isEmpty()}">Empty wishlist</h3>
+        <div class="wishlist-card" th:each="wish : ${wishes}">
+            <h3 th:text="${wish.name}">Name</h3>
+            <a class="button" th:href="${wish.link}" target="_blank ">Visit Site</a>
+            <a class="button" th:href="@{/wishlist/edit/{id}(id=${wish.id})}">Edit</a>
+        </div>
+    </div>
+
+</main>
+<footer th:replace="~{fragments/_commonElements :: footer}"></footer>
+</body>
+</html>

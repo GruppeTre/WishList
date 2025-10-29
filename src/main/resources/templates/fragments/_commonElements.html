@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<header th:fragment="header" class="u-full-width">
+    <a th:href="${session == null or session.get('user') == null} ? '/' : '/wishlist/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
+    <div class="header-buttons">
+        <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/register">Register</a>
+        <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/login">Login</a>
+        <div id="profile_dropdown" th:if="${session != null and session.get('user') != null}">
+            <div class="inline">
+                <a class="button button-primary" href="#">Profile</a>
+            </div>
+            <div id="show_dropdown">
+                <ul>
+                    <li>
+                        <a class="button button-primary" th:href="@{/user/profile}">Details</a>
+                    </li>
+                    <li>
+                        <form class="button-container-form" th:action="@{/user/profile/logout}" method="post">
+                            <input class="button-primary" type="submit" value="Log Out">
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<footer th:fragment="footer">
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" th:href="@{/style/normalize.css}">
+    <link rel="stylesheet" th:href="@{/style/skeleton.css}">
+    <link rel="stylesheet" th:href="@{/style/custom.css}">
+</head>
+
+<body>
+<header th:replace="~{fragments/_commonElements :: header}"></header>
+<main class="container wishlist-form">
+
+    <form th:action="@{/user/profile/update}" th:object="${user}" method="post">
+        <div>
+            <h2 th:text="${viewMode == 'view'} ? 'Profile' : 'Edit Profile'"></h2>
+        </div>
+
+        <!-- INPUTS -->
+        <input hidden="hidden" th:field="*{password}">
+
+        <div class="row">
+            <label for="mail">Email:</label>
+            <input type="email" id="mail" th:field="*{mail}" readonly/>
+        </div>
+
+        <div class="row">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" th:field="*{firstName}" th:readonly="${viewMode == 'view'}" />
+        </div>
+
+        <div class="row">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" th:field="*{lastName}" th:readonly="${viewMode == 'view'}"/>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="row">
+            <a class="button" th:href="${viewMode == 'view'} ? '/wishlist/' : '/user/profile'">Back</a>
+            <button th:if="${viewMode == 'edit'}" type="submit">Save</button>
+            <a class="button" th:if="${viewMode == 'view'}" th:href="@{/user/profile(viewMode='edit')}">Edit</a>
+        </div>
+    </form>
+
+    <!-- DELETE BUTTON -->
+    <form th:if="${viewMode == 'edit'}" onsubmit="return confirm('Do you want to permanently delete your account?');" th:action="@{/user/profile/delete}" method="post" th:object="${user}">
+        <button id="delete-button" type="submit">Delete User</button>
+    </form>
+</main>
+<footer th:replace="~{fragments/_commonElements :: footer}"></footer>
+</body>
+</html>
