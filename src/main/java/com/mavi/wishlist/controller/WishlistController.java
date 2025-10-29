@@ -45,6 +45,15 @@ public class WishlistController {
         return "wishPage";
     }
 
+    @GetMapping("/edit/{id}")
+    public String getEditWishPage(Model model, HttpSession session) {
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        service.
+    }
+
     @PostMapping("/add")
     public String addWish(@ModelAttribute Wish newWish, RedirectAttributes redirectAttributes, HttpSession session){
 
