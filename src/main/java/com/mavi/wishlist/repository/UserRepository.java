@@ -42,17 +42,6 @@ public class  UserRepository {
         }
     }
 
-    //Get password as String by user id
-    public String getPassword(int id){
-        String checkPassword = "SELECT password FROM user WHERE id = ?";
-
-        try{
-            return jdbcTemplate.queryForObject(checkPassword, String.class, id);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
     public User addUser(User user) {
         String query = "INSERT IGNORE INTO User (password, mail, firstname, lastName) VALUES (?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
