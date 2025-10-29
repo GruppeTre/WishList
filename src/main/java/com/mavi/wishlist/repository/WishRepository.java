@@ -2,6 +2,7 @@ package com.mavi.wishlist.repository;
 
 import com.mavi.wishlist.model.Wish;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -9,9 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class WishRepository {
+
+    private final RowMapper<Wish> rowMapper = (rs, rowNum) -> {
+        Wish wish = new Wish();
+        wish.setId(rs.getInt("id"));
+        wish.setName(rs.getString("name"));
+        wish.setLink(rs.getString("link"));
+        return wish;
+    };
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -57,6 +67,12 @@ public class WishRepository {
         }
 
         return rowsAffected;
+    }
+
+    public List<Wish> showWishlistByUser(int userId) {
+        String query = "SELECT w.id, w.name, w.link FROM Wish w JOIN wishlist wl ON w.id = wl.wish_id WHERE wl.user_id = ?";
+
+        return jdbcTemplate.query(query, rowMapper, userId);
     }
 
     public Wish editWish(Wish wish){

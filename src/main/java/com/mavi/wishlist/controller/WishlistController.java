@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/wishlist")
@@ -28,6 +30,10 @@ public class WishlistController {
             return "redirect:/";
         }
 
+        User user = (User) session.getAttribute("user");
+        List<Wish> wishes = service.showWishlistByUser(user.getId());
+
+        model.addAttribute("wishes", wishes);
         model.addAttribute("user", session.getAttribute("user"));
 
         return "wishlist";
@@ -35,6 +41,7 @@ public class WishlistController {
 
     @GetMapping("/add")
     public String getWishPage(Model model, HttpSession session) {
+
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }

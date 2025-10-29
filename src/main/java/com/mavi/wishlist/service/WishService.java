@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class WishService {
 
@@ -44,6 +46,10 @@ public class WishService {
         return insertedWish;
     }
 
+    public List<Wish> showWishlistByUser(int userId) {
+        return repository.showWishlistByUser(userId);
+    }
+
     public Wish editWish(Wish wish){
         if(isInvalid(wish)){
             return null;
@@ -51,5 +57,4 @@ public class WishService {
 
         return repository.editWish(wish);
     }
-
 }
