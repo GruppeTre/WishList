@@ -29,7 +29,7 @@ class WishServiceTest {
     @BeforeEach
     void setUp() {
         String description = "Test ønske";
-        String link = "testlink.com";
+        String link = "https://testlink.com";
         int id = 1;
 
         userId = 1;

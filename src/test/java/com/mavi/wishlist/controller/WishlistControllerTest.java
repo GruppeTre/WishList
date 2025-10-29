@@ -43,7 +43,7 @@ class WishlistControllerTest {
         newWish = new Wish();
         newWish.setId(1);
         newWish.setName("Test");
-        newWish.setLink("link.test");
+        newWish.setLink("http://link.test");
 
         user = new User();
         user.setMail("test@example.com");
