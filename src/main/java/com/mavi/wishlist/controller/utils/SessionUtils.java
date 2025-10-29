@@ -1,5 +1,6 @@
 package com.mavi.wishlist.controller.utils;
 
+import com.mavi.wishlist.model.User;
 import jakarta.servlet.http.HttpSession;
 
 public class SessionUtils {
