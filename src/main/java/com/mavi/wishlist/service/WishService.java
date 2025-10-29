@@ -30,6 +30,11 @@ public class WishService {
 
     @Transactional
     public Wish addWish(Wish wish, Integer userId) {
+
+        if (isInvalid(wish)) {
+            return null;
+        }
+
         Wish insertedWish = repository.insertWish(wish);
         repository.insertToJunction(insertedWish.getId(), userId);
         return insertedWish;
