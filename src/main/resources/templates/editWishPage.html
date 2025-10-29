@@ -39,7 +39,10 @@
             <a class="button" href="/wishlist/">Back</a>
             <button type="submit">Save</button>
         </div>
-
+    </form>
+    <!-- DELETE BUTTON -->
+    <form onsubmit="return confirm('Do you want to permanently delete this wish?');" th:action="@{/wishlist/edit/delete}" method="post" th:object="${wish}">
+        <button id="delete-button" type="submit">Delete Wish</button>
     </form>
 </main>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
