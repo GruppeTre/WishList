@@ -16,10 +16,19 @@
     <a th:if="${session.user.id == ownerId}" class="button button-primary" th:href="@{/wishlist/add}">Add Wish</a>
 
     <div class="wishlist">
+
         <h3 th:if="${wishes.isEmpty()}">Empty wishlist</h3>
+
         <div class="wishlist-card" th:each="wish : ${wishes}">
-            <h3 th:text="${wish.name}">Name</h3>
+
+            <div id="wishlist-card-text-container">
+                <p th:text="${wish.name}">Name</p>
+            </div>
+
+            <!-- BUTTONS -->
             <a class="button" th:href="${wish.link}" target="_blank ">Visit Site</a>
+
+            <!--Edit button shown only for owner -->
             <a th:if="${session.user.id == ownerId}" class="button" th:href="@{/wishlist/edit/{id}(id=${wish.id})}">Edit</a>
 
             <!-- reservation options only shown if current user does not own wishlist -->
@@ -27,12 +36,12 @@
 
                 <!--reserve button shown if wish is not reserved -->
                 <form th:if="${!wish.isReserved()}" class="button-container-form" th:action="@{/wishlist/{ownerId}/toggleReserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
-                    <button class="button" type="submit" th:text="reserve"></button>
+                    <button type="submit" th:text="reserve"></button>
                 </form>
 
                 <!--unreserve button shown if wish is reserved AND owner of reservation is logged in-->
                 <form th:if="${wish.isReserved() && reservationsByUser.contains(wish.id)}" class="button-container-form" th:action="@{/wishlist/{ownerId}/toggleReserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
-                    <button class="button" type="submit" th:text="Unreserve"></button>
+                    <button type="submit" th:text="Unreserve"></button>
                 </form>
 
                 <!--reserved label shown if wish is reserved by another user -->
