@@ -32,7 +32,7 @@ CREATE TABLE wishlist (
 		ON DELETE CASCADE
 );
 
-CREATE TABLE reservations (
+CREATE TABLE reservation (
     user_id INT NOT NULL,
     wish_id INT NOT NULL UNIQUE,
 
