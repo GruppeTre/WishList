@@ -24,17 +24,21 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/{id}")
-    public String getWishlist(@PathVariable int id, Model model, HttpSession session){
+    //this method is served on requests to /wishlist/view & /wishlist/view/{userId}
+    @GetMapping(value = {"/view", "/view/{userId}"})
+    public String getWishlist(@PathVariable(required = false) Integer userId, Model model, HttpSession session){
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
-        User user = (User) session.getAttribute("user");
-        //Refactored to use pathvariable instead of session
-        List<Wish> wishes = service.showWishlistByUser(id);
+        //set userId to session owner's ID if no path variable is passed
+        userId = (userId == null) ? ((User)session.getAttribute("user")).getId() : userId;
 
-        model.addAttribute("wishList", id);
+        System.out.println("user ID:" + userId);
+        //Refactored to use pathvariable instead of session
+        List<Wish> wishes = service.showWishlistByUser(userId);
+
+        model.addAttribute("wishListId", userId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("user", session.getAttribute("user"));
 
