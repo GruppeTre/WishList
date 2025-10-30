@@ -31,10 +31,16 @@ public class WishlistController {
             return "redirect:/";
         }
 
-        //set userId to session owner's ID if no path variable is passed
-        userId = (userId == null) ? ((User)session.getAttribute("user")).getId() : userId;
+        int sessionId = ((User)session.getAttribute("user")).getId();
 
-        System.out.println("user ID:" + userId);
+        //redirect to endpoint with no pathVariable in URL if user goes to /view/{id} endpoint of wishlist they own
+        if (userId != null && userId == sessionId) {
+            return "redirect:/wishlist/view";
+        }
+
+        //set userId to session owner's ID if no path variable is passed
+        userId = (userId == null) ? sessionId : userId;
+
         //Refactored to use pathvariable instead of session
         List<Wish> wishes = service.showWishlistByUser(userId);
 
