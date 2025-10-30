@@ -19,6 +19,7 @@ public class WishRepository {
         wish.setId(rs.getInt("id"));
         wish.setName(rs.getString("name"));
         wish.setLink(rs.getString("link"));
+        wish.setReserved(rs.getBoolean("isReserved"));
         return wish;
     };
 
@@ -35,7 +36,7 @@ public class WishRepository {
     }
 
     public Wish insertWish(Wish wish) {
-        String query = "INSERT IGNORE INTO wish (name, link) VALUES (?, ?)";
+        String query = "INSERT IGNORE INTO wish (name, link, isReserved) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         try{
@@ -43,6 +44,7 @@ public class WishRepository {
                 PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, wish.getName());
                 ps.setString(2, wish.getLink());
+                ps.setBoolean(3, wish.isReserved());
                 return ps;
             }, keyHolder);
         } catch (Exception e) {
@@ -58,34 +60,59 @@ public class WishRepository {
         return wish;
     }
 
-    public int insertToJunction(Integer wishId, Integer userId) {
+    public int insertToWishlistJunction(int wishId, int userId) {
         String query = "INSERT INTO wishlist (user_id, wish_id) VALUES (?, ?)";
 
         int rowsAffected = jdbcTemplate.update(query, userId, wishId);
 
         if (rowsAffected != 1) {
-            throw new RuntimeException("Couldn't insert into junction table!");
+            throw new RuntimeException("Couldn't insert into 'wishlist' junction table!");
         }
 
         return rowsAffected;
     }
 
+    public int insertToReservationJunction(int wishId, int userId) {
+        String query = "INSERT INTO reservation (user_id, wish_id) VALUES (?, ?)";
+
+        int rowsAffected = jdbcTemplate.update(query, userId, wishId);
+
+        if (rowsAffected != 1) {
+            throw new RuntimeException("Couldn't insert into 'reservation' junction table!");
+        }
+
+        System.out.println("wish with id: " + wishId + " added to junction table with user id: " + userId);
+        return rowsAffected;
+    }
+
     public List<Wish> getWishlistByUser(int userId) {
-        String query = "SELECT w.id, w.name, w.link FROM Wish w JOIN wishlist wl ON w.id = wl.wish_id WHERE wl.user_id = ?";
+        String query = "SELECT w.id, w.name, w.link, w.isReserved FROM Wish w JOIN wishlist wl ON w.id = wl.wish_id WHERE wl.user_id = ?";
 
         return jdbcTemplate.query(query, rowMapper, userId);
     }
 
-    public Wish editWish(Wish wish){
-        String query = "UPDATE Wish SET name = ?, link = ? WHERE id = ?";
+    public List<Integer> getReservationListByUserId(int userId) {
+        String query = "SELECT wish_id FROM reservation WHERE user_id = ?";
 
-        int rowsAffected = jdbcTemplate.update(query, wish.getName(), wish.getLink(), wish.getId());
+        return jdbcTemplate.queryForList(query, Integer.class, userId);
+    }
+
+    public Wish editWish(Wish wish){
+        String query = "UPDATE Wish SET name = ?, link = ?, isReserved = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(query, wish.getName(), wish.getLink(), wish.isReserved(), wish.getId());
 
         if (rowsAffected != 1) {
             throw  new RuntimeException("Could not update the wish");
         }
 
         return wish;
+    }
+
+    public int deleteWishReservation(int wishId) {
+        String query = "DELETE FROM reservation WHERE wish_id = ?";
+
+        return jdbcTemplate.update(query, wishId);
     }
 
     public int deleteWish(Wish wish) {

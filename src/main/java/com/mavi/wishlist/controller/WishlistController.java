@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -43,9 +44,13 @@ public class WishlistController {
 
         //Refactored to use pathvariable instead of session
         List<Wish> wishes = service.showWishlistByUser(ownerId);
+        List<Integer> reservationsByUser = service.getReservationListByUserId(sessionId);
 
-        model.addAttribute("wishListId", ownerId);
+        System.out.println(Arrays.toString(reservationsByUser.toArray()));
+
+        model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
+        model.addAttribute("reservationsByUser", reservationsByUser);
         model.addAttribute("user", session.getAttribute("user"));
 
         return "wishlist";
@@ -73,6 +78,8 @@ public class WishlistController {
         Wish wishToEdit = service.getWish(id);
 
         session.setAttribute("wish", wishToEdit);
+
+        System.out.println("editing wish with isReserved field of: " + wishToEdit.isReserved());
 
         model.addAttribute(wishToEdit);
 
@@ -131,4 +138,21 @@ public class WishlistController {
         return "redirect:/wishlist/view";
     }
 
+    @PostMapping("/{ownerId}/toggleReserve/{wishId}")
+    public String toggleWishReservation(@PathVariable int ownerId, @PathVariable int wishId, HttpSession session) {
+
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        //get wish object from pathVariable wishId
+        Wish wishToReserve =  service.getWish(wishId);
+
+        //get id of current user
+        int userId = ((User) session.getAttribute("user")).getId();
+
+        wishToReserve = service.toggleWishReservation(wishToReserve, userId);
+
+        return "redirect:/wishlist/view/" + ownerId;
+    }
 }
