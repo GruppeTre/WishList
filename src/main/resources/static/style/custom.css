@@ -154,11 +154,16 @@ header .button, .button-container-form input {
     flex-direction: column;
     background-color: var(--green);
     width: 15.5em;
-    height: 11em;
+    height: 15em;
     margin: 1.5em;
     padding: 1.5em;
     border-radius: 40px;
     box-shadow: 3px 7px var(--dark-blue);
+}
+
+#wishlist-card-text-container {
+    width: 90%;
+    height: 60%;
 }
 
 .wishlist-card .button {
