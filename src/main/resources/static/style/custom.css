@@ -152,6 +152,7 @@ header .button, .button-container-form input {
 .wishlist-card {
     display: flex;
     flex-direction: column;
+    align-items: center;
     background-color: var(--green);
     width: 15.5em;
     height: 15em;
@@ -164,13 +165,29 @@ header .button, .button-container-form input {
 #wishlist-card-text-container {
     width: 90%;
     height: 60%;
+    max-height: 60%;
+    overflow-y: clip;   /* scroll if text is taller than 9em */
+    overflow-x: hidden; /* prevent horizontal scrollbars */
+
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
 }
 
-.wishlist-card .button {
+#wishlist-card-text-container p {
+    font-size: 1.2em;
+}
+
+#reserve-form {
+    width: fit-content;
+}
+
+.wishlist-card .button, .wishlist-card button{
     background-color: var(--dark-blue);
     border-color: var(--dark-blue);
     color: var(--cream);
     border-radius: 15px;
+    width: 14em;
 }
 
 footer {
