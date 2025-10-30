@@ -37,24 +37,17 @@ public class UserController {
         if (service.mailIsTaken(newUser.getMail())) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "That email is already in use");
-            System.out.println("controller: failed mailIsTaken check");
             return "redirect:/user/register";
         }
-
-        System.out.println("controller: passed mailIsTaken check");
 
         //If user was not added successfully, return value is null, and we redirect to register page with an error message
         if ((newUser = service.registerUser(newUser)) == null) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "Failed to register user, please try again");
-            System.out.println("controller: registerUser call returned null!");
             return "redirect:/user/register";
         }
 
-        System.out.println("controller: passed all checks, redirecting to /wishlist with session attribute");
-
         session.setAttribute("user", newUser);
-        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
         return "redirect:/wishlist/view";
     }
@@ -103,7 +96,6 @@ public class UserController {
         if ((updatedUser = service.updateUser(updatedUser)) == null) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "Failed to update user, please try again");
-            System.out.println("controller: updateUser call returned null!");
         } else {
             session.setAttribute("user", updatedUser);
         }

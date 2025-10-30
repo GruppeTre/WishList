@@ -43,9 +43,11 @@ public class WishlistController {
 
         //Refactored to use pathvariable instead of session
         List<Wish> wishes = service.showWishlistByUser(ownerId);
+        List<Integer> reservationsByUser = service.getReservationListByUserId(sessionId);
 
-        model.addAttribute("wishListId", ownerId);
+        model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
+        model.addAttribute("reservationsByUser", reservationsByUser);
         model.addAttribute("user", session.getAttribute("user"));
 
         return "wishlist";
@@ -120,7 +122,7 @@ public class WishlistController {
     }
 
     @PostMapping("/edit/delete")
-    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session) {
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -131,4 +133,21 @@ public class WishlistController {
         return "redirect:/wishlist/view";
     }
 
+    @PostMapping("/{ownerId}/toggleReserve/{wishId}")
+    public String toggleWishReservation(@PathVariable int ownerId, @PathVariable int wishId, HttpSession session) {
+
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        //get wish object from pathVariable wishId
+        Wish wishToReserve =  service.getWish(wishId);
+
+        //get id of current user
+        int userId = ((User) session.getAttribute("user")).getId();
+
+        service.toggleWishReservation(wishToReserve, userId);
+
+        return "redirect:/wishlist/view/" + ownerId;
+    }
 }

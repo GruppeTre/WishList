@@ -41,7 +41,6 @@ public class WishService {
   
     public boolean linkContainsHttp(Wish wish) {
         String regex = "http[s]?:\\/\\/";
-        System.out.println(regex);
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(wish.getLink());
 
@@ -51,12 +50,15 @@ public class WishService {
     @Transactional
     public Wish addWish(Wish wish, Integer userId) {
 
+        //new wishes are never reserved
+        wish.setReserved(false);
+
         if (isInvalid(wish)) {
             return null;
         }
 
         Wish insertedWish = repository.insertWish(wish);
-        repository.insertToJunction(insertedWish.getId(), userId);
+        repository.insertToWishlistJunction(insertedWish.getId(), userId);
         return insertedWish;
     }
 
@@ -72,9 +74,59 @@ public class WishService {
         return repository.editWish(wish);
     }
 
+    public Wish toggleWishReservation(Wish wish, int userId) {
+
+        //check if wish is valid
+        if (isInvalid(wish)) {
+            return null;
+        }
+
+        //get all reservations by userID
+        List<Integer> reservedByUser = this.getReservationListByUserId(userId);
+
+        //if wish is reserved, check if current user owns reservation and unreserve it, otherwise return null
+        if (wish.isReserved()) {
+           return reservedByUser.contains(wish.getId()) ? this.unreserveWish(wish) : null;
+        }
+
+        //if wish is not already reserved, the current user reserves it
+        return this.reserveWish(wish, userId);
+    }
+
+    public List<Integer> getReservationListByUserId(int userId) {
+        return this.repository.getReservationListByUserId(userId);
+    }
+
     public Wish deleteWish(Wish wishToDelete) {
         int rowsAffected = repository.deleteWish(wishToDelete);
-        System.out.println(rowsAffected);
         return wishToDelete;
+    }
+
+    private Wish unreserveWish(Wish wish) {
+
+        int rowsAffected = this.repository.deleteWishReservation(wish.getId());
+
+        if (rowsAffected == 0) {
+            return null;
+        } else if (rowsAffected > 1) {
+            throw new RuntimeException("Multiple lines in reservation junction were affected!");
+        }
+
+        wish.setReserved(false);
+        return repository.editWish(wish);
+    }
+
+    private Wish reserveWish(Wish wish, int userId) {
+
+        int rowsAffected = this.repository.insertToReservationJunction(wish.getId(), userId);
+
+        if (rowsAffected == 0) {
+            return null;
+        } else if (rowsAffected > 1) {
+            throw new RuntimeException("Multiple lines in reservation junction were affected!");
+        }
+
+        wish.setReserved(true);
+        return repository.editWish(wish);
     }
 }
