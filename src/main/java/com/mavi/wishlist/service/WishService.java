@@ -61,7 +61,7 @@ public class WishService {
     }
 
     public List<Wish> showWishlistByUser(int userId) {
-        return repository.showWishlistByUser(userId);
+        return repository.getWishlistByUser(userId);
     }
 
     public Wish editWish(Wish wish){
