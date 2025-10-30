@@ -17,6 +17,7 @@ CREATE TABLE wish (
 	id INT NOT NULL UNIQUE AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     link VARCHAR(255) NOT NULL,
+    isReserved BIT NOT NULL,
     
     PRIMARY KEY(id)
 );
