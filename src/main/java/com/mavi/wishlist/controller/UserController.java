@@ -54,8 +54,9 @@ public class UserController {
         System.out.println("controller: passed all checks, redirecting to /wishlist with session attribute");
 
         session.setAttribute("user", newUser);
+        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/view";
     }
 
 
@@ -80,7 +81,7 @@ public class UserController {
 
         session.setAttribute("user", user);
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/view";
     }
 
     @GetMapping("/profile")
@@ -116,6 +117,8 @@ public class UserController {
         userToDelete.setId(this.getUserIdFromSession(session));
 
         this.service.deleteUser(userToDelete);
+
+        session.invalidate();
 
         return "redirect:/";
     }

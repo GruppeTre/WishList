@@ -77,7 +77,7 @@ class UserControllerTest {
                 //Checks that it redirects
                 .andExpect(status().is3xxRedirection())
                 //Checks that the redirected url is /wishlist
-                .andExpect(redirectedUrl("/wishlist/"))
+                .andExpect(redirectedUrl("/wishlist/view"))
                 //Checks that no attributes are left behind
                 .andExpect(flash().attributeCount(0))
                 //Checks that it sets a new session

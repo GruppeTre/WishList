@@ -24,15 +24,27 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/")
-    public String getWishlist(Model model, HttpSession session){
+    //this method is served on requests to /wishlist/view & /wishlist/view/{userId}
+    @GetMapping(value = {"/view", "/view/{ownerId}"})
+    public String getWishlist(@PathVariable(required = false) Integer ownerId, Model model, HttpSession session){
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
-        User user = (User) session.getAttribute("user");
-        List<Wish> wishes = service.showWishlistByUser(user.getId());
+        int sessionId = ((User)session.getAttribute("user")).getId();
 
+        //redirect to endpoint with no pathVariable in URL if user goes to /view/{id} endpoint of wishlist they own
+        if (ownerId != null && ownerId == sessionId) {
+            return "redirect:/wishlist/view";
+        }
+
+        //set userId to session owner's ID if no path variable is passed
+        ownerId = (ownerId == null) ? sessionId : ownerId;
+
+        //Refactored to use pathvariable instead of session
+        List<Wish> wishes = service.showWishlistByUser(ownerId);
+
+        model.addAttribute("wishListId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("user", session.getAttribute("user"));
 
@@ -84,7 +96,7 @@ public class WishlistController {
 
         service.addWish(newWish, userId);
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/view";
     }
 
     @PostMapping("/edit")
@@ -104,11 +116,11 @@ public class WishlistController {
 
         service.editWish(editWish);
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/view";
     }
 
     @PostMapping("/edit/delete")
-    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session) {
+    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session, RedirectAttributes redirectAttributes) {
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -116,7 +128,7 @@ public class WishlistController {
         wishToDelete.setId(((Wish) session.getAttribute("wish")).getId());
         service.deleteWish(wishToDelete);
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/view";
     }
 
 }

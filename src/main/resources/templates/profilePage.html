@@ -37,7 +37,7 @@
 
         <!-- BUTTONS -->
         <div class="row">
-            <a class="button" th:href="${viewMode == 'view'} ? '/wishlist/' : '/user/profile'">Back</a>
+            <a class="button" th:href="${viewMode == 'view'} ? '/wishlist/view' : '/user/profile'">Back</a>
             <button th:if="${viewMode == 'edit'}" type="submit">Save</button>
             <a class="button" th:if="${viewMode == 'view'}" th:href="@{/user/profile(viewMode='edit')}">Edit</a>
         </div>
