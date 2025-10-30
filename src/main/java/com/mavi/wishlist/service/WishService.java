@@ -41,7 +41,6 @@ public class WishService {
   
     public boolean linkContainsHttp(Wish wish) {
         String regex = "http[s]?:\\/\\/";
-        System.out.println(regex);
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(wish.getLink());
 
@@ -100,7 +99,6 @@ public class WishService {
 
     public Wish deleteWish(Wish wishToDelete) {
         int rowsAffected = repository.deleteWish(wishToDelete);
-        System.out.println(rowsAffected);
         return wishToDelete;
     }
 

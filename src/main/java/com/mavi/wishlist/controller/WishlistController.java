@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -46,8 +45,6 @@ public class WishlistController {
         List<Wish> wishes = service.showWishlistByUser(ownerId);
         List<Integer> reservationsByUser = service.getReservationListByUserId(sessionId);
 
-        System.out.println(Arrays.toString(reservationsByUser.toArray()));
-
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("reservationsByUser", reservationsByUser);
@@ -78,8 +75,6 @@ public class WishlistController {
         Wish wishToEdit = service.getWish(id);
 
         session.setAttribute("wish", wishToEdit);
-
-        System.out.println("editing wish with isReserved field of: " + wishToEdit.isReserved());
 
         model.addAttribute(wishToEdit);
 
@@ -127,7 +122,7 @@ public class WishlistController {
     }
 
     @PostMapping("/edit/delete")
-    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session) {
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -151,7 +146,7 @@ public class WishlistController {
         //get id of current user
         int userId = ((User) session.getAttribute("user")).getId();
 
-        wishToReserve = service.toggleWishReservation(wishToReserve, userId);
+        service.toggleWishReservation(wishToReserve, userId);
 
         return "redirect:/wishlist/view/" + ownerId;
     }

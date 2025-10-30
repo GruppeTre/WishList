@@ -37,7 +37,6 @@ public class UserController {
         if (service.mailIsTaken(newUser.getMail())) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "That email is already in use");
-            System.out.println("controller: failed mailIsTaken check");
             return "redirect:/user/register";
         }
 
@@ -97,7 +96,6 @@ public class UserController {
         if ((updatedUser = service.updateUser(updatedUser)) == null) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "Failed to update user, please try again");
-            System.out.println("controller: updateUser call returned null!");
         } else {
             session.setAttribute("user", updatedUser);
         }

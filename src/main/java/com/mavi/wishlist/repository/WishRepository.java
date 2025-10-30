@@ -81,7 +81,6 @@ public class WishRepository {
             throw new RuntimeException("Couldn't insert into 'reservation' junction table!");
         }
 
-        System.out.println("wish with id: " + wishId + " added to junction table with user id: " + userId);
         return rowsAffected;
     }
 
