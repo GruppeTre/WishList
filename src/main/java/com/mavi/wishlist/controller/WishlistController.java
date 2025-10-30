@@ -24,15 +24,17 @@ public class WishlistController {
     }
 
 
-    @GetMapping("/")
-    public String getWishlist(Model model, HttpSession session){
+    @GetMapping("/{id}")
+    public String getWishlist(@PathVariable int id, Model model, HttpSession session){
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
         User user = (User) session.getAttribute("user");
-        List<Wish> wishes = service.showWishlistByUser(user.getId());
+        //Refactored to use pathvariable instead of session
+        List<Wish> wishes = service.showWishlistByUser(id);
 
+        model.addAttribute("wishList", id);
         model.addAttribute("wishes", wishes);
         model.addAttribute("user", session.getAttribute("user"));
 
@@ -83,8 +85,9 @@ public class WishlistController {
         Integer userId = ((User) session.getAttribute("user")).getId();
 
         service.addWish(newWish, userId);
+        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/{id}";
     }
 
     @PostMapping("/edit")
@@ -103,20 +106,22 @@ public class WishlistController {
         }
 
         service.editWish(editWish);
+        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/{id}";
     }
 
     @PostMapping("/edit/delete")
-    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session) {
+    public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session, RedirectAttributes redirectAttributes) {
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
         wishToDelete.setId(((Wish) session.getAttribute("wish")).getId());
         service.deleteWish(wishToDelete);
+        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/{id}";
     }
 
 }

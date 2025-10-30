@@ -54,8 +54,9 @@ public class UserController {
         System.out.println("controller: passed all checks, redirecting to /wishlist with session attribute");
 
         session.setAttribute("user", newUser);
+        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/{id}";
     }
 
 
@@ -79,8 +80,9 @@ public class UserController {
         user = service.getUserByMail(user.getMail());
 
         session.setAttribute("user", user);
+        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/";
+        return "redirect:/wishlist/{id}";
     }
 
     @GetMapping("/profile")
