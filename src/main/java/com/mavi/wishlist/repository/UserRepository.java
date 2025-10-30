@@ -33,10 +33,10 @@ public class  UserRepository {
 
     //Get user object by mail
     public User getUser(String mail){
-        String checkUser = "SELECT * FROM User WHERE mail = ?";
+        String query = "SELECT * FROM User WHERE mail = ?";
 
         try{
-            return jdbcTemplate.queryForObject(checkUser, userRowMapper, mail);
+            return jdbcTemplate.queryForObject(query, userRowMapper, mail);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -84,16 +84,16 @@ public class  UserRepository {
         return user;
     }
 
-    public User deleteUser(User userToDelete) {
+    public User deleteUser(User user) {
         String query = "DELETE FROM User WHERE id = ?";
 
-        int rowsAffected = jdbcTemplate.update(query, userToDelete.getId());
+        int rowsAffected = jdbcTemplate.update(query, user.getId());
 
         if (rowsAffected == 0) {
             return null;
         }
 
-        return userToDelete;
+        return user;
     }
 
 }
