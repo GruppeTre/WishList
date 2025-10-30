@@ -13,15 +13,17 @@
 <main class="container wishlist-container">
 
     <h2 th:text="${user.firstName} + ' Wishlist'">User Wishlist</h2>
-    <a th:if="${session.user.id == wishListId}" class="button button-primary" th:href="@{/wishlist/add}">Add Wish</a>
+    <a th:if="${session.user.id == ownerId}" class="button button-primary" th:href="@{/wishlist/add}">Add Wish</a>
 
     <div class="wishlist">
         <h3 th:if="${wishes.isEmpty()}">Empty wishlist</h3>
         <div class="wishlist-card" th:each="wish : ${wishes}">
             <h3 th:text="${wish.name}">Name</h3>
             <a class="button" th:href="${wish.link}" target="_blank ">Visit Site</a>
-            <a th:if="${session.user.id == wishListId}" class="button" th:href="@{/wishlist/edit/{id}(id=${wish.id})}">Edit</a>
-            <a th:if="${session.user.id != wishListId}" class="button" th:href="@{/wishlist/reserve}">Reserve</a>
+            <a th:if="${session.user.id == ownerId}" class="button" th:href="@{/wishlist/edit/{id}(id=${wish.id})}">Edit</a>
+            <form class="button-container-form" th:if="${session.user.id != ownerId}" th:action="@{/wishlist/{ownerId}/reserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
+                <button class="button" type="submit">Reserve</button>
+            </form>
             <!--<div th:if="${session.user.id != wishListId && isReserved == true}" class="button">Reserved</div>-->
         </div>
     </div>
