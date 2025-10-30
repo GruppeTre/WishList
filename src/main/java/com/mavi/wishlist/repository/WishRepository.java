@@ -29,9 +29,9 @@ public class WishRepository {
     }
 
     public Wish getWish(Integer wishId){
-        String selectQuery = "SElECT * FROM Wish WHERE id = ?";
+        String query = "SElECT * FROM Wish WHERE id = ?";
 
-        return jdbcTemplate.queryForObject(selectQuery, rowMapper, wishId);
+        return jdbcTemplate.queryForObject(query, rowMapper, wishId);
     }
 
     public Wish insertWish(Wish wish) {
@@ -70,16 +70,16 @@ public class WishRepository {
         return rowsAffected;
     }
 
-    public List<Wish> showWishlistByUser(int userId) {
+    public List<Wish> getWishlistByUser(int userId) {
         String query = "SELECT w.id, w.name, w.link FROM Wish w JOIN wishlist wl ON w.id = wl.wish_id WHERE wl.user_id = ?";
 
         return jdbcTemplate.query(query, rowMapper, userId);
     }
 
     public Wish editWish(Wish wish){
-        String updateQuery = "UPDATE Wish SET name = ?, link = ? WHERE id = ?";
+        String query = "UPDATE Wish SET name = ?, link = ? WHERE id = ?";
 
-        int rowsAffected = jdbcTemplate.update(updateQuery, wish.getName(), wish.getLink(), wish.getId());
+        int rowsAffected = jdbcTemplate.update(query, wish.getName(), wish.getLink(), wish.getId());
 
         if (rowsAffected != 1) {
             throw  new RuntimeException("Could not update the wish");
