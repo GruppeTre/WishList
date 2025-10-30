@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Frontpage</title>
+    <title th:text="#{title.frontpage}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
@@ -15,31 +15,25 @@
 
         <div class="hero-block">
             <article>
-                <h3>Quickly & Easily</h3>
-                <p>Add and share new wishes! Filling out your own personal wish list is as
-                    easy as finding the product you want online, and adding it to your list!
-                </p>
+                <h3 th:text="#{hero.block1.h}"></h3>
+                <p th:text="#{hero.block1.p}"></p>
             </article>
             <img class="hero-img" src="/images/gifts.png" alt="Illustration of wrapped gifts">
         </div>
 
         <div class="hero-block">
             <article>
-                <h3>Ask your friends</h3>
-                <p>For their wish list to help you find the perfect gift for your best
-                    friend, partner or family member
-                </p>
+                <h3 th:text="#{hero.block2.h}"></h3>
+                <p th:text="#{hero.block2.p}"></p>
             </article>
             <img class="hero-img" src="/images/friends.png" alt="Illustration of friends fist bumping">
         </div>
 
         <div class="hero-block">
             <article>
-                <h3>Found the perfect gift?</h3>
-                <p>Once you’ve decided on a gift to give, make sure to reserve it on the
-                    list to claim it before anyone else!
-                </p>
-                <a class="button button-primary" href="/user/register">Get Started Now</a>
+                <h3 th:text="#{hero.block3.h}"></h3>
+                <p th:text="#{hero.block3.p}"></p>
+                <a class="button button-primary" href="/user/register" th:text="#{hero.button.text}"></a>
             </article>
             <img class="hero-img" src="/images/reserve.png" alt="Illustration of woman with a large checklist">
         </div>
