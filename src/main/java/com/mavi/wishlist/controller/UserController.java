@@ -56,7 +56,7 @@ public class UserController {
         session.setAttribute("user", newUser);
         redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/{id}";
+        return "redirect:/wishlist/view";
     }
 
 
@@ -80,9 +80,8 @@ public class UserController {
         user = service.getUserByMail(user.getMail());
 
         session.setAttribute("user", user);
-        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/{id}";
+        return "redirect:/wishlist/view";
     }
 
     @GetMapping("/profile")
@@ -118,6 +117,8 @@ public class UserController {
         userToDelete.setId(this.getUserIdFromSession(session));
 
         this.service.deleteUser(userToDelete);
+
+        session.invalidate();
 
         return "redirect:/";
     }

@@ -89,9 +89,8 @@ public class WishlistController {
         Integer userId = ((User) session.getAttribute("user")).getId();
 
         service.addWish(newWish, userId);
-        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/{id}";
+        return "redirect:/wishlist/view";
     }
 
     @PostMapping("/edit")
@@ -110,9 +109,8 @@ public class WishlistController {
         }
 
         service.editWish(editWish);
-        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/{id}";
+        return "redirect:/wishlist/view";
     }
 
     @PostMapping("/edit/delete")
@@ -123,9 +121,8 @@ public class WishlistController {
 
         wishToDelete.setId(((Wish) session.getAttribute("wish")).getId());
         service.deleteWish(wishToDelete);
-        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
-        return "redirect:/wishlist/{id}";
+        return "redirect:/wishlist/view";
     }
 
 }

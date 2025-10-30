@@ -99,7 +99,7 @@ class WishlistControllerTest {
 
             mvc.perform(post("/wishlist/add").session(session))
                     .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/wishlist/"))
+                    .andExpect(redirectedUrl("/wishlist/view"))
                     .andExpect(flash().attributeCount(0));
         }
     }
