@@ -41,20 +41,14 @@ public class UserController {
             return "redirect:/user/register";
         }
 
-        System.out.println("controller: passed mailIsTaken check");
-
         //If user was not added successfully, return value is null, and we redirect to register page with an error message
         if ((newUser = service.registerUser(newUser)) == null) {
             redirectAttributes.addFlashAttribute("showErrorMessage", true);
             redirectAttributes.addFlashAttribute("errorMessageText", "Failed to register user, please try again");
-            System.out.println("controller: registerUser call returned null!");
             return "redirect:/user/register";
         }
 
-        System.out.println("controller: passed all checks, redirecting to /wishlist with session attribute");
-
         session.setAttribute("user", newUser);
-        redirectAttributes.addAttribute("id", ((User) session.getAttribute("user")).getId());
 
         return "redirect:/wishlist/view";
     }
