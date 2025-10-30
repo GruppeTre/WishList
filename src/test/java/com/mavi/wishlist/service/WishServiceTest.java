@@ -48,7 +48,7 @@ class WishServiceTest {
     @Test
     void addWishShouldCallRepositoryAndReturnWishWithIdOnSuccess() {
         when(repository.insertWish(wish)).thenReturn(wishWithId);
-        when(repository.insertToJunction(wishWithId.getId(), userId)).thenReturn(1);
+        when(repository.insertToWishlistJunction(wishWithId.getId(), userId)).thenReturn(1);
 
         assertEquals(this.service.addWish(wish, userId), wishWithId);
     }
