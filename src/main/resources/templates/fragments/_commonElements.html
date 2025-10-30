@@ -7,7 +7,7 @@
 
 <body>
 <header th:fragment="header" class="u-full-width">
-    <a th:href="${session == null or session.get('user') == null} ? '/' : '/wishlist/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
+    <a th:href="${session == null or session.get('user') == null} ? '/' : '/wishlist/view'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
     <div class="header-buttons">
         <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/register" th:text="#{header.button.register}"></a>
         <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/login" th:text="#{header.button.login}"></a>
