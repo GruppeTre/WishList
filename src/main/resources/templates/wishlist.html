@@ -16,10 +16,19 @@
     <a th:if="${session.user.id == ownerId}" class="button button-primary" th:href="@{/wishlist/add}">Add Wish</a>
 
     <div class="wishlist">
+
         <h3 th:if="${wishes.isEmpty()}">Empty wishlist</h3>
+
         <div class="wishlist-card" th:each="wish : ${wishes}">
-            <h3 th:text="${wish.name}">Name</h3>
+
+            <div id="wishlist-card-text-container">
+                <h5 th:text="${wish.name}">Name</h5>
+            </div>
+
+            <!-- BUTTONS -->
             <a class="button" th:href="${wish.link}" target="_blank ">Visit Site</a>
+
+            <!--Edit button shown only for owner -->
             <a th:if="${session.user.id == ownerId}" class="button" th:href="@{/wishlist/edit/{id}(id=${wish.id})}">Edit</a>
 
             <!-- reservation options only shown if current user does not own wishlist -->
