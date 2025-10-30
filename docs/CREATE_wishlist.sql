@@ -31,3 +31,14 @@ CREATE TABLE wishlist (
 	FOREIGN KEY(wish_id) REFERENCES Wish(id)
 		ON DELETE CASCADE
 );
+
+CREATE TABLE reservations (
+    user_id INT NOT NULL,
+    wish_id INT NOT NULL UNIQUE,
+
+    PRIMARY KEY(user_id, wish_id),
+    FOREIGN KEY(user_id) REFERENCES User(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY(wish_id) REFERENCES Wish(id)
+        ON DELETE CASCADE
+);
