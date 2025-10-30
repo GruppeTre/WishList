@@ -25,8 +25,8 @@ public class WishlistController {
 
 
     //this method is served on requests to /wishlist/view & /wishlist/view/{userId}
-    @GetMapping(value = {"/view", "/view/{userId}"})
-    public String getWishlist(@PathVariable(required = false) Integer userId, Model model, HttpSession session){
+    @GetMapping(value = {"/view", "/view/{ownerId}"})
+    public String getWishlist(@PathVariable(required = false) Integer ownerId, Model model, HttpSession session){
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -34,17 +34,17 @@ public class WishlistController {
         int sessionId = ((User)session.getAttribute("user")).getId();
 
         //redirect to endpoint with no pathVariable in URL if user goes to /view/{id} endpoint of wishlist they own
-        if (userId != null && userId == sessionId) {
+        if (ownerId != null && ownerId == sessionId) {
             return "redirect:/wishlist/view";
         }
 
         //set userId to session owner's ID if no path variable is passed
-        userId = (userId == null) ? sessionId : userId;
+        ownerId = (ownerId == null) ? sessionId : ownerId;
 
         //Refactored to use pathvariable instead of session
-        List<Wish> wishes = service.showWishlistByUser(userId);
+        List<Wish> wishes = service.showWishlistByUser(ownerId);
 
-        model.addAttribute("wishListId", userId);
+        model.addAttribute("wishListId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("user", session.getAttribute("user"));
 
