@@ -21,6 +21,9 @@
                         <a class="button button-primary" th:href="@{/user/profile}" th:text="#{header.button.details}"></a>
                     </li>
                     <li>
+                        <a class="button button-primary" th:href="@{/wishlist/view/{id}(id=${session.user.id})}" th:text="#{header.button.wishlist}"></a>
+                    </li>
+                    <li>
                         <form class="button-container-form" th:action="@{/user/profile/logout}" method="post">
                             <input class="button-primary" type="submit" th:value="#{header.button.logout}">
                         </form>

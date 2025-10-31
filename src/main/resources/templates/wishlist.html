@@ -12,7 +12,8 @@
 <header th:replace="~{fragments/_commonElements :: header}"></header>
 <main class="container wishlist-container">
 
-    <h2 th:text="${user.firstName} + ' Wishlist'">User Wishlist</h2>
+    <h2 th:if="${session.user.id != ownerId}" th:text="${userName} + ' Wishlist'">User Wishlist</h2>
+    <h2 th:if="${session.user.id == ownerId}" th:text="${'Your Wishlist'}">User Wishlist</h2>
     <a th:if="${session.user.id == ownerId}" class="button button-primary" th:href="@{/wishlist/add}">Add Wish</a>
 
     <div class="wishlist">
