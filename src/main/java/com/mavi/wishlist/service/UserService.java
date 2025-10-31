@@ -44,8 +44,8 @@ public class UserService {
 
     public User registerUser(User user) {
 
-        //trim mail for leading and trailing whitespaces
-        user.setMail(user.getMail().trim());
+        //trim fields for leading and trailing whitespaces
+        trimFields(user);
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user) || mailIsTaken(user.getMail())) {
@@ -61,8 +61,8 @@ public class UserService {
 
     public User updateUser(User user){
 
-        //trim mail for leading and trailing whitespaces
-        user.setMail(user.getMail().trim());
+        //trim fields for leading and trailing whitespaces
+        trimFields(user);
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
@@ -106,5 +106,12 @@ public class UserService {
         }
 
         return false;
+    }
+
+    private void trimFields(User user) {
+
+        user.setMail(user.getMail().trim());
+        user.setFirstName(user.getFirstName().trim());
+        user.setLastName(user.getLastName().trim());
     }
 }
