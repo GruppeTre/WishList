@@ -3,6 +3,7 @@ package com.mavi.wishlist.controller;
 import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.model.Wish;
+import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,11 @@ import java.util.List;
 public class WishlistController {
 
     private final WishService service;
+    private final UserService userService;
 
-    public WishlistController(WishService service) {
+    public WishlistController(WishService service, UserService userService) {
         this.service = service;
+        this.userService = userService;
     }
 
 
@@ -44,7 +47,9 @@ public class WishlistController {
         //Refactored to use pathvariable instead of session
         List<Wish> wishes = service.showWishlistByUser(ownerId);
         List<Integer> reservationsByUser = service.getReservationListByUserId(sessionId);
+        User user = userService.getUserByMail(((User) session.getAttribute("user")).getMail());
 
+        model.addAttribute("userName", user.getFirstName());
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("reservationsByUser", reservationsByUser);
