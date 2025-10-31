@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title.error.generic}"></title>
+    <link rel="stylesheet" th:href="@{/style/normalize.css}">
+    <link rel="stylesheet" th:href="@{/style/skeleton.css}">
+    <link rel="stylesheet" th:href="@{/style/custom.css}">
+</head>
+<body>
+    <div class="container error-generic">
+        <h1 th:text="${status + ' – ' + error}">Error</h1>
+        <p th:text="${message}">Something went wrong.</p>
+        <a class="back-link" th:href="@{/profiles}">Back</a>
+    </div>
+</body>
+</html>
