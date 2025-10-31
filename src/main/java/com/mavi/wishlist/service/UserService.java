@@ -1,5 +1,7 @@
 package com.mavi.wishlist.service;
 
+import com.mavi.wishlist.exceptions.DuplicateUserException;
+import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -47,9 +49,14 @@ public class UserService {
         //trim fields for leading and trailing whitespaces
         trimFields(user);
 
+        //check if mail already exists
+        if (mailIsTaken(user.getMail())) {
+            throw new DuplicateUserException("A user with that mail already exists");
+        }
+
         //check for validity (no empty fields)
-        if (userHasInvalidFields(user) || mailIsTaken(user.getMail())) {
-            return null;
+        if (userHasInvalidFields(user)) {
+            throw new InvalidFieldsException("Invalid fields in User");
         }
 
         String rawPassword = user.getPassword();
@@ -66,7 +73,7 @@ public class UserService {
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
-            return null;
+            throw new InvalidFieldsException("Invalid fields in User");
         }
         return userRepository.updateUser(user);
     }
