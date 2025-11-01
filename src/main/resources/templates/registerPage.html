@@ -12,6 +12,12 @@
 <header th:replace="~{fragments/_commonElements :: header}"></header>
 <main class="container wishlist-form">
 
+
+    <!-- Error message modal -->
+    <section th:if="${showErrorModal}">
+        <dialog th:replace="~{fragments/_commonElements :: errorBox(message=${message})}"></dialog>
+    </section>
+
     <form action="#" th:object="${newUser}" th:action="@{/user/register}" method="post">
         <div>
             <h2 th:text="#{register.header}"></h2>
