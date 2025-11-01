@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.http.HttpRequest;
 
@@ -14,8 +15,12 @@ import java.net.http.HttpRequest;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateUserException.class)
-    public String handleDuplicateUser(){
-        return "";
+    public String handleDuplicateUser(DuplicateUserException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("showErrorModal", true);
+        redirectAttributes.addFlashAttribute("status", HttpStatus.CONFLICT.value());
+        redirectAttributes.addFlashAttribute("error", "Invalid input");
+        redirectAttributes.addFlashAttribute("message", ex.getMessage());
+        return "redirect:/user/register";
     }
 
     @ExceptionHandler(InvalidFieldsException.class)
