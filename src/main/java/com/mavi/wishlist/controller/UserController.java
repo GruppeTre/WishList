@@ -33,19 +33,7 @@ public class UserController {
     @PostMapping("/register")
     public String addNewUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
 
-        //validate if user with given email already exists
-        if (service.mailIsTaken(newUser.getMail())) {
-            redirectAttributes.addFlashAttribute("showErrorMessage", true);
-            redirectAttributes.addFlashAttribute("errorMessageText", "That email is already in use");
-            return "redirect:/user/register";
-        }
-
-        //If user was not added successfully, return value is null, and we redirect to register page with an error message
-        if ((newUser = service.registerUser(newUser)) == null) {
-            redirectAttributes.addFlashAttribute("showErrorMessage", true);
-            redirectAttributes.addFlashAttribute("errorMessageText", "Failed to register user, please try again");
-            return "redirect:/user/register";
-        }
+        newUser = service.registerUser(newUser);
 
         session.setAttribute("user", newUser);
 
