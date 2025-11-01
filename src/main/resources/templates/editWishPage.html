@@ -20,12 +20,12 @@
         <!-- INPUTS -->
         <div class="row">
             <label for="name">Description:</label>
-            <input type="text" id="name" th:field="*{name}" th:value="*{name}" maxlength="70"/>
+            <input type="text" id="name" th:field="*{name}" th:value="*{name}" maxlength="70" required pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <div class="row">
             <label for="link">Link:</label>
-            <input type="text" id="link" th:field="*{link}" th:value="*{link}"/>
+            <input type="text" id="link" th:field="*{link}" th:value="*{link}" required pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <!-- BUTTONS -->

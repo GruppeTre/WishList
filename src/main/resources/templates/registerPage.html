@@ -20,7 +20,7 @@
         <!-- INPUTS -->
         <div class="row">
             <label for="email" class="form-label" th:text="#{form.user.label.mail}"></label>
-            <input id="email" type="email" th:field="*{mail}" required th:placeholder="#{form.user.label.mail}">
+            <input id="email" type="email" th:field="*{mail}" required th:placeholder="#{form.user.label.mail}" pattern=".*\S.*" th:title="#{form.warning.empty}">
         </div>
 
         <div class="row">
