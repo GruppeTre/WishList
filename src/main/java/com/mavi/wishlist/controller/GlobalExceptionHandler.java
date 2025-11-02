@@ -4,19 +4,22 @@ import com.mavi.wishlist.exceptions.DuplicateUserException;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.exceptions.PageNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateUserException.class)
-    public String handleDuplicateUser(){
-        return "";
+    public String handleDuplicateUser(DuplicateUserException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("showErrorModal", true);
+        redirectAttributes.addFlashAttribute("status", HttpStatus.CONFLICT.value());
+        redirectAttributes.addFlashAttribute("error", "Invalid input");
+        redirectAttributes.addFlashAttribute("message", ex.getMessage());
+        return "redirect:/user/register";
     }
 
     @ExceptionHandler(InvalidFieldsException.class)
