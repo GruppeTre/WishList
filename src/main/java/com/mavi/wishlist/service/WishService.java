@@ -1,6 +1,5 @@
 package com.mavi.wishlist.service;
 
-import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.repository.WishRepository;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class WishService {
         wish.setReserved(false);
 
         if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish");
+            return null;
         }
 
         Wish insertedWish = repository.insertWish(wish);
@@ -69,7 +68,7 @@ public class WishService {
 
     public Wish editWish(Wish wish){
         if(isInvalid(wish)){
-            throw new InvalidFieldsException("Invalid fields in Wish");
+            return null;
         }
 
         return repository.editWish(wish);
@@ -79,7 +78,7 @@ public class WishService {
 
         //check if wish is valid
         if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish");
+            return null;
         }
 
         //get all reservations by userID
