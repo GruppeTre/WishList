@@ -2,13 +2,14 @@ package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.exceptions.DuplicateUserException;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
-import com.mavi.wishlist.exceptions.UserNotFoundException;
+import com.mavi.wishlist.exceptions.PageNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.net.http.HttpRequest;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,8 +27,13 @@ public class GlobalExceptionHandler {
         return "error/error";
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public String handleUserNotFound(){
-        return "";
+    @ExceptionHandler(PageNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handlePageNotFound(PageNotFoundException ex, Model model) {
+
+        model.addAttribute("status", HttpStatus.NOT_FOUND.value());
+        model.addAttribute("error", ex.getError() );
+        model.addAttribute("message", ex.getMessage());
+        return "error/404";
     }
 }
