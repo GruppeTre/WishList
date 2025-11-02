@@ -1,7 +1,5 @@
 package com.mavi.wishlist.service;
 
-import com.mavi.wishlist.exceptions.DuplicateUserException;
-import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -46,17 +44,12 @@ public class UserService {
 
     public User registerUser(User user) {
 
-        //trim fields for leading and trailing whitespaces
-        trimFields(user);
-
-        //check if mail already exists
-        if (mailIsTaken(user.getMail())) {
-            throw new DuplicateUserException("A user with that mail already exists");
-        }
+        //trim mail for leading and trailing whitespaces
+        user.setMail(user.getMail().trim());
 
         //check for validity (no empty fields)
-        if (userHasInvalidFields(user)) {
-            throw new InvalidFieldsException("Invalid fields in User");
+        if (userHasInvalidFields(user) || mailIsTaken(user.getMail())) {
+            return null;
         }
 
         String rawPassword = user.getPassword();
@@ -68,12 +61,12 @@ public class UserService {
 
     public User updateUser(User user){
 
-        //trim fields for leading and trailing whitespaces
-        trimFields(user);
+        //trim mail for leading and trailing whitespaces
+        user.setMail(user.getMail().trim());
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
-            throw new InvalidFieldsException("Invalid fields in User");
+            return null;
         }
         return userRepository.updateUser(user);
     }
@@ -113,12 +106,5 @@ public class UserService {
         }
 
         return false;
-    }
-
-    private void trimFields(User user) {
-
-        user.setMail(user.getMail().trim());
-        user.setFirstName(user.getFirstName().trim());
-        user.setLastName(user.getLastName().trim());
     }
 }
