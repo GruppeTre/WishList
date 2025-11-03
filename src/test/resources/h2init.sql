@@ -1,12 +1,6 @@
 DROP ALL OBJECTS;
 
-DROP DATABASE IF EXISTS wishlist_project;
-CREATE DATABASE wishlist_project
-DEFAULT CHARACTER SET utf8mb4;
-
-USE wishlist_project;
-
-CREATE TABLE User (
+CREATE TABLE UserList (
                     id INT NOT NULL UNIQUE AUTO_INCREMENT,
                     password VARCHAR(255) NOT NULL,
                     mail VARCHAR(100) NOT NULL UNIQUE,
@@ -16,7 +10,7 @@ CREATE TABLE User (
                     PRIMARY KEY(id)
 );
 
-Create Wish (
+Create TABLE Wish (
                     id INT NOT NULL UNIQUE AUTO_INCREMENT,
                     name VARCHAR(75) NOT NULL,
                     link VARCHAR(255) NOT NULL,
@@ -25,11 +19,37 @@ Create Wish (
                     PRIMARY KEY(id)
 );
 
-CREATE Wishlist(
+CREATE TABLE Wishlist(
                     user_id INT NOT NULL,
-                    wish_id INT NOT NULL
-)
+                    wish_id INT NOT NULL,
 
-INSERT IGNORE INTO User (password, mail, firstname, lastName)
-       VALUES ("adam@1234", "adam@mail.dk", "Adam", "Adamsen"),
-	("erik@1234", "Erik@gmail.com", "Erik", "Eriksen");
+                    PRIMARY KEY(user_id, wish_id),
+                    FOREIGN KEY(user_id) REFERENCES UserList(id)
+		                ON DELETE CASCADE,
+	                FOREIGN KEY(wish_id) REFERENCES Wish(id)
+		                ON DELETE CASCADE
+);
+
+CREATE TABLE Reservation (
+                    user_id INT NOT NULL,
+                    wish_id INT NOT NULL UNIQUE,
+
+                    PRIMARY KEY(user_id, wish_id),
+                    FOREIGN KEY(user_id) REFERENCES UserList(id)
+                        ON DELETE CASCADE,
+                    FOREIGN KEY(wish_id) REFERENCES Wish(id)
+                        ON DELETE CASCADE
+);
+
+INSERT INTO UserList (password, mail, firstname, lastName)
+       VALUES ('adam1234', 'adam@mail.dk', '"Adam', 'Adamsen'),
+	('erik1234', 'Erik@gmail.com', 'Erik', 'Eriksen');
+
+INSERT INTO Wish (name, link, isReserved) VALUES ('Uldsokker 5stk', 'http://www.etgenerisklink.com', 1),
+                                                 ('The Kopper', 'http://www.togenerisklink.com', 0),
+                                                 ('Fjernsyn', 'http://www.tregenerisklink.com', 0),
+                                                 ('Tegneblok', 'http://www.firegenerisklink.com', 1);
+
+INSERT INTO Reservation (user_id, wish_id) VALUES (2, 1), (1, 4);
+
+INSERT INTO Wishlist (user_id, wish_id) VALUES (1, 1), (1, 2), (2, 3), (2, 4);
