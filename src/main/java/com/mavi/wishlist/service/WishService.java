@@ -67,7 +67,7 @@ public class WishService {
         return insertedWish;
     }
 
-    public List<Wish> showWishlistByUser(int userId) {
+    public List<Wish> getWishlistByUser(int userId) {
 
         User user = this.userService.getUserById(userId);
 
