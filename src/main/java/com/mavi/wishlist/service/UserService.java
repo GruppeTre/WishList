@@ -86,7 +86,7 @@ public class UserService {
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
-            throw new InvalidFieldsException("Invalid fields in User", "name");
+            throw new InvalidFieldsException("Invalid fields in User", "names");
         }
         return userRepository.updateUser(user);
     }
