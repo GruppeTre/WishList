@@ -81,7 +81,7 @@ class UserServiceTest {
 
         logInUser.setMail("Wrong@mail.com");
 
-        assertThrows(PageNotFoundException.class, () -> this.userService.userLogin(logInUser));
+        assertFalse(this.userService.userLogin(logInUser));
     }
 
     //Register tests
