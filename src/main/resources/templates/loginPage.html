@@ -20,7 +20,7 @@
 
         <!-- Error messages -->
         <div th:if="${error}" class="form-error-container">
-            <label>Incorrect password/email: please double check your credentials and try again</label>
+            <label th:text="#{form.error.wrongCredentials}"></label>
         </div>
 
         <!-- INPUTS -->

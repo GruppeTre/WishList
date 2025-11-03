@@ -19,8 +19,8 @@
 
         <!-- Error messages -->
         <div th:if="${error}" class="form-error-container">
-            <label th:if="${invalidField == 'mail'}">That mail is already in use</label>
-            <label th:if="${invalidField == 'names'}">Name cannot be blank</label>
+            <label th:if="${invalidField == 'mail'}" th:text="#{form.error.duplicateMail}"></label>
+            <label th:if="${invalidField == 'names'}" th:text="#{form.error.blankName}"></label>
         </div>
 
         <!-- INPUTS -->
