@@ -62,14 +62,6 @@
         <button id="delete-button" type="submit" th:text="#{form.button.delete.user}"></button>
     </form>
 </main>
-<script>
-    let deleteWarning = "";
-    if(locale === "da") {
-        deleteWarning = "Er du sikker på at du vil slette din konto? Denne handling kan ikke fortrydes!"
-    } else{
-        deleteWarning = "Are you sure you want to delete your account? This action cannot be undone!"
-    }
-</script>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
 </body>
 </html>
