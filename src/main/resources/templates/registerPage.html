@@ -12,31 +12,31 @@
 <header th:replace="~{fragments/_commonElements :: header}"></header>
 <main class="container wishlist-form">
 
-
-    <!-- Error message modal -->
-    <section th:if="${showErrorModal}">
-        <dialog th:replace="~{fragments/_commonElements :: errorBox(message=${message})}"></dialog>
-    </section>
-
     <form action="#" th:object="${newUser}" th:action="@{/user/register}" method="post">
         <div>
             <h2 th:text="#{register.header}"></h2>
         </div>
 
+        <!-- Error messages -->
+        <div th:if="${error}" class="form-error-container">
+            <label th:if="${invalidField == 'mail'}" th:text="#{form.error.duplicateMail}"></label>
+            <label th:if="${invalidField == 'names'}" th:text="#{form.error.blankName}"></label>
+        </div>
+
         <!-- INPUTS -->
         <div class="row">
             <label for="email" class="form-label" th:text="#{form.user.label.mail}"></label>
-            <input id="email" type="email" th:field="*{mail}" required th:placeholder="#{form.user.label.mail}" pattern=".*\S.*" th:title="#{form.warning.empty}">
+            <input id="email" type="email" th:field="*{mail}" th:placeholder="#{form.user.label.mail}" required pattern=".*\S.*" th:title="#{form.warning.empty}">
         </div>
 
         <div class="row">
             <label for="first-name" class="form-label" th:text="#{form.user.label.firstName}"></label>
-            <input id="first-name" type="text" th:field="*{firstName}" th:placeholder="#{form.user.label.firstName}" maxlength="50" required pattern="\S(.*\S)?" th:title="#{form.warning.empty}">
+            <input id="first-name" type="text" th:field="*{firstName}" th:placeholder="#{form.user.label.firstName}" maxlength="50" required pattern=".*\S.*" th:title="#{form.warning.empty}">
         </div>
 
         <div class="row">
             <label for="last-name" class="form-label" th:text="#{form.user.label.lastName}"></label>
-            <input id="last-name" type="text" th:field="*{lastName}" th:placeholder="#{form.user.label.lastName}" maxlength="50" required pattern="\S(.*\S)?" th:title="#{form.warning.empty}">
+            <input id="last-name" type="text" th:field="*{lastName}" th:placeholder="#{form.user.label.lastName}" maxlength="50" required pattern=".*\S.*" th:title="#{form.warning.empty}">
         </div>
 
         <div class="row">

@@ -1,6 +1,7 @@
 package com.mavi.wishlist.service;
 
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
+import com.mavi.wishlist.exceptions.PageNotFoundException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

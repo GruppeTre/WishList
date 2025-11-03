@@ -101,6 +101,6 @@ class UserControllerTest {
                 .andExpect(redirectedUrl("/user/login"))
                 //Checks that one attributes are left behind
                 .andExpect(flash().attributeCount(1))
-                .andExpect(flash().attributeExists("badCredentials"));
+                .andExpect(flash().attributeExists("error"));
     }
 }

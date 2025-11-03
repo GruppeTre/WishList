@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Wish List</title>
+    <title th:if="${session.user.id != ownerId}" th:text="${ownerName} + '\'s Wish List'"></title>
+    <title th:if="${session.user.id == ownerId}" th:text="#{title.wishlist.owner}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
@@ -12,45 +13,45 @@
 <header th:replace="~{fragments/_commonElements :: header}"></header>
 <main class="container wishlist-container">
 
-    <h2 th:if="${session.user.id != ownerId}" th:text="${userName} + ' Wishlist'">User Wishlist</h2>
-    <h2 th:if="${session.user.id == ownerId}" th:text="${'Your Wishlist'}">User Wishlist</h2>
-    <a th:if="${session.user.id == ownerId}" class="button button-primary" th:href="@{/wishlist/add}">Add Wish</a>
+    <!-- HEADERS -->
+    <h2 th:if="${session.user.id != ownerId}" th:text="${ownerName} + '\'s Wishlist'"></h2>
+    <h2 th:if="${session.user.id == ownerId}" th:text="#{title.wishlist.owner}"></h2>
+    <a th:if="${session.user.id == ownerId}" class="button button-primary" th:href="@{/wishlist/add}" th:text="#{form.button.addWish}"></a>
 
     <div class="wishlist">
 
-        <h3 th:if="${wishes.isEmpty()}">Empty wishlist</h3>
+        <h3 th:if="${wishes.isEmpty()}" th:text="#{wishlist.header.empty}"></h3>
 
         <div class="wishlist-card" th:each="wish : ${wishes}">
 
             <div id="wishlist-card-text-container">
-                <p th:text="${wish.name}">Name</p>
+                <p th:text="${wish.name}"></p>
             </div>
 
             <!-- BUTTONS -->
-            <a class="button" th:href="${wish.link}" target="_blank ">Visit Site</a>
+            <a class="button" th:href="${wish.link}" target="_blank" th:text="#{wishcard.button.visitSite}"></a>
 
             <!--Edit button shown only for owner -->
-            <a th:if="${session.user.id == ownerId}" class="button" th:href="@{/wishlist/edit/{id}(id=${wish.id})}">Edit</a>
+            <a th:if="${session.user.id == ownerId}" class="button" th:href="@{/wishlist/edit/{id}(id=${wish.id})}" th:text="#{wishcard.button.edit}"></a>
 
             <!-- reservation options only shown if current user does not own wishlist -->
             <div id="reserve-form" th:if="${session.user.id != ownerId}">
 
                 <!--reserve button shown if wish is not reserved -->
                 <form th:if="${!wish.isReserved()}" class="button-container-form" th:action="@{/wishlist/{ownerId}/toggleReserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
-                    <button type="submit" th:text="reserve"></button>
+                    <button type="submit" th:text="#{wishcard.button.reserve}"></button>
                 </form>
 
                 <!--unreserve button shown if wish is reserved AND owner of reservation is logged in-->
                 <form th:if="${wish.isReserved() && reservationsByUser.contains(wish.id)}" class="button-container-form" th:action="@{/wishlist/{ownerId}/toggleReserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
-                    <button type="submit" th:text="Unreserve"></button>
+                    <button type="submit" th:text="#{wishcard.button.unreserve}"></button>
                 </form>
 
                 <!--reserved label shown if wish is reserved by another user -->
-                <div th:if="${wish.isReserved() && !reservationsByUser.contains(wish.id)}" class="button">Reserved</div>
+                <div th:if="${wish.isReserved() && !reservationsByUser.contains(wish.id)}" class="button" th:text="#{wishcard.button.reserved}"></div>
             </div>
         </div>
     </div>
-
 </main>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
 </body>

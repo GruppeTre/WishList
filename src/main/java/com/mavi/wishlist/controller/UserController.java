@@ -1,6 +1,7 @@
 package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.controller.utils.SessionUtils;
+import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -33,9 +34,14 @@ public class UserController {
     @PostMapping("/register")
     public String addNewUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
 
-        newUser = service.registerUser(newUser);
-
-        session.setAttribute("user", newUser);
+        try{
+            newUser = service.registerUser(newUser);
+            session.setAttribute("user", newUser);
+        } catch (InvalidFieldsException e) {
+            redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
+            return "redirect:/user/register";
+        }
 
         return "redirect:/wishlist/view";
     }
@@ -52,14 +58,16 @@ public class UserController {
     @PostMapping("/login")
     public String postLogin(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User user){
 
+        //if credentials are invalid, return to login-form
         if(!service.userLogin(user)) {
-            redirectAttributes.addFlashAttribute("badCredentials", true);
+            redirectAttributes.addFlashAttribute("error", true);
             return "redirect:/user/login";
         }
 
-        //update user object with all fields including ID
+        //if credentials are valid, update user object with all fields including ID
         user = service.getUserByMail(user.getMail());
 
+        //add user to session
         session.setAttribute("user", user);
 
         return "redirect:/wishlist/view";
@@ -67,9 +75,11 @@ public class UserController {
 
     @GetMapping("/profile")
     public String showProfile(@RequestParam(required = false, defaultValue = "view") String viewMode, Model model, HttpSession session){
+
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
+
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
         model.addAttribute("viewMode", viewMode);
@@ -79,13 +89,18 @@ public class UserController {
     @PostMapping("/profile/update")
     public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
 
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
         updatedUser.setId(this.getUserIdFromSession(session));
 
-        if ((updatedUser = service.updateUser(updatedUser)) == null) {
-            redirectAttributes.addFlashAttribute("showErrorMessage", true);
-            redirectAttributes.addFlashAttribute("errorMessageText", "Failed to update user, please try again");
-        } else {
+        try{
+            updatedUser = service.updateUser(updatedUser);
             session.setAttribute("user", updatedUser);
+        } catch (InvalidFieldsException e) {
+            redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
         }
 
         return "redirect:/user/profile";

@@ -1,6 +1,7 @@
 package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.controller.utils.SessionUtils;
+import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.service.UserService;
@@ -30,6 +31,7 @@ public class WishlistController {
     //this method is served on requests to /wishlist/view & /wishlist/view/{userId}
     @GetMapping(value = {"/view", "/view/{ownerId}"})
     public String getWishlist(@PathVariable(required = false) Integer ownerId, Model model, HttpSession session){
+
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -45,11 +47,10 @@ public class WishlistController {
         ownerId = (ownerId == null) ? sessionId : ownerId;
 
         //Refactored to use pathvariable instead of session
-        List<Wish> wishes = service.showWishlistByUser(ownerId);
+        List<Wish> wishes = service.getWishlistByUser(ownerId);
         List<Integer> reservationsByUser = service.getReservationListByUserId(sessionId);
-        User user = userService.getUserByMail(((User) session.getAttribute("user")).getMail());
 
-        model.addAttribute("userName", user.getFirstName());
+        model.addAttribute("ownerName", userService.getUserById(ownerId).getFirstName());
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("reservationsByUser", reservationsByUser);
@@ -73,6 +74,7 @@ public class WishlistController {
 
     @GetMapping("/edit/{id}")
     public String getEditWishPage(@PathVariable int id, Model model, HttpSession session) {
+
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -93,35 +95,33 @@ public class WishlistController {
             return "redirect:/";
         }
 
-        if (service.isInvalid(newWish)) {
-            redirectAttributes.addFlashAttribute("showErrorMessage", true);
-            redirectAttributes.addFlashAttribute("errorMessageText", "Fields cannot be blank");
+        try{
+            Integer userId = ((User) session.getAttribute("user")).getId();
+            service.addWish(newWish, userId);
+        } catch (InvalidFieldsException e) {
+            redirectAttributes.addFlashAttribute("error", true);
             return "redirect:/wishlist/add";
         }
-
-        Integer userId = ((User) session.getAttribute("user")).getId();
-
-        service.addWish(newWish, userId);
 
         return "redirect:/wishlist/view";
     }
 
     @PostMapping("/edit")
-    public String editWish(@ModelAttribute Wish editWish, RedirectAttributes redirectAttributes, HttpSession session){
+    public String editWish(@ModelAttribute Wish editedWish, RedirectAttributes redirectAttributes, HttpSession session){
+
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
-        editWish.setId(((Wish) session.getAttribute("wish")).getId());
+        editedWish.setId(((Wish) session.getAttribute("wish")).getId());
         session.removeAttribute("wish");
 
-        if (service.isInvalid(editWish)) {
-            redirectAttributes.addFlashAttribute("showErrorMessage", true);
-            redirectAttributes.addFlashAttribute("errorMessageText", "Fields cannot be blank");
-            return "redirect:/wishlist/edit/" + editWish.getId();
+        try {
+            service.editWish(editedWish);
+        } catch (InvalidFieldsException e) {
+            redirectAttributes.addFlashAttribute("error", true);
+            return "redirect:/wishlist/edit/" + editedWish.getId();
         }
-
-        service.editWish(editWish);
 
         return "redirect:/wishlist/view";
     }
