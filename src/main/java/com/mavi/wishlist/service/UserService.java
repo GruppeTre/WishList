@@ -2,6 +2,7 @@ package com.mavi.wishlist.service;
 
 import com.mavi.wishlist.exceptions.DuplicateUserException;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
+import com.mavi.wishlist.exceptions.PageNotFoundException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -23,7 +24,8 @@ public class UserService {
         User user = this.getUserByMail(userToCheck.getMail());
 
         if (user == null) {
-            return false;
+            String error = "Well, this is awkward, the User with ID: " + userToCheck.getId() + " doesn't seem to exist :(";
+            throw new PageNotFoundException("Page not found", error);
         }
 
         return encoder.matches(userToCheck.getPassword(), user.getPassword());
@@ -38,6 +40,20 @@ public class UserService {
         } catch (IncorrectResultSizeDataAccessException e) {
             throw new RuntimeException("Multiple users found with email: " + mail);
         }
+    }
+
+    public User getUserById(int id){
+
+        try {
+
+            return this.userRepository.getUserById(id);
+
+        } catch (IncorrectResultSizeDataAccessException e) {
+
+            throw new RuntimeException("Multiple users found with id: " + id);
+
+        }
+
     }
 
     public boolean mailIsTaken(String mail) {
