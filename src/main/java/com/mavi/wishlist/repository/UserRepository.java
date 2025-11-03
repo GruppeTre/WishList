@@ -1,5 +1,6 @@
 package com.mavi.wishlist.repository;
 
+import ch.qos.logback.core.joran.conditional.IfAction;
 import com.mavi.wishlist.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,8 +43,21 @@ public class  UserRepository {
         }
     }
 
+    //Get user object by id
+    public User getUserById(int id){
+        String query = "SELECT * FROM user WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(query, userRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public User addUser(User user) {
-        String query = "INSERT IGNORE INTO User (password, mail, firstname, lastName) VALUES (?,?,?,?)";
+        //Hex key generation
+        //String hex12Byte = "SELECT HEX(RANDOM_BYTES(12))";
+
+        String query = "INSERT IGNORE INTO User (password, mail, firstname, lastName, wishList) VALUES (?,?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         try{
@@ -53,6 +67,8 @@ public class  UserRepository {
                 ps.setString(2, user.getMail());
                 ps.setString(3, user.getFirstName());
                 ps.setString(4, user.getLastName());
+                //Hex key insert
+                //ps.setString(5, hex12Byte);
                 return ps;
             }, keyHolder);
         } catch (Exception e) {

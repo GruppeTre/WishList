@@ -1,6 +1,8 @@
 package com.mavi.wishlist.service;
 
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
+import com.mavi.wishlist.exceptions.PageNotFoundException;
+import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.repository.WishRepository;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import java.util.regex.Pattern;
 public class WishService {
 
     private final WishRepository repository;
+    private final UserService userService;
 
-    public WishService(WishRepository repository) {
+    public WishService(WishRepository repository, UserService userService) {
         this.repository = repository;
+        this.userService = userService;
     }
 
     public boolean isInvalid(Wish wishToCheck) {
@@ -64,7 +68,18 @@ public class WishService {
     }
 
     public List<Wish> showWishlistByUser(int userId) {
+
+        User user = this.userService.getUserById(userId);
+
+        if(user == null){
+
+            String error = "Well, this is awkward, the Wishlist with ID: " + userId + " doesn't seem to exist :(";
+
+            throw new PageNotFoundException("Page not found", error);
+
+        }
         return repository.getWishlistByUser(userId);
+
     }
 
     public Wish editWish(Wish wish){

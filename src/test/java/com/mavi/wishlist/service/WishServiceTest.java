@@ -1,5 +1,6 @@
 package com.mavi.wishlist.service;
 
+import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.repository.WishRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +59,7 @@ class WishServiceTest {
 
         wish.setName(" ");
 
-        assertNull(this.service.addWish(wish, userId));
+        assertThrows(InvalidFieldsException.class, () -> this.service.addWish(wish, userId));
     }
 
     @Test
@@ -66,6 +67,6 @@ class WishServiceTest {
 
         wish.setLink(" ");
 
-        assertNull(this.service.addWish(wish, userId));
+        assertThrows(InvalidFieldsException.class, () -> this.service.addWish(wish, userId));
     }
 }

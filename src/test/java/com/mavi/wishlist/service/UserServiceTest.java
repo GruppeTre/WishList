@@ -1,5 +1,6 @@
 package com.mavi.wishlist.service;
 
+import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -109,7 +110,7 @@ class UserServiceTest {
 
         registerUser.setMail("");
 
-        assertNull(this.userService.registerUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.registerUser(registerUser));
     }
 
     @Test
@@ -118,7 +119,7 @@ class UserServiceTest {
 
         registerUser.setFirstName("");
 
-        assertNull(this.userService.registerUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.registerUser(registerUser));
     }
 
     @Test
@@ -127,7 +128,7 @@ class UserServiceTest {
 
         registerUser.setLastName("");
 
-        assertNull(this.userService.registerUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.registerUser(registerUser));
     }
 
     @Test
@@ -136,7 +137,7 @@ class UserServiceTest {
 
         registerUser.setPassword("");
 
-        assertNull(this.userService.registerUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.registerUser(registerUser));
     }
 
     //update tests
@@ -147,7 +148,7 @@ class UserServiceTest {
 
         registerUser.setMail(" ");
 
-        assertNull(this.userService.updateUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.updateUser(registerUser));
     }
 
     @Test
@@ -156,7 +157,7 @@ class UserServiceTest {
 
         registerUser.setFirstName(" ");
 
-        assertNull(this.userService.updateUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.updateUser(registerUser));
     }
 
     @Test
@@ -165,7 +166,7 @@ class UserServiceTest {
 
         registerUser.setLastName(" ");
 
-        assertNull(this.userService.updateUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.updateUser(registerUser));
     }
 
 }

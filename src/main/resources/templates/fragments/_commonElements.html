@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-
 <body>
+
+<!--HEADER -->
 <header th:fragment="header" class="u-full-width">
     <a th:href="${session == null or session.get('user') == null} ? '/' : '/wishlist/view'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
     <div class="header-buttons">
@@ -34,6 +35,15 @@
     </div>
 </header>
 
+<!--ERROR BOX -->
+<dialog id="error-box" th:fragment="errorBox(message)" open>
+    <form>
+        <p th:text="${message}"></p>
+        <button>OK</button>
+    </form>
+</dialog>
+
+<!-- FOOTER -->
 <footer th:fragment="footer">
 
 </footer>
