@@ -23,33 +23,8 @@ public class WishService {
         this.userService = userService;
     }
 
-    public boolean isInvalid(Wish wishToCheck) {
-
-        if(wishToCheck.getName().isBlank()) {
-           return true;
-        }
-
-        if(wishToCheck.getLink().isBlank()) {
-            return true;
-        }
-
-        if (!linkContainsHttp(wishToCheck)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public Wish getWish(Integer wishId){
+    public Wish getWish(Integer wishId) {
         return repository.getWish(wishId);
-    }
-  
-    public boolean linkContainsHttp(Wish wish) {
-        String regex = "http[s]?:\\/\\/";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(wish.getLink());
-
-        return matcher.find();
     }
 
     @Transactional
@@ -82,7 +57,8 @@ public class WishService {
 
     }
 
-    public Wish editWish(Wish wish){
+    public Wish editWish(Wish wish) {
+
         if(isInvalid(wish)){
             throw new InvalidFieldsException("Invalid fields in Wish", "fields");
         }
@@ -144,5 +120,30 @@ public class WishService {
 
         wish.setReserved(true);
         return repository.editWish(wish);
+    }
+
+    private boolean isInvalid(Wish wishToCheck) {
+
+        if(wishToCheck.getName().isBlank()) {
+            return true;
+        }
+
+        if(wishToCheck.getLink().isBlank()) {
+            return true;
+        }
+
+        if (!linkContainsHttp(wishToCheck)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean linkContainsHttp(Wish wish) {
+        String regex = "http[s]?:\\/\\/";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(wish.getLink());
+
+        return matcher.find();
     }
 }
