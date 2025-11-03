@@ -1,8 +1,6 @@
 package com.mavi.wishlist.service;
 
-import com.mavi.wishlist.exceptions.DuplicateUserException;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
-import com.mavi.wishlist.exceptions.PageNotFoundException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -24,8 +22,7 @@ public class UserService {
         User user = this.getUserByMail(userToCheck.getMail());
 
         if (user == null) {
-            String error = "Well, this is awkward, the User with ID: " + userToCheck.getId() + " doesn't seem to exist :(";
-            throw new PageNotFoundException("Page not found", error);
+            return false;
         }
 
         return encoder.matches(userToCheck.getPassword(), user.getPassword());
@@ -67,12 +64,12 @@ public class UserService {
 
         //check if mail already exists
         if (mailIsTaken(user.getMail())) {
-            throw new DuplicateUserException("A user with that mail already exists");
+            throw new InvalidFieldsException("User with that mail already exists", "mail");
         }
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
-            throw new InvalidFieldsException("Invalid fields in User");
+            throw new InvalidFieldsException("Invalid fields in User", "names");
         }
 
         String rawPassword = user.getPassword();
@@ -89,7 +86,7 @@ public class UserService {
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
-            throw new InvalidFieldsException("Invalid fields in User");
+            throw new InvalidFieldsException("Invalid fields in User", "name");
         }
         return userRepository.updateUser(user);
     }
@@ -101,7 +98,7 @@ public class UserService {
     //collection of guard clauses to run before adding new user to database
     private boolean userHasInvalidFields(User user) {
 
-        int passwordMinLength = 4;
+        int passwordMinLength = 8;
 
         boolean mailIsBlank = user.getMail().isBlank();
         if (mailIsBlank) {

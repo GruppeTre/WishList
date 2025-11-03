@@ -1,6 +1,7 @@
 package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.controller.utils.SessionUtils;
+import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -33,9 +34,14 @@ public class UserController {
     @PostMapping("/register")
     public String addNewUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
 
-        newUser = service.registerUser(newUser);
-
-        session.setAttribute("user", newUser);
+        try{
+            newUser = service.registerUser(newUser);
+            session.setAttribute("user", newUser);
+        } catch (InvalidFieldsException e) {
+            redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
+            return "redirect:/user/register";
+        }
 
         return "redirect:/wishlist/view";
     }
@@ -53,7 +59,7 @@ public class UserController {
     public String postLogin(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User user){
 
         if(!service.userLogin(user)) {
-            redirectAttributes.addFlashAttribute("badCredentials", true);
+            redirectAttributes.addFlashAttribute("error", true);
             return "redirect:/user/login";
         }
 
@@ -81,11 +87,11 @@ public class UserController {
 
         updatedUser.setId(this.getUserIdFromSession(session));
 
-        if ((updatedUser = service.updateUser(updatedUser)) == null) {
-            redirectAttributes.addFlashAttribute("showErrorMessage", true);
-            redirectAttributes.addFlashAttribute("errorMessageText", "Failed to update user, please try again");
-        } else {
+        try{
+            updatedUser = service.updateUser(updatedUser);
             session.setAttribute("user", updatedUser);
+        } catch (InvalidFieldsException e) {
+            redirectAttributes.addFlashAttribute("emptyFields", true);
         }
 
         return "redirect:/user/profile";

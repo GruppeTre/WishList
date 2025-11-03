@@ -59,7 +59,7 @@ public class WishService {
         wish.setReserved(false);
 
         if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish");
+            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
         }
 
         Wish insertedWish = repository.insertWish(wish);
@@ -84,7 +84,7 @@ public class WishService {
 
     public Wish editWish(Wish wish){
         if(isInvalid(wish)){
-            throw new InvalidFieldsException("Invalid fields in Wish");
+            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
         }
 
         return repository.editWish(wish);
@@ -94,7 +94,7 @@ public class WishService {
 
         //check if wish is valid
         if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish");
+            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
         }
 
         //get all reservations by userID
