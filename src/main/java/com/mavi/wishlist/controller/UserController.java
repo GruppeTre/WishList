@@ -99,7 +99,8 @@ public class UserController {
             updatedUser = service.updateUser(updatedUser);
             session.setAttribute("user", updatedUser);
         } catch (InvalidFieldsException e) {
-            redirectAttributes.addFlashAttribute("emptyFields", true);
+            redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("field", e.getIncorrectField());
         }
 
         return "redirect:/user/profile";
