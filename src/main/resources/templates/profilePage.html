@@ -17,6 +17,12 @@
             <h2 th:text="${viewMode == 'view'} ? 'Profile' : 'Edit Profile'"></h2>
         </div>
 
+        <!-- Error messages -->
+        <div th:if="${error}" class="form-error-container">
+            <label th:if="${invalidField == 'mail'}">That mail is already in use</label>
+            <label th:if="${invalidField == 'names'}">Names cannot be blank</label>
+        </div>
+
         <!-- INPUTS -->
         <input hidden="hidden" th:field="*{password}">
 
