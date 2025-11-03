@@ -18,6 +18,11 @@
             <h2 th:text="#{login.header}"></h2>
         </div>
 
+        <!-- Error messages -->
+        <div th:if="${error}" class="error-container">
+            <label>Email or Password incorrect: please double check your credentials and try again</label>
+        </div>
+
         <!-- INPUTS -->
         <div class="row">
             <label for="email" th:text="#{form.user.label.mail}"></label>
