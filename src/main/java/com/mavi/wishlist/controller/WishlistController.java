@@ -47,9 +47,8 @@ public class WishlistController {
         //Refactored to use pathvariable instead of session
         List<Wish> wishes = service.showWishlistByUser(ownerId);
         List<Integer> reservationsByUser = service.getReservationListByUserId(sessionId);
-        User user = userService.getUserByMail(((User) session.getAttribute("user")).getMail());
 
-        model.addAttribute("userName", user.getFirstName());
+        model.addAttribute("ownerName", userService.getUserById(ownerId).getFirstName());
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("reservationsByUser", reservationsByUser);
