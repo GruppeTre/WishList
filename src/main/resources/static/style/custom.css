@@ -182,6 +182,15 @@ header .button, .button-container-form input {
     width: fit-content;
 }
 
+.form-error-container {
+    box-sizing: border-box;
+    width: 30em;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-bottom: 1.5rem;
+    background-color: var(--warning-red);
+}
+
 .wishlist-card .button, .wishlist-card button{
     background-color: var(--dark-blue);
     border-color: var(--dark-blue);
