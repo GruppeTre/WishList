@@ -58,14 +58,16 @@ public class UserController {
     @PostMapping("/login")
     public String postLogin(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User user){
 
+        //if credentials are invalid, return to login-form
         if(!service.userLogin(user)) {
             redirectAttributes.addFlashAttribute("error", true);
             return "redirect:/user/login";
         }
 
-        //update user object with all fields including ID
+        //if credentials are valid, update user object with all fields including ID
         user = service.getUserByMail(user.getMail());
 
+        //add user to session
         session.setAttribute("user", user);
 
         return "redirect:/wishlist/view";
@@ -73,9 +75,11 @@ public class UserController {
 
     @GetMapping("/profile")
     public String showProfile(@RequestParam(required = false, defaultValue = "view") String viewMode, Model model, HttpSession session){
+
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
+
         User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
         model.addAttribute("viewMode", viewMode);
@@ -84,6 +88,10 @@ public class UserController {
 
     @PostMapping("/profile/update")
     public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
+
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
 
         updatedUser.setId(this.getUserIdFromSession(session));
 
