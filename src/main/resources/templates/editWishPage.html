@@ -17,6 +17,11 @@
             <h2>Edit Wish</h2>
         </div>
 
+        <!-- Error messages -->
+        <div th:if="${error}" class="form-error-container">
+            <label>Fields cannot be blank</label>
+        </div>
+
         <!-- INPUTS -->
         <div class="row">
             <label for="name">Description:</label>

@@ -94,7 +94,6 @@ class WishlistControllerTest {
 
             Integer userId = user.getId();
 
-            Mockito.when(service.isInvalid(newWish)).thenReturn(true);
             Mockito.when(service.addWish(newWish, userId)).thenReturn(newWish);
 
             mvc.perform(post("/wishlist/add").session(session))

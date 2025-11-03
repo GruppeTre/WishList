@@ -20,7 +20,7 @@
         <!-- Error messages -->
         <div th:if="${error}" class="form-error-container">
             <label th:if="${invalidField == 'mail'}">That mail is already in use</label>
-            <label th:if="${invalidField == 'names'}">Names cannot be blank</label>
+            <label th:if="${invalidField == 'names'}">Name cannot be blank</label>
         </div>
 
         <!-- INPUTS -->
@@ -31,7 +31,7 @@
 
         <div class="row">
             <label for="first-name" class="form-label" th:text="#{form.user.label.firstName}"></label>
-            <input id="first-name" type="text" th:field="*{firstName}" th:placeholder="#{form.user.label.firstName}" maxlength="50" required  th:title="#{form.warning.empty}">
+            <input id="first-name" type="text" th:field="*{firstName}" th:placeholder="#{form.user.label.firstName}" maxlength="50" required pattern=".*\S.*" th:title="#{form.warning.empty}">
         </div>
 
         <div class="row">
