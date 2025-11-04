@@ -197,6 +197,7 @@ header .button, .button-container-form input {
     padding: 6px 10px;
     margin-bottom: 1.5rem;
     background-color: var(--warning-red);
+    color: var(--cream);
 }
 
 .button-container-form {
