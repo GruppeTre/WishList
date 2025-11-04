@@ -23,43 +23,15 @@ public class WishService {
         this.userService = userService;
     }
 
-    public boolean isInvalid(Wish wishToCheck) {
-
-        if(wishToCheck.getName().isBlank()) {
-           return true;
-        }
-
-        if(wishToCheck.getLink().isBlank()) {
-            return true;
-        }
-
-        if (!linkContainsHttp(wishToCheck)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public Wish getWish(Integer wishId){
+    public Wish getWish(Integer wishId) {
         return repository.getWish(wishId);
-    }
-  
-    public boolean linkContainsHttp(Wish wish) {
-        String regex = "http[s]?:\\/\\/";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(wish.getLink());
-
-        return matcher.find();
     }
 
     @Transactional
     public Wish addWish(Wish wish, Integer userId) {
 
-        //new wishes are never reserved
-//        wish.setReserved(false);
-
         if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish");
+            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
         }
 
         Wish insertedWish = repository.insertWish(wish);
@@ -82,32 +54,14 @@ public class WishService {
 
     }
 
-    public Wish editWish(Wish wish){
+    public Wish editWish(Wish wish) {
+
         if(isInvalid(wish)){
-            throw new InvalidFieldsException("Invalid fields in Wish");
+            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
         }
 
         return repository.editWish(wish);
     }
-
-//    public Wish toggleWishReservation(Wish wish, int userId) {
-//
-//        //check if wish is valid
-//        if (isInvalid(wish)) {
-//            throw new InvalidFieldsException("Invalid fields in Wish");
-//        }
-//
-//        //get all reservations by userID
-//        List<Integer> reservedByUser = this.getReservationListByUserId(userId);
-//
-//        //if wish is reserved, check if current user owns reservation and unreserve it, otherwise return null
-//        if (wish.isReserved()) {
-//           return reservedByUser.contains(wish.getId()) ? this.unreserveWish(wish) : null;
-//        }
-//
-//        //if wish is not already reserved, the current user reserves it
-//        return this.reserveWish(wish, userId);
-//    }
 
     public List<Integer> getReservationListByUserId(int userId) {
         return this.repository.getReservationListByUserId(userId);
@@ -148,5 +102,30 @@ public class WishService {
 
     public boolean isReserved(Wish wish) {
         return this.repository.isReserved(wish);
+    }
+
+    private boolean isInvalid(Wish wishToCheck) {
+
+        if(wishToCheck.getName().isBlank()) {
+            return true;
+        }
+
+        if(wishToCheck.getLink().isBlank()) {
+            return true;
+        }
+
+        if (!linkContainsHttp(wishToCheck)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean linkContainsHttp(Wish wish) {
+        String regex = "http[s]?:\\/\\/";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(wish.getLink());
+
+        return matcher.find();
     }
 }

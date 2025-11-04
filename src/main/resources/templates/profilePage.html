@@ -2,50 +2,64 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Profile</title>
+    <title th:text="#{title.profile}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
-</head>
 
+    <script>
+        let deleteWarning = "";
+        if(navigator.language.includes("da")) {
+            deleteWarning = "Er du sikker på at du vil slette din konto? Denne handling kan ikke fortrydes!"
+        } else{
+            deleteWarning = "Are you sure you want to delete your account? This action cannot be undone!"
+        }
+    </script>
+</head>
 <body>
 <header th:replace="~{fragments/_commonElements :: header}"></header>
 <main class="container wishlist-form">
 
     <form th:action="@{/user/profile/update}" th:object="${user}" method="post">
         <div>
-            <h2 th:text="${viewMode == 'view'} ? 'Profile' : 'Edit Profile'"></h2>
+            <h2 th:text="${viewMode == 'view'} ? #{profile.header.view} : #{profile.header.edit}"></h2>
+        </div>
+
+        <!-- Error messages -->
+        <div th:if="${error}" class="form-error-container">
+            <label th:if="${invalidField == 'mail'}" th:text="#{form.error.duplicateMail}"></label>
+            <label th:if="${invalidField == 'names'}" th:text="#{form.error.blankName}"></label>
         </div>
 
         <!-- INPUTS -->
         <input hidden="hidden" th:field="*{password}">
 
         <div class="row">
-            <label for="mail">Email:</label>
+            <label for="mail" th:text="#{form.user.label.mail}"></label>
             <input type="email" id="mail" th:field="*{mail}" readonly pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <div class="row">
-            <label for="firstName">First Name:</label>
+            <label for="firstName" th:text="#{form.user.label.firstName}"></label>
             <input type="text" id="firstName" th:field="*{firstName}" th:readonly="${viewMode == 'view'}" pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <div class="row">
-            <label for="lastName">Last Name:</label>
+            <label for="lastName" th:text="#{form.user.label.lastName}"></label>
             <input type="text" id="lastName" th:field="*{lastName}" th:readonly="${viewMode == 'view'}" pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <!-- BUTTONS -->
         <div class="row">
-            <a class="button" th:href="${viewMode == 'view'} ? '/wishlist/view' : '/user/profile'">Back</a>
-            <button th:if="${viewMode == 'edit'}" type="submit">Save</button>
-            <a class="button" th:if="${viewMode == 'view'}" th:href="@{/user/profile(viewMode='edit')}">Edit</a>
+            <a class="button" th:href="${viewMode == 'view'} ? '/wishlist/view' : '/user/profile'" th:text="#{form.button.back}"></a>
+            <button th:if="${viewMode == 'edit'}" type="submit" th:text="#{form.button.save}"></button>
+            <a class="button" th:if="${viewMode == 'view'}" th:href="@{/user/profile(viewMode='edit')}" th:text="#{form.button.edit}"></a>
         </div>
     </form>
 
     <!-- DELETE BUTTON -->
-    <form th:if="${viewMode == 'edit'}" onsubmit="return confirm('Do you want to permanently delete your account?');" th:action="@{/user/profile/delete}" method="post" th:object="${user}">
-        <button id="delete-button" type="submit">Delete User</button>
+    <form th:if="${viewMode == 'edit'}" onsubmit="return confirm(deleteWarning);" th:action="@{/user/profile/delete}" method="post" th:object="${user}">
+        <button id="delete-button" type="submit" th:text="#{form.button.delete.user}"></button>
     </form>
 </main>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>

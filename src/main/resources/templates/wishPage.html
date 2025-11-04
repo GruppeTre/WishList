@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Profile</title>
+    <title th:text="#{title.wish.new}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
@@ -14,25 +14,29 @@
     <form th:action="@{/wishlist/add}" th:object="${wish}" method="post">
 
         <div>
-            <h2>Add Wish</h2>
+            <h2 th:text="#{newWish.header}"></h2>
+        </div>
+
+        <!-- Error messages -->
+        <div th:if="${error}" class="form-error-container">
+            <label th:text="#{form.error.fields.blank}"></label>
         </div>
 
         <!-- INPUTS -->
         <div class="row">
-            <label for="name">Description:</label>
+            <label for="name" th:text="#{form.wish.label.description}"></label>
             <input type="text" id="name" th:field="*{name}" maxlength="70" required pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <div class="row">
-            <label for="link">Link:</label>
+            <label for="link" th:text="#{form.wish.label.link}"></label>
             <input type="text" id="link" th:field="*{link}" required pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <!-- BUTTONS -->
-
         <div class="row">
-            <a class="button" href="/wishlist/view">Back</a>
-            <button type="submit">Add wish</button>
+            <a class="button" href="/wishlist/view" th:text="#{form.button.back}"></a>
+            <button type="submit" th:text="#{form.button.addWish}"></button>
         </div>
 
     </form>

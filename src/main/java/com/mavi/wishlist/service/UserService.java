@@ -1,13 +1,13 @@
 package com.mavi.wishlist.service;
 
-import com.mavi.wishlist.exceptions.DuplicateUserException;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
-import com.mavi.wishlist.exceptions.PageNotFoundException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 @Service
 public class UserService {
@@ -24,8 +24,7 @@ public class UserService {
         User user = this.getUserByMail(userToCheck.getMail());
 
         if (user == null) {
-            String error = "Well, this is awkward, the User with ID: " + userToCheck.getId() + " doesn't seem to exist :(";
-            throw new PageNotFoundException("Page not found", error);
+            return false;
         }
 
         return encoder.matches(userToCheck.getPassword(), user.getPassword());
@@ -53,7 +52,14 @@ public class UserService {
             throw new RuntimeException("Multiple users found with id: " + id);
 
         }
+    }
 
+    public Integer getOwnerIdFromRefString(String refString) {
+        return this.userRepository.getUserIdFromRefString(refString);
+    }
+
+    public String getRefStringFromId(Integer id) {
+        return this.userRepository.getRefStringFromId(id);
     }
 
     public boolean mailIsTaken(String mail) {
@@ -67,19 +73,21 @@ public class UserService {
 
         //check if mail already exists
         if (mailIsTaken(user.getMail())) {
-            throw new DuplicateUserException("A user with that mail already exists");
+            throw new InvalidFieldsException("User with that mail already exists", "mail");
         }
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
-            throw new InvalidFieldsException("Invalid fields in User");
+            throw new InvalidFieldsException("Invalid fields in User", "names");
         }
 
         String rawPassword = user.getPassword();
 
         user.setPassword(encoder.encode(rawPassword));
 
-        return userRepository.addUser(user);
+        String urlReference = getRandomString(12);
+
+        return userRepository.addUser(user, urlReference);
     }
 
     public User updateUser(User user){
@@ -89,7 +97,7 @@ public class UserService {
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
-            throw new InvalidFieldsException("Invalid fields in User");
+            throw new InvalidFieldsException("Invalid fields in User", "names");
         }
         return userRepository.updateUser(user);
     }
@@ -101,7 +109,7 @@ public class UserService {
     //collection of guard clauses to run before adding new user to database
     private boolean userHasInvalidFields(User user) {
 
-        int passwordMinLength = 4;
+        int passwordMinLength = 8;
 
         boolean mailIsBlank = user.getMail().isBlank();
         if (mailIsBlank) {
@@ -136,5 +144,24 @@ public class UserService {
         user.setMail(user.getMail().trim());
         user.setFirstName(user.getFirstName().trim());
         user.setLastName(user.getLastName().trim());
+    }
+
+    private String getRandomString(int numBytes) {
+        byte[] bytes = generateRandomBytes(numBytes);
+
+        //convert byte array to string
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+
+        return sb.toString();
+    }
+
+    private byte[] generateRandomBytes(int numBytes) {
+        byte[] ref = new byte[numBytes];
+        new SecureRandom().nextBytes(ref);
+        return ref;
     }
 }
