@@ -23,11 +23,11 @@ class UserRepositoryTest {
     }
 
     /*
-    ('adam1234', 'adam@mail.dk', '"Adam', 'Adamsen'),
-	('erik1234', 'Erik@gmail.com', 'Erik', 'Eriksen');
+    ('adam1234', 'adam@mail.dk', '"Adam', 'Adamsen', '80ee1e11b3b393efd0872de7'),
+	('erik1234', 'Erik@gmail.com', 'Erik', 'Eriksen', '0a0609f01458afb981cfeead');
      */
 
-/*    @Test
+    @Test
     void shouldGetUserByMail() throws Exception {
         User user = repository.getUser("adam@mail.dk");
 
@@ -36,5 +36,5 @@ class UserRepositoryTest {
         assertThat(user.getPassword()).isEqualTo("adam1234");
         assertThat(user.getFirstName()).isEqualTo("Adam");
         assertThat(user.getLastName()).isEqualTo("Adamsen");
-    }*/
+    }
 }
