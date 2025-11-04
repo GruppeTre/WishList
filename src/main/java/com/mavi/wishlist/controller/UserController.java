@@ -111,6 +111,10 @@ public class UserController {
     @PostMapping("profile/delete")
     public String deleteUser(HttpSession session, @ModelAttribute User userToDelete) {
 
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
         userToDelete.setId(this.getUserIdFromSession(session));
 
         this.service.deleteUser(userToDelete);
@@ -122,6 +126,11 @@ public class UserController {
 
     @PostMapping("profile/logout")
     public String logout(HttpSession session){
+
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
         session.invalidate();
         return "redirect:/";
     }
