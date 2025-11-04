@@ -52,7 +52,14 @@ public class UserService {
             throw new RuntimeException("Multiple users found with id: " + id);
 
         }
+    }
 
+    public Integer getOwnerIdFromRefString(String refString) {
+        return this.userRepository.getUserIdFromRefString(refString);
+    }
+
+    public String getRefStringFromId(Integer id) {
+        return this.userRepository.getRefStringFromId(id);
     }
 
     public boolean mailIsTaken(String mail) {

@@ -2,6 +2,7 @@ package com.mavi.wishlist.repository;
 
 import ch.qos.logback.core.joran.conditional.IfAction;
 import com.mavi.wishlist.model.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -48,6 +49,27 @@ public class  UserRepository {
         String query = "SELECT * FROM account WHERE id = ?";
         try {
             return jdbcTemplate.queryForObject(query, userRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    //get user from given refString
+    public Integer getUserIdFromRefString(String refString) {
+        String query = "SELECT id FROM account WHERE refString = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(query, Integer.class, refString);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public String getRefStringFromId(Integer id) {
+        String query = "SELECT refString FROM account WHERE id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(query, String.class, id);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
