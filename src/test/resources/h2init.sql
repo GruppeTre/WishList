@@ -1,6 +1,6 @@
 DROP ALL OBJECTS;
 
-CREATE TABLE UserList (
+CREATE TABLE account (
                     id INT NOT NULL UNIQUE AUTO_INCREMENT,
                     password VARCHAR(255) NOT NULL,
                     mail VARCHAR(100) NOT NULL UNIQUE,
@@ -24,7 +24,7 @@ CREATE TABLE Wishlist(
                     wish_id INT NOT NULL,
 
                     PRIMARY KEY(user_id, wish_id),
-                    FOREIGN KEY(user_id) REFERENCES UserList(id)
+                    FOREIGN KEY(user_id) REFERENCES account(id)
 		                ON DELETE CASCADE,
 	                FOREIGN KEY(wish_id) REFERENCES Wish(id)
 		                ON DELETE CASCADE
@@ -35,15 +35,15 @@ CREATE TABLE Reservation (
                     wish_id INT NOT NULL UNIQUE,
 
                     PRIMARY KEY(user_id, wish_id),
-                    FOREIGN KEY(user_id) REFERENCES UserList(id)
+                    FOREIGN KEY(user_id) REFERENCES account(id)
                         ON DELETE CASCADE,
                     FOREIGN KEY(wish_id) REFERENCES Wish(id)
                         ON DELETE CASCADE
 );
 
-INSERT INTO UserList (password, mail, firstname, lastName)
-       VALUES ('adam1234', 'adam@mail.dk', '"Adam', 'Adamsen'),
-	('erik1234', 'Erik@gmail.com', 'Erik', 'Eriksen');
+INSERT INTO account (password, mail, firstname, lastName, refString)
+       VALUES ('adam1234', 'adam@mail.dk', 'Adam', 'Adamsen', '80ee1e11b3b393efd0872de7'),
+	('erik1234', 'Erik@gmail.com', 'Erik', 'Eriksen','0a0609f01458afb981cfeead');
 
 INSERT INTO Wish (name, link, isReserved) VALUES ('Uldsokker 5stk', 'http://www.etgenerisklink.com', 1),
                                                  ('The Kopper', 'http://www.togenerisklink.com', 0),
