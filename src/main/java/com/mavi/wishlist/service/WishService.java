@@ -30,9 +30,6 @@ public class WishService {
     @Transactional
     public Wish addWish(Wish wish, Integer userId) {
 
-        //new wishes are never reserved
-        wish.setReserved(false);
-
         if (isInvalid(wish)) {
             throw new InvalidFieldsException("Invalid fields in Wish", "fields");
         }
@@ -66,27 +63,12 @@ public class WishService {
         return repository.editWish(wish);
     }
 
-    public Wish toggleWishReservation(Wish wish, int userId) {
-
-        //check if wish is valid
-        if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
-        }
-
-        //get all reservations by userID
-        List<Integer> reservedByUser = this.getReservationListByUserId(userId);
-
-        //if wish is reserved, check if current user owns reservation and unreserve it, otherwise return null
-        if (wish.isReserved()) {
-           return reservedByUser.contains(wish.getId()) ? this.unreserveWish(wish) : null;
-        }
-
-        //if wish is not already reserved, the current user reserves it
-        return this.reserveWish(wish, userId);
-    }
-
     public List<Integer> getReservationListByUserId(int userId) {
         return this.repository.getReservationListByUserId(userId);
+    }
+
+    public List<Integer> getReservedWishes(int userId) {
+        return this.repository.getReservedWishes(userId);
     }
 
     public Wish deleteWish(Wish wishToDelete) {
@@ -94,7 +76,7 @@ public class WishService {
         return wishToDelete;
     }
 
-    private Wish unreserveWish(Wish wish) {
+    public Wish unreserveWish(Wish wish) {
 
         int rowsAffected = this.repository.deleteWishReservation(wish.getId());
 
@@ -103,12 +85,10 @@ public class WishService {
         } else if (rowsAffected > 1) {
             throw new RuntimeException("Multiple lines in reservation junction were affected!");
         }
-
-        wish.setReserved(false);
-        return repository.editWish(wish);
+        return wish;
     }
 
-    private Wish reserveWish(Wish wish, int userId) {
+    public Wish reserveWish(Wish wish, int userId) {
 
         int rowsAffected = this.repository.insertToReservationJunction(wish.getId(), userId);
 
@@ -117,9 +97,11 @@ public class WishService {
         } else if (rowsAffected > 1) {
             throw new RuntimeException("Multiple lines in reservation junction were affected!");
         }
+        return wish;
+    }
 
-        wish.setReserved(true);
-        return repository.editWish(wish);
+    public boolean isReserved(Wish wish) {
+        return this.repository.isReserved(wish);
     }
 
     private boolean isInvalid(Wish wishToCheck) {

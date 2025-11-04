@@ -4,6 +4,7 @@ import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.model.Wish;
+import com.mavi.wishlist.repository.WishRepository;
 import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
 import jakarta.servlet.http.HttpSession;
@@ -53,12 +54,15 @@ public class WishlistController {
         List<Integer> reservationsByUser = wishService.getReservationListByUserId(sessionId);
         listRef = userService.getRefStringFromId(ownerId);
 
+        List<Integer> reservedWishes = wishService.getReservedWishes(ownerId);
+
         model.addAttribute("listRef", listRef);
         model.addAttribute("ownerName", userService.getUserById(ownerId).getFirstName());
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("reservationsByUser", reservationsByUser);
         model.addAttribute("user", session.getAttribute("user"));
+        model.addAttribute("reservedWishes", reservedWishes);
 
         return "wishlist";
     }
@@ -155,8 +159,15 @@ public class WishlistController {
         //get id of current user
         int userId = ((User) session.getAttribute("user")).getId();
 
-        wishService.toggleWishReservation(wishToReserve, userId);
+        if(wishService.isReserved(wishToReserve)) {
+            wishService.unreserveWish(wishToReserve);
+        }
+        else {
+            wishService.reserveWish(wishToReserve, userId);
+        }
 
-        return "redirect:/wishlist/view/" + ownerId;
+        String redirectRef = this.userService.getRefStringFromId(ownerId);
+
+        return "redirect:/wishlist/view/" + redirectRef;
     }
 }
