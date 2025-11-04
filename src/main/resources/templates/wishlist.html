@@ -41,12 +41,12 @@
             <div id="reserve-form" th:if="${session.user.id != ownerId}">
 
                 <!--reserve button shown if wish is not reserved -->
-                <form th:if="${!reservedWishes.contains(wish.id)}" class="button-container-form" th:action="@{/wishlist/{ownerId}/toggleReserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
+                <form th:class="button-container-form" th:if="${!reservedWishes.contains(wish.id)}" class="button-container-form" th:action="@{/wishlist/{ownerId}/toggleReserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
                     <button type="submit" th:text="#{wishcard.button.reserve}"></button>
                 </form>
 
                 <!--unreserve button shown if wish is reserved AND owner of reservation is logged in-->
-                <form th:if="${reservedWishes.contains(wish.id) && reservationsByUser.contains(wish.id)}" class="button-container-form" th:action="@{/wishlist/{ownerId}/toggleReserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
+                <form th:class="button-container-form" th:if="${reservedWishes.contains(wish.id) && reservationsByUser.contains(wish.id)}" class="button-container-form" th:action="@{/wishlist/{ownerId}/toggleReserve/{wishId}(ownerId=${ownerId}, wishId=${wish.id})}" method="post">
                     <button type="submit" th:text="#{wishcard.button.unreserve}"></button>
                 </form>
 
