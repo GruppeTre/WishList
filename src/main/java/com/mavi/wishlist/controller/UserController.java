@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String addNewUser(HttpSession session, Model model, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
+    public String addNewUser(HttpSession session, Model model, @ModelAttribute User newUser) {
 
         try{
             newUser = service.registerUser(newUser);
@@ -57,12 +57,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String postLogin(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User user){
+    public String postLogin(HttpSession session, Model model, @ModelAttribute User user){
 
         //if credentials are invalid, return to login-form
         if(!service.userLogin(user)) {
-            redirectAttributes.addFlashAttribute("error", true);
-            return "redirect:/user/login";
+            model.addAttribute("error", true);
+            model.addAttribute("userLogin", user);
+            return "loginPage";
         }
 
         //if credentials are valid, update user object with all fields including ID
