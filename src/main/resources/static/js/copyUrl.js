@@ -8,10 +8,10 @@ function copyUrl() {
     // Copy the text inside the text field
     navigator.clipboard.writeText(copyText.value);
 
-    let alertText = "";
-    if(navigator.language.includes("da")) {
+    let alertText;
+    if (navigator.language.includes("da")) {
         alertText = "Link kopieret: "
-    } else{
+    } else {
         alertText = "Copied to clipboard: "
     }
 
