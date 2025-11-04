@@ -5,7 +5,6 @@ public class Wish {
     private Integer id;
     private String name;
     private String link;
-    private boolean isReserved;
 
     //constructors
 
@@ -35,11 +34,4 @@ public class Wish {
         this.link = link;
     }
 
-    public boolean isReserved() {
-        return isReserved;
-    }
-
-    public void setReserved(boolean reserved) {
-        isReserved = reserved;
-    }
 }

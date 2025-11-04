@@ -3,6 +3,7 @@ package com.mavi.wishlist.controller;
 import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.model.Wish;
+import com.mavi.wishlist.repository.WishRepository;
 import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
 import jakarta.servlet.http.HttpSession;
@@ -48,11 +49,14 @@ public class WishlistController {
         List<Wish> wishes = service.getWishlistByUser(ownerId);
         List<Integer> reservationsByUser = service.getReservationListByUserId(sessionId);
 
+        List<Integer> reservedWishes = service.getReservedWishes(ownerId);
+
         model.addAttribute("ownerName", userService.getUserById(ownerId).getFirstName());
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("reservationsByUser", reservationsByUser);
         model.addAttribute("user", session.getAttribute("user"));
+        model.addAttribute("reservedWishes", reservedWishes);
 
         return "wishlist";
     }
@@ -150,8 +154,14 @@ public class WishlistController {
         //get id of current user
         int userId = ((User) session.getAttribute("user")).getId();
 
-        service.toggleWishReservation(wishToReserve, userId);
+        if(service.isReserved(wishToReserve)) {
+            service.unreserveWish(wishToReserve);
+        }
+        else {
+            service.reserveWish(wishToReserve, userId);
+        }
 
         return "redirect:/wishlist/view/" + ownerId;
     }
+
 }
