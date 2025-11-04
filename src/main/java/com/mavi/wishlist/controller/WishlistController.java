@@ -7,6 +7,7 @@ import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.repository.WishRepository;
 import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,7 +98,7 @@ public class WishlistController {
     }
 
     @PostMapping("/add")
-    public String addWish(@ModelAttribute Wish newWish, Model model, RedirectAttributes redirectAttributes, HttpSession session){
+    public String addWish(@ModelAttribute Wish newWish, Model model, HttpSession session, HttpServletResponse response){
 
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
@@ -107,6 +108,7 @@ public class WishlistController {
             Integer userId = ((User) session.getAttribute("user")).getId();
             wishService.addWish(newWish, userId);
         } catch (InvalidFieldsException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             model.addAttribute("error", true);
             model.addAttribute("invalidField", e.getIncorrectField());
             model.addAttribute("wish", newWish);
@@ -117,7 +119,7 @@ public class WishlistController {
     }
 
     @PostMapping("/edit")
-    public String editWish(@ModelAttribute Wish editedWish, RedirectAttributes redirectAttributes, HttpSession session){
+    public String editWish(@ModelAttribute Wish editedWish, RedirectAttributes redirectAttributes, HttpSession session, HttpServletResponse response){
 
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
@@ -129,6 +131,7 @@ public class WishlistController {
         try {
             wishService.editWish(editedWish);
         } catch (InvalidFieldsException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             redirectAttributes.addFlashAttribute("error", true);
             redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
             return "redirect:/wishlist/edit/" + editedWish.getId();
