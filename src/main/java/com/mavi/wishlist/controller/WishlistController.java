@@ -97,7 +97,7 @@ public class WishlistController {
     }
 
     @PostMapping("/add")
-    public String addWish(@ModelAttribute Wish newWish, RedirectAttributes redirectAttributes, HttpSession session){
+    public String addWish(@ModelAttribute Wish newWish, Model model, RedirectAttributes redirectAttributes, HttpSession session){
 
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
@@ -107,8 +107,10 @@ public class WishlistController {
             Integer userId = ((User) session.getAttribute("user")).getId();
             wishService.addWish(newWish, userId);
         } catch (InvalidFieldsException e) {
-            redirectAttributes.addFlashAttribute("error", true);
-            return "redirect:/wishlist/add";
+            model.addAttribute("error", true);
+            model.addAttribute("invalidField", e.getIncorrectField());
+            model.addAttribute("wish", newWish);
+            return "wishPage";
         }
 
         return "redirect:/wishlist/view";
@@ -128,6 +130,7 @@ public class WishlistController {
             wishService.editWish(editedWish);
         } catch (InvalidFieldsException e) {
             redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
             return "redirect:/wishlist/edit/" + editedWish.getId();
         }
 

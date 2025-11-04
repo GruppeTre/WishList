@@ -30,8 +30,14 @@ public class WishService {
     @Transactional
     public Wish addWish(Wish wish, Integer userId) {
 
+        trimFields(wish);
+
+        if (!linkContainsHttp(wish)) {
+            throw new InvalidFieldsException("Invalid fields in Wish", "link");
+        }
+
         if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
+            throw new InvalidFieldsException("Invalid fields in Wish", "description");
         }
 
         Wish insertedWish = repository.insertWish(wish);
@@ -56,8 +62,14 @@ public class WishService {
 
     public Wish editWish(Wish wish) {
 
+        trimFields(wish);
+
+        if (!linkContainsHttp(wish)) {
+            throw new InvalidFieldsException("Invalid fields in Wish", "link");
+        }
+
         if(isInvalid(wish)){
-            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
+            throw new InvalidFieldsException("Invalid fields in Wish", "description");
         }
 
         return repository.editWish(wish);
@@ -127,5 +139,10 @@ public class WishService {
         Matcher matcher = pattern.matcher(wish.getLink());
 
         return matcher.find();
+    }
+
+    private void trimFields(Wish wish) {
+        wish.setName(wish.getName().trim());
+        wish.setLink(wish.getLink().trim());
     }
 }

@@ -19,7 +19,8 @@
 
         <!-- Error messages -->
         <div th:if="${error}" class="form-error-container">
-            <label th:text="#{form.error.fields.blank}"></label>
+            <label th:if="${invalidField == 'link'}" th:text="#{form.error.link}"></label>
+            <label th:if="${invalidField == 'description'}" th:text="#{form.error.description.blank}"></label>
         </div>
 
         <!-- INPUTS -->
