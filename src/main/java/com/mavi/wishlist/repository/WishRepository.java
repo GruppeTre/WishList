@@ -83,7 +83,7 @@ public class WishRepository {
     }
 
     public List<Wish> getWishlistByUser(int userId) {
-        String query = "SELECT w.id, w.name, w.link, w.isReserved FROM Wish w JOIN wishlist wl ON w.id = wl.wish_id WHERE wl.user_id = ?";
+        String query = "SELECT w.id, w.name, w.link FROM Wish w JOIN wishlist wl ON w.id = wl.wish_id WHERE wl.user_id = ?";
 
         return jdbcTemplate.query(query, rowMapper, userId);
     }
@@ -113,7 +113,8 @@ public class WishRepository {
 
 
     public Wish editWish(Wish wish){
-        String query = "UPDATE Wish SET name = ?, link = ?, WHERE id = ?";
+
+        String query = "UPDATE Wish SET name = ?, link = ? WHERE id = ?";
 
         int rowsAffected = jdbcTemplate.update(query, wish.getName(), wish.getLink(), wish.getId());
 
