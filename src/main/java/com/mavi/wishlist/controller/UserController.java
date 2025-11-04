@@ -32,15 +32,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String addNewUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
+    public String addNewUser(HttpSession session, Model model, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
 
         try{
             newUser = service.registerUser(newUser);
             session.setAttribute("user", newUser);
         } catch (InvalidFieldsException e) {
-            redirectAttributes.addFlashAttribute("error", true);
-            redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
-            return "redirect:/user/register";
+            model.addAttribute("error", true);
+            model.addAttribute("invalidField", e.getIncorrectField());
+            model.addAttribute("newUser", newUser);
+            return "registerPage";
         }
 
         return "redirect:/wishlist/view";
