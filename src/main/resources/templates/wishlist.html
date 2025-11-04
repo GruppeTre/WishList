@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
+    <script th:src="@{/js/copyUrl.js}"></script>
 </head>
 
 <body>
@@ -57,28 +58,6 @@
         <input th:value="'http://localhost:8080/wishlist/view/' + ${listRef}" type="text" id="listLink" hidden="hidden">
     </div>
 </main>
-<script>
-    function copyUrl() {
-        // Get the text field
-        var copyText = document.getElementById("listLink");
-
-        // Select the text field
-        copyText.select();
-
-        // Copy the text inside the text field
-        navigator.clipboard.writeText(copyText.value);
-
-        let alertText = "";
-        if(navigator.language.includes("da")) {
-            alertText = "Link kopieret: "
-        } else{
-            alertText = "Copied to clipboard: "
-        }
-
-        // Alert the copied text
-        alert(alertText + copyText.value);
-    }
-</script>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
 </body>
 </html>

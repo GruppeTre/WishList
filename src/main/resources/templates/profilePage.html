@@ -6,15 +6,7 @@
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
-
-    <script>
-        let deleteWarning = "";
-        if(navigator.language.includes("da")) {
-            deleteWarning = "Er du sikker på at du vil slette din konto? Denne handling kan ikke fortrydes!"
-        } else{
-            deleteWarning = "Are you sure you want to delete your account? This action cannot be undone!"
-        }
-    </script>
+    <script th:src="@{/js/deleteWarning.js}"></script>
 </head>
 <body>
 <header th:replace="~{fragments/_commonElements :: header}"></header>
