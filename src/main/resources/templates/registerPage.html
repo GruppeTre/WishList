@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
+    <script th:src="@{/js/passwordConfirmation.js}"></script>
 </head>
 
 <body>
@@ -41,7 +42,12 @@
 
         <div class="row">
             <label for="password" class="form-label" th:text="#{form.user.label.password.withMinimum}"></label>
-            <input id="password" type="password" th:field="*{password}" th:placeholder="#{form.user.label.password}" required minlength="8" maxlength="20" th:title="#{form.warning.empty}">
+            <input id="password" type="password" th:field="*{password}" th:placeholder="#{form.user.label.password}" required minlength="8" maxlength="20" th:title="#{form.warning.empty}" onchange="onChange()">
+        </div>
+
+        <div class="row">
+            <label for="confirm-password" class="form-label" th:text="#{form.user.label.password.repeat}"></label>
+            <input id="confirm-password" type="password" th:placeholder="#{form.user.label.password.repeat}" required onchange="onChange()">
         </div>
 
         <!-- BUTTONS -->
