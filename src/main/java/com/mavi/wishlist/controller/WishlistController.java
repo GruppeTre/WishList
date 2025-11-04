@@ -19,24 +19,27 @@ import java.util.List;
 @RequestMapping("/wishlist")
 public class WishlistController {
 
-    private final WishService service;
+    private final WishService wishService;
     private final UserService userService;
 
-    public WishlistController(WishService service, UserService userService) {
-        this.service = service;
+    public WishlistController(WishService wishService, UserService userService) {
+        this.wishService = wishService;
         this.userService = userService;
     }
 
 
     //this method is served on requests to /wishlist/view & /wishlist/view/{userId}
-    @GetMapping(value = {"/view", "/view/{ownerId}"})
-    public String getWishlist(@PathVariable(required = false) Integer ownerId, Model model, HttpSession session){
+    @GetMapping(value = {"/view", "/view/{listRef}"})
+    public String getWishlist(@PathVariable(required = false) String listRef, Model model, HttpSession session){
 
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
         int sessionId = ((User)session.getAttribute("user")).getId();
+
+        //get refString from ownerID
+        Integer ownerId = userService.getOwnerIdFromRefString(listRef);
 
         //redirect to endpoint with no pathVariable in URL if user goes to /view/{id} endpoint of wishlist they own
         if (ownerId != null && ownerId == sessionId) {
@@ -46,10 +49,11 @@ public class WishlistController {
         //set userId to session owner's ID if no path variable is passed
         ownerId = (ownerId == null) ? sessionId : ownerId;
 
-        //Refactored to use pathvariable instead of session
-        List<Wish> wishes = service.getWishlistByUser(ownerId);
-        List<Integer> reservationsByUser = service.getReservationListByUserId(sessionId);
+        List<Wish> wishes = wishService.getWishlistByUser(ownerId);
+        List<Integer> reservationsByUser = wishService.getReservationListByUserId(sessionId);
+        listRef = userService.getRefStringFromId(ownerId);
 
+        model.addAttribute("listRef", listRef);
         model.addAttribute("ownerName", userService.getUserById(ownerId).getFirstName());
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
@@ -79,7 +83,7 @@ public class WishlistController {
             return "redirect:/";
         }
 
-        Wish wishToEdit = service.getWish(id);
+        Wish wishToEdit = wishService.getWish(id);
 
         session.setAttribute("wish", wishToEdit);
 
@@ -97,7 +101,7 @@ public class WishlistController {
 
         try{
             Integer userId = ((User) session.getAttribute("user")).getId();
-            service.addWish(newWish, userId);
+            wishService.addWish(newWish, userId);
         } catch (InvalidFieldsException e) {
             redirectAttributes.addFlashAttribute("error", true);
             return "redirect:/wishlist/add";
@@ -117,7 +121,7 @@ public class WishlistController {
         session.removeAttribute("wish");
 
         try {
-            service.editWish(editedWish);
+            wishService.editWish(editedWish);
         } catch (InvalidFieldsException e) {
             redirectAttributes.addFlashAttribute("error", true);
             return "redirect:/wishlist/edit/" + editedWish.getId();
@@ -133,7 +137,7 @@ public class WishlistController {
         }
 
         wishToDelete.setId(((Wish) session.getAttribute("wish")).getId());
-        service.deleteWish(wishToDelete);
+        wishService.deleteWish(wishToDelete);
 
         return "redirect:/wishlist/view";
     }
@@ -146,12 +150,12 @@ public class WishlistController {
         }
 
         //get wish object from pathVariable wishId
-        Wish wishToReserve =  service.getWish(wishId);
+        Wish wishToReserve =  wishService.getWish(wishId);
 
         //get id of current user
         int userId = ((User) session.getAttribute("user")).getId();
 
-        service.toggleWishReservation(wishToReserve, userId);
+        wishService.toggleWishReservation(wishToReserve, userId);
 
         return "redirect:/wishlist/view/" + ownerId;
     }
