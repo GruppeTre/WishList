@@ -166,6 +166,8 @@ public class WishlistController {
             wishService.reserveWish(wishToReserve, userId);
         }
 
-        return "redirect:/wishlist/view/" + ownerId;
+        String redirectRef = this.userService.getRefStringFromId(ownerId);
+
+        return "redirect:/wishlist/view/" + redirectRef;
     }
 }
