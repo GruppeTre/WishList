@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -56,7 +57,7 @@ class UserRepositoryTest {
         User newUser = new User();
         newUser.setFirstName("Peter");
         newUser.setLastName("Petersen");
-        newUser.setMail("peter@peter");
+        newUser.setMail("peter@live.com");
         newUser.setPassword("peter1234");
 
         String refString = "0b0609f01458afb981cfeead";
@@ -70,13 +71,26 @@ class UserRepositoryTest {
 
     @Test
     void shouldUpdateUser() throws Exception {
-        User user = repository.getUser("adam@adam");
-        user.setMail("adam@testCase");
+        User user = repository.getUser("adam@mail.dk");
+        user.setFirstName("Søren");
 
         repository.updateUser(user);
 
-        User updatedUser = repository.getUser("adam@testCase");
+        User updatedUser = repository.getUser("adam@mail.dk");
 
-        assertThat(updatedUser.getMail()).isEqualTo("adam@testCase");
+        assertThat(updatedUser.getFirstName()).isEqualTo("Søren");
+    }
+
+    @Test
+    void shouldDeleteUser() throws Exception {
+        User user = repository.getUser("adam@mail.dk");
+
+        repository.deleteUser(user);
+
+        User deletedUser = repository.getUser("adam@mail.dk");
+
+        assertThat(deletedUser).isNull();
+
+
     }
 }
