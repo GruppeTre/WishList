@@ -145,6 +145,10 @@ header .button, .button-container-form input {
     max-width: 1300px
 }
 
+.wishlist-panel {
+    margin-left: 1.6em;
+}
+
 .wishlist {
     display: flex;
     justify-content: flex-start;
