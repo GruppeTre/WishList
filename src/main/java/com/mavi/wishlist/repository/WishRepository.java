@@ -36,7 +36,7 @@ public class WishRepository {
     }
 
     public Wish insertWish(Wish wish) {
-        String query = "INSERT IGNORE INTO wish (name, link, isReserved) VALUES (?, ?, ?)";
+        String query = "INSERT INTO wish (name, link, isReserved) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         try{

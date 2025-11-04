@@ -7,6 +7,8 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -76,7 +78,9 @@ public class UserService {
 
         user.setPassword(encoder.encode(rawPassword));
 
-        return userRepository.addUser(user);
+        String urlReference = getRandomString(12);
+
+        return userRepository.addUser(user, urlReference);
     }
 
     public User updateUser(User user){
@@ -133,5 +137,24 @@ public class UserService {
         user.setMail(user.getMail().trim());
         user.setFirstName(user.getFirstName().trim());
         user.setLastName(user.getLastName().trim());
+    }
+
+    private String getRandomString(int numBytes) {
+        byte[] bytes = generateRandomBytes(numBytes);
+
+        //convert byte array to string
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+
+        return sb.toString();
+    }
+
+    private byte[] generateRandomBytes(int numBytes) {
+        byte[] ref = new byte[numBytes];
+        new SecureRandom().nextBytes(ref);
+        return ref;
     }
 }

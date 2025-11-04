@@ -3,12 +3,13 @@ DROP DATABASE IF EXISTS wishlist_project;
     DEFAULT CHARACTER SET utf8mb4;
 USE wishlist_project;
 
-CREATE TABLE User (
+CREATE TABLE account (
 	id INT NOT NULL UNIQUE AUTO_INCREMENT,
     password VARCHAR(255) NOT NULL,
     mail VARCHAR(100) NOT NULL UNIQUE,
     firstName VARCHAR(50) NOT NULL,
     lastName VARCHAR(50) NOT NULL,
+    refString VARCHAR(24) NOT NULL,
     
     PRIMARY KEY(id)
 );
@@ -27,7 +28,7 @@ CREATE TABLE wishlist (
     wish_id INT NOT NULL UNIQUE,
     
     PRIMARY KEY(user_id, wish_id),
-    FOREIGN KEY(user_id) REFERENCES User(id)
+    FOREIGN KEY(user_id) REFERENCES account(id)
 		ON DELETE CASCADE,
 	FOREIGN KEY(wish_id) REFERENCES Wish(id)
 		ON DELETE CASCADE
@@ -38,7 +39,7 @@ CREATE TABLE reservation (
     wish_id INT NOT NULL UNIQUE,
 
     PRIMARY KEY(user_id, wish_id),
-    FOREIGN KEY(user_id) REFERENCES User(id)
+    FOREIGN KEY(user_id) REFERENCES account(id)
         ON DELETE CASCADE,
     FOREIGN KEY(wish_id) REFERENCES Wish(id)
         ON DELETE CASCADE
