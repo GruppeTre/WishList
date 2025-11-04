@@ -32,15 +32,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String addNewUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
+    public String addNewUser(HttpSession session, Model model, @ModelAttribute User newUser) {
 
         try{
             newUser = service.registerUser(newUser);
             session.setAttribute("user", newUser);
         } catch (InvalidFieldsException e) {
-            redirectAttributes.addFlashAttribute("error", true);
-            redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
-            return "redirect:/user/register";
+            model.addAttribute("error", true);
+            model.addAttribute("invalidField", e.getIncorrectField());
+            model.addAttribute("newUser", newUser);
+            return "registerPage";
         }
 
         return "redirect:/wishlist/view";
@@ -56,12 +57,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String postLogin(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User user){
+    public String postLogin(HttpSession session, Model model, @ModelAttribute User user){
 
         //if credentials are invalid, return to login-form
         if(!service.userLogin(user)) {
-            redirectAttributes.addFlashAttribute("error", true);
-            return "redirect:/user/login";
+            model.addAttribute("error", true);
+            model.addAttribute("userLogin", user);
+            return "loginPage";
         }
 
         //if credentials are valid, update user object with all fields including ID
@@ -109,6 +111,10 @@ public class UserController {
     @PostMapping("profile/delete")
     public String deleteUser(HttpSession session, @ModelAttribute User userToDelete) {
 
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
         userToDelete.setId(this.getUserIdFromSession(session));
 
         this.service.deleteUser(userToDelete);
@@ -120,6 +126,11 @@ public class UserController {
 
     @PostMapping("profile/logout")
     public String logout(HttpSession session){
+
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
         session.invalidate();
         return "redirect:/";
     }

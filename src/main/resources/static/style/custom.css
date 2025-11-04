@@ -64,6 +64,10 @@ header .button, .button-container-form input {
     margin-bottom: 0;
 }
 
+.button {
+    margin-right: 1em;
+}
+
 .button.button-primary, input[type="submit"].button-primary {
     background-color: var(--dark-blue);
     border-color: var(--dark-blue);
@@ -141,6 +145,10 @@ header .button, .button-container-form input {
     max-width: 1300px
 }
 
+.wishlist-panel {
+    margin-left: 1.6em;
+}
+
 .wishlist {
     display: flex;
     justify-content: flex-start;
@@ -191,6 +199,9 @@ header .button, .button-container-form input {
     background-color: var(--warning-red);
 }
 
+.button-container-form {
+    display: inline;
+}
 .wishlist-card .button, .wishlist-card button{
     background-color: var(--dark-blue);
     border-color: var(--dark-blue);
