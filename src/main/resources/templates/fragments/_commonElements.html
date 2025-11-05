@@ -46,9 +46,9 @@
 <!-- FOOTER -->
 <footer th:fragment="footer">
     <div class="footer-item">
-        <a class="footer link" href="#">Cookies |</a>
-        <a class="footer link" href="#">Brugervilkår |</a>
-        <a class="footer link" href="#">Om os</a>
+        <a class="footer-link" href="#" th:text="#{link.cookies} + ' |'"></a>
+        <a class="footer-link" href="#" th:text="#{link.terms} + ' |'"></a>
+        <a class="footer-link" href="#" th:text="#{link.about}"></a>
     </div>
     <p class="footer-item" id="business-info">
         OnlineØnsker ApS | Guldbergsgade 29, 2200 København N | CVR-Nummer 00000000
