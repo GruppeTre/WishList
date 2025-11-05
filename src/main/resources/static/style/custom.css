@@ -229,6 +229,11 @@ footer {
     margin: 0;
 }
 
-.footer-item a {
+.footer-link {
     color: var(--cream);
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: var(--green);
 }
