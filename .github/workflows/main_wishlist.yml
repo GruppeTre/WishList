@@ -4,10 +4,10 @@
 name: Build and deploy JAR app to Azure Web App - wishlist
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
@@ -26,6 +26,7 @@ jobs:
 
       - name: Build with Maven
         env:
+          SPRING_PROFILES_ACTIVE: prod
           PROD_DATABASE_URL: ${{secrets.PROD_DATABASE_URL}}
           PROD_USERNAME: ${{secrets.PROD_USERNAME}}
           PROD_PASSWORD: ${{secrets.PROD_PASSWORD}}

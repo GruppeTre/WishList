@@ -38,8 +38,9 @@ public class WishlistController {
     @GetMapping(value = {"/view", "/view/{listRef}"})
     public String getWishlist(@PathVariable(required = false) String listRef, Model model, HttpSession session){
 
+        //if user is not logged in, send them to login page along with a reference to the endpoint they were trying to visit
         if (!SessionUtils.isLoggedIn(session)) {
-            return "redirect:/";
+            return "redirect:/user/login?ref=" + listRef;
         }
 
         int sessionId = ((User)session.getAttribute("user")).getId();
