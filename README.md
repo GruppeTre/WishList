@@ -23,3 +23,6 @@ Kombineret:
 
 **Deployment**
 https://wishlist-hdf6cre8hucaadgr.swedencentral-01.azurewebsites.net/
+
+**Scrips**
+Findes i /docs mappen
