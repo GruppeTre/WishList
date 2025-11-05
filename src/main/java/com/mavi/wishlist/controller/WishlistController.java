@@ -27,6 +27,11 @@ public class WishlistController {
         this.userService = userService;
     }
 
+    /*
+    ==================================
+    ==         GET MAPPINGS         ==
+    ==================================
+     */
 
     //this method is served on requests to /wishlist/view & /wishlist/view/{userId}
     @GetMapping(value = {"/view", "/view/{listRef}"})
@@ -63,9 +68,11 @@ public class WishlistController {
         return "wishlist";
     }
 
+    //Adds a new wish to a wishlist
     @GetMapping("/add")
     public String getWishPage(Model model, HttpSession session) {
 
+        //Check if a  session is set
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -76,9 +83,11 @@ public class WishlistController {
         return "wishPage";
     }
 
+    //Edit form for wishes
     @GetMapping("/edit/{id}")
     public String getEditWishPage(@PathVariable int id, Model model, HttpSession session) {
 
+        //Checks if a session is set
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -92,13 +101,22 @@ public class WishlistController {
         return "editWishPage";
     }
 
+    /*
+    ==================================
+    ==        POST MAPPINGS         ==
+    ==================================
+    */
+
+    //Adds a new wish
     @PostMapping("/add")
     public String addWish(@ModelAttribute Wish newWish, RedirectAttributes redirectAttributes, HttpSession session){
 
+        //Checks if a session is set
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
+        //Checks if there are any invalid fields
         try{
             Integer userId = ((User) session.getAttribute("user")).getId();
             wishService.addWish(newWish, userId);
@@ -110,9 +128,11 @@ public class WishlistController {
         return "redirect:/wishlist/view";
     }
 
+    //Edits a wish
     @PostMapping("/edit")
     public String editWish(@ModelAttribute Wish editedWish, RedirectAttributes redirectAttributes, HttpSession session){
 
+        //Check if a session is set
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -120,6 +140,7 @@ public class WishlistController {
         editedWish.setId(((Wish) session.getAttribute("wish")).getId());
         session.removeAttribute("wish");
 
+        //Check for invalid fields
         try {
             wishService.editWish(editedWish);
         } catch (InvalidFieldsException e) {
@@ -130,8 +151,11 @@ public class WishlistController {
         return "redirect:/wishlist/view";
     }
 
+    //Deleles a wish
     @PostMapping("/edit/delete")
     public String deleteWish(@ModelAttribute Wish wishToDelete, HttpSession session) {
+
+        //Check if a session is set
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
@@ -142,9 +166,11 @@ public class WishlistController {
         return "redirect:/wishlist/view";
     }
 
+    //Toggles for reservations
     @PostMapping("/{ownerId}/toggleReserve/{wishId}")
     public String toggleWishReservation(@PathVariable int ownerId, @PathVariable int wishId, HttpSession session) {
 
+        //Check if a session is set
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }

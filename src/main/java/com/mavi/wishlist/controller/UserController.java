@@ -19,10 +19,18 @@ public class UserController {
         this.service = service;
     }
 
+    /*
+    ===================================
+    ==          GET MAPPINGS         ==
+    ===================================
+     */
+
+    //Gets user ID from session
     private Integer getUserIdFromSession(HttpSession session) {
         return ((User)session.getAttribute("user")).getId();
     }
 
+    //Shows the register form
     @GetMapping("/register")
     public String getRegisterForm(Model model) {
         User userToAdd = new User();
@@ -31,9 +39,42 @@ public class UserController {
         return "registerPage";
     }
 
+    //Shows login form
+    @GetMapping("/login")
+    public String getLogin(Model model){
+        User userLogin = new User();
+        model.addAttribute("userLogin", userLogin);
+
+        return "loginPage";
+    }
+
+    //Shows the profile page
+    @GetMapping("/profile")
+    public String showProfile(@RequestParam(required = false, defaultValue = "view") String viewMode, Model model, HttpSession session){
+
+        //If there is no session you get sent back to login
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        model.addAttribute("viewMode", viewMode);
+        return "profilePage";
+    }
+
+    /*
+    ===================================
+    ==         POST MAPPINGS         ==
+    ===================================
+     */
+
+
+    //Registers a new user
     @PostMapping("/register")
     public String addNewUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
 
+        //Check to see if all fields are filled correctly
         try{
             newUser = service.registerUser(newUser);
             session.setAttribute("user", newUser);
@@ -46,15 +87,7 @@ public class UserController {
         return "redirect:/wishlist/view";
     }
 
-
-    @GetMapping("/login")
-    public String getLogin(Model model){
-        User userLogin = new User();
-        model.addAttribute("userLogin", userLogin);
-
-        return "loginPage";
-    }
-
+    //Log the user in
     @PostMapping("/login")
     public String postLogin(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User user){
 
@@ -73,28 +106,18 @@ public class UserController {
         return "redirect:/wishlist/view";
     }
 
-    @GetMapping("/profile")
-    public String showProfile(@RequestParam(required = false, defaultValue = "view") String viewMode, Model model, HttpSession session){
-
-        if (!SessionUtils.isLoggedIn(session)) {
-            return "redirect:/";
-        }
-
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("user", user);
-        model.addAttribute("viewMode", viewMode);
-        return "profilePage";
-    }
-
+    //Updates a user profile
     @PostMapping("/profile/update")
     public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
 
+        //If there is no session, redirect to login form.
         if (!SessionUtils.isLoggedIn(session)) {
             return "redirect:/";
         }
 
         updatedUser.setId(this.getUserIdFromSession(session));
 
+        //Check that all fields are valid
         try{
             updatedUser = service.updateUser(updatedUser);
             session.setAttribute("user", updatedUser);
@@ -106,6 +129,7 @@ public class UserController {
         return "redirect:/user/profile";
     }
 
+    //Deletes the profile
     @PostMapping("profile/delete")
     public String deleteUser(HttpSession session, @ModelAttribute User userToDelete) {
 
@@ -118,6 +142,7 @@ public class UserController {
         return "redirect:/";
     }
 
+    //Logout
     @PostMapping("profile/logout")
     public String logout(HttpSession session){
         session.invalidate();

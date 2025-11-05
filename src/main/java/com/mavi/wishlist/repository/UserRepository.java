@@ -65,6 +65,7 @@ public class  UserRepository {
         }
     }
 
+    //Get wishlist reference string from user id
     public String getRefStringFromId(Integer id) {
         String query = "SELECT refString FROM account WHERE id = ?";
 
@@ -75,11 +76,13 @@ public class  UserRepository {
         }
     }
 
+    //Inserts a user in the database
     public User addUser(User user, String urlReference) {
 
         String query = "INSERT IGNORE INTO account (password, mail, firstname, lastName, refString) VALUES (?,?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
+        //Uses a prepared statement in lambda form
         try{
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -87,7 +90,7 @@ public class  UserRepository {
                 ps.setString(2, user.getMail());
                 ps.setString(3, user.getFirstName());
                 ps.setString(4, user.getLastName());
-                //Hex key insert
+                //12byte key insert
                 ps.setString(5, urlReference);
                 return ps;
             }, keyHolder);
@@ -95,6 +98,7 @@ public class  UserRepository {
             throw new RuntimeException(e);
         }
 
+        //Returns the keyholder for check
         if (keyHolder.getKey() == null) {
             throw new RuntimeException("Failed to obtain generated key for new user");
         }
@@ -104,15 +108,18 @@ public class  UserRepository {
         return user;
     }
 
+    //Updates user
     public User updateUser(User user) {
         String query = "UPDATE account SET firstname = ?, lastname = ? WHERE id = ?";
 
         int rowsAffected = jdbcTemplate.update(query, user.getFirstName(), user.getLastName(), user.getId());
 
+        //Check if more than 1 row was affected
         if(rowsAffected > 1){
             throw new RuntimeException("Multiple users with same ID found!");
         }
 
+        //Check if no row was affected
         if(rowsAffected == 0){
             return null;
         }
@@ -120,11 +127,13 @@ public class  UserRepository {
         return user;
     }
 
+    //Deletes user
     public User deleteUser(User user) {
         String query = "DELETE FROM account WHERE id = ?";
 
         int rowsAffected = jdbcTemplate.update(query, user.getId());
 
+        //Checks if no rows was affected
         if (rowsAffected == 0) {
             return null;
         }
