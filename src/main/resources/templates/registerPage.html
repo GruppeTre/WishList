@@ -47,7 +47,7 @@
 
         <div class="row">
             <label for="confirm-password" class="form-label" th:text="#{form.user.label.password.repeat}"></label>
-            <input id="confirm-password" type="password" th:placeholder="#{form.user.label.password.repeat}" required onchange="onChange()">
+            <input id="confirm-password" type="password" th:placeholder="#{form.user.label.password.repeat}" required th:title="#{form.warning.empty}" onchange="onChange()">
         </div>
 
         <!-- BUTTONS -->
