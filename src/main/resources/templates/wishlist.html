@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:if="${session.user.id != ownerId}" th:text="${ownerName} + '\'s Wish List'"></title>
+    <title th:if="${session.user.id != ownerId}" th:text="${ownerName} + '\s Wish List'"></title>
     <title th:if="${session.user.id == ownerId}" th:text="#{title.wishlist.owner}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
