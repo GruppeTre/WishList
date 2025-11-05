@@ -42,9 +42,14 @@ public class UserController {
 
     //Shows login form
     @GetMapping("/login")
-    public String getLogin(Model model){
+    public String getLogin(HttpSession session, Model model, @RequestParam(required = false, defaultValue = "") String ref){
         User userLogin = new User();
         model.addAttribute("userLogin", userLogin);
+
+        //if ref value is given, temporarily store it in session
+        if (!ref.isBlank()) {
+            session.setAttribute("ref", ref);
+        }
 
         return "loginPage";
     }
@@ -108,7 +113,21 @@ public class UserController {
         //add user to session
         session.setAttribute("user", user);
 
-        return "redirect:/wishlist/view";
+        //set up redirect String
+        String redirect = "redirect:/wishlist/view";
+
+        //get ref attribute from session (created in getLogin method)
+        String ref = (String)session.getAttribute("ref");
+
+        //if attribute contains a ref, concatenate it to redirect String
+        if (ref != null) {
+            redirect = redirect.concat("/" + ref);
+        }
+
+        //remove ref attribute as it is no longer needed
+        session.removeAttribute("ref");
+
+        return redirect;
     }
 
     //Updates a user profile
