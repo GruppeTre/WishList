@@ -58,7 +58,7 @@
             </div>
         </div>
         <!--Text to be copied to clipboard -->
-        <input th:value="'https://localhost:8080/wishlist/view/' + ${listRef}" type="text" id="listLink" hidden="hidden">
+        <input th:value="(${@environment.getActiveProfiles()[0] == 'dev'} ? 'localhost:8080/wishlist/view/' : 'https://wishlist-hdf6cre8hucaadgr.swedencentral-01.azurewebsites.net/wishlist/view/') + ${listRef}" type="text" id="listLink" hidden="hidden">
     </div>
 </main>
 <script>
