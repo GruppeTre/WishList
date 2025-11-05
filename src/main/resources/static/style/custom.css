@@ -146,7 +146,7 @@ header .button, .button-container-form input {
 }
 
 .wishlist-panel {
-    margin-left: 1.6em;
+    margin-left: 1.8rem;
 }
 
 .wishlist {
@@ -155,6 +155,10 @@ header .button, .button-container-form input {
     align-items: flex-start;
     flex-wrap: wrap;
     margin: 0;
+}
+
+#empty-list-warning {
+    margin-left: 1.8rem;
 }
 
 .wishlist-card {

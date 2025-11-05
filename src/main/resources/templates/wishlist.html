@@ -26,7 +26,7 @@
 
     <div class="wishlist">
 
-        <h3 th:if="${wishes.isEmpty()}" th:text="#{wishlist.header.empty}"></h3>
+        <h3 id="empty-list-warning" th:if="${wishes.isEmpty()}" th:text="#{wishlist.header.empty}"></h3>
 
         <div class="wishlist-card" th:each="wish : ${wishes}">
 
