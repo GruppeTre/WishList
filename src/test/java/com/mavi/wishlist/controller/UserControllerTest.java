@@ -1,7 +1,6 @@
 package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.model.User;
-import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
 import org.junit.jupiter.api.BeforeEach;

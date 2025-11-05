@@ -19,10 +19,12 @@ public class UserService {
         this.encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
 
+    //Logs in a user
     public boolean userLogin(User userToCheck){
 
         User user = this.getUserByMail(userToCheck.getMail());
 
+        //Checks if user exist
         if (user == null) {
             return false;
         }
@@ -30,6 +32,7 @@ public class UserService {
         return encoder.matches(userToCheck.getPassword(), user.getPassword());
     }
 
+    //Checks user by email
     public User getUserByMail(String mail) {
 
         try{
@@ -41,6 +44,7 @@ public class UserService {
         }
     }
 
+    //Gets user by id
     public User getUserById(int id){
 
         try {
@@ -54,18 +58,22 @@ public class UserService {
         }
     }
 
+    //Gets owner of wishlist id from refString
     public Integer getOwnerIdFromRefString(String refString) {
         return this.userRepository.getUserIdFromRefString(refString);
     }
 
+    //Gets refString from user id
     public String getRefStringFromId(Integer id) {
         return this.userRepository.getRefStringFromId(id);
     }
 
+    //Cchecks if mail is taken
     public boolean mailIsTaken(String mail) {
         return getUserByMail(mail) != null;
     }
 
+    //Registers a user
     public User registerUser(User user) {
 
         //trim fields for leading and trailing whitespaces
@@ -90,6 +98,7 @@ public class UserService {
         return userRepository.addUser(user, urlReference);
     }
 
+    //Updates a user
     public User updateUser(User user){
 
         //trim fields for leading and trailing whitespaces
@@ -139,6 +148,7 @@ public class UserService {
         return false;
     }
 
+    //Trims fields of blank spaces
     private void trimFields(User user) {
 
         user.setMail(user.getMail().trim());
@@ -146,6 +156,7 @@ public class UserService {
         user.setLastName(user.getLastName().trim());
     }
 
+    //Get a string of random bytes for wishlist string
     private String getRandomString(int numBytes) {
         byte[] bytes = generateRandomBytes(numBytes);
 
@@ -159,6 +170,7 @@ public class UserService {
         return sb.toString();
     }
 
+    //Generates a random byte string for wishlist refString
     private byte[] generateRandomBytes(int numBytes) {
         byte[] ref = new byte[numBytes];
         new SecureRandom().nextBytes(ref);

@@ -1,12 +1,10 @@
 package com.mavi.wishlist.service;
 
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
-import com.mavi.wishlist.exceptions.PageNotFoundException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
