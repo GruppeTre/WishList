@@ -1,5 +1,7 @@
 package com.mavi.wishlist.service;
 
+import com.mavi.wishlist.exceptions.InvalidFieldsException;
+import com.mavi.wishlist.exceptions.PageNotFoundException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +31,7 @@ class UserServiceTest {
     private User logInUser;
     private User registerUser;
     private User dbUser;
+    private String urlReference;
 
     @BeforeEach
     void setUp() {
@@ -41,6 +44,8 @@ class UserServiceTest {
         logInUser = new User();
         logInUser.setMail(mail);
         logInUser.setPassword(password);
+
+        urlReference = "211af7b48ba069e2c44d4358";
 
         registerUser = new User();
         registerUser.setMail(mail);
@@ -85,13 +90,10 @@ class UserServiceTest {
     //Register tests
     @Test
     void registerUserShouldHashPassword() {
-        when(repository.addUser(registerUser)).thenReturn(dbUser);
+        when(repository.addUser(registerUser, urlReference)).thenReturn(dbUser);
 
         String oldPassword = registerUser.getPassword();
         this.userService.registerUser(registerUser);
-
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-        verify(repository).addUser(captor.capture());
 
         assertTrue(encoder.matches(oldPassword, registerUser.getPassword()));
     }
@@ -105,38 +107,38 @@ class UserServiceTest {
 
     @Test
     void registerUserShouldRejectUserWithEmptyMail() {
-        when(repository.addUser(registerUser)).thenReturn(dbUser);
+        when(repository.addUser(registerUser, urlReference)).thenReturn(dbUser);
 
         registerUser.setMail("");
 
-        assertNull(this.userService.registerUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.registerUser(registerUser));
     }
 
     @Test
     void registerUserShouldRejectUserWithEmptyFirstName() {
-        when(repository.addUser(registerUser)).thenReturn(dbUser);
+        when(repository.addUser(registerUser, urlReference)).thenReturn(dbUser);
 
         registerUser.setFirstName("");
 
-        assertNull(this.userService.registerUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.registerUser(registerUser));
     }
 
     @Test
     void registerUserShouldRejectUserWithEmptyLastName() {
-        when(repository.addUser(registerUser)).thenReturn(dbUser);
+        when(repository.addUser(registerUser, urlReference)).thenReturn(dbUser);
 
         registerUser.setLastName("");
 
-        assertNull(this.userService.registerUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.registerUser(registerUser));
     }
 
     @Test
     void registerUserShouldRejectUserWithEmptyPassword() {
-        when(repository.addUser(registerUser)).thenReturn(dbUser);
+        when(repository.addUser(registerUser, urlReference)).thenReturn(dbUser);
 
         registerUser.setPassword("");
 
-        assertNull(this.userService.registerUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.registerUser(registerUser));
     }
 
     //update tests
@@ -147,7 +149,7 @@ class UserServiceTest {
 
         registerUser.setMail(" ");
 
-        assertNull(this.userService.updateUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.updateUser(registerUser));
     }
 
     @Test
@@ -156,7 +158,7 @@ class UserServiceTest {
 
         registerUser.setFirstName(" ");
 
-        assertNull(this.userService.updateUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.updateUser(registerUser));
     }
 
     @Test
@@ -165,7 +167,7 @@ class UserServiceTest {
 
         registerUser.setLastName(" ");
 
-        assertNull(this.userService.updateUser(registerUser));
+        assertThrows(InvalidFieldsException.class, () -> this.userService.updateUser(registerUser));
     }
 
 }

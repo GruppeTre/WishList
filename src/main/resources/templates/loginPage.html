@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Log In</title>
+    <title th:text="#{title.login}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
@@ -13,25 +13,31 @@
 <main class="container wishlist-form">
 
     <form th:object="${userLogin}" th:action="@{/user/login}" method="post">
+
         <div>
-            <h2>Log In</h2>
+            <h2 th:text="#{login.header}"></h2>
+        </div>
+
+        <!-- Error messages -->
+        <div th:if="${error}" class="form-error-container">
+            <label th:text="#{form.error.wrongCredentials}"></label>
         </div>
 
         <!-- INPUTS -->
         <div class="row">
-            <label for="email">Email:</label>
-            <input id="email" type="email" th:field="*{mail}" placeholder="email">
+            <label for="email" th:text="#{form.user.label.mail}"></label>
+            <input id="email" type="email" th:field="*{mail}" th:placeholder="#{form.user.placeholder.mail}">
         </div>
 
         <div class="row">
-            <label for="password">Password</label>
-            <input id="password" type="password" th:field="*{password}" placeholder="password" minlength="4">
+            <label for="password" th:text="#{form.user.label.password}"></label>
+            <input id="password" type="password" th:field="*{password}" minlength="4" th:placeholder="#{form.user.placeholder.password}">
         </div>
 
         <!-- BUTTONS -->
         <div class="row">
-            <a class="button" href="/">Back</a>
-            <button type="submit">Submit</button>
+            <a class="button" href="/" th:text="#{form.button.back}"></a>
+            <button class="button" type="submit" th:text="#{form.button.submit}"></button>
         </div>
     </form>
 </main>

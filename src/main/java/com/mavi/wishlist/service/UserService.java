@@ -1,10 +1,13 @@
 package com.mavi.wishlist.service;
 
+import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.repository.UserRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 @Service
 public class UserService {
@@ -38,35 +41,63 @@ public class UserService {
         }
     }
 
+    public User getUserById(int id){
+
+        try {
+
+            return this.userRepository.getUserById(id);
+
+        } catch (IncorrectResultSizeDataAccessException e) {
+
+            throw new RuntimeException("Multiple users found with id: " + id);
+
+        }
+    }
+
+    public Integer getOwnerIdFromRefString(String refString) {
+        return this.userRepository.getUserIdFromRefString(refString);
+    }
+
+    public String getRefStringFromId(Integer id) {
+        return this.userRepository.getRefStringFromId(id);
+    }
+
     public boolean mailIsTaken(String mail) {
         return getUserByMail(mail) != null;
     }
 
     public User registerUser(User user) {
 
-        //trim mail for leading and trailing whitespaces
-        user.setMail(user.getMail().trim());
+        //trim fields for leading and trailing whitespaces
+        trimFields(user);
+
+        //check if mail already exists
+        if (mailIsTaken(user.getMail())) {
+            throw new InvalidFieldsException("User with that mail already exists", "mail");
+        }
 
         //check for validity (no empty fields)
-        if (userHasInvalidFields(user) || mailIsTaken(user.getMail())) {
-            return null;
+        if (userHasInvalidFields(user)) {
+            throw new InvalidFieldsException("Invalid fields in User", "names");
         }
 
         String rawPassword = user.getPassword();
 
         user.setPassword(encoder.encode(rawPassword));
 
-        return userRepository.addUser(user);
+        String urlReference = getRandomString(12);
+
+        return userRepository.addUser(user, urlReference);
     }
 
     public User updateUser(User user){
 
-        //trim mail for leading and trailing whitespaces
-        user.setMail(user.getMail().trim());
+        //trim fields for leading and trailing whitespaces
+        trimFields(user);
 
         //check for validity (no empty fields)
         if (userHasInvalidFields(user)) {
-            return null;
+            throw new InvalidFieldsException("Invalid fields in User", "names");
         }
         return userRepository.updateUser(user);
     }
@@ -78,7 +109,7 @@ public class UserService {
     //collection of guard clauses to run before adding new user to database
     private boolean userHasInvalidFields(User user) {
 
-        int passwordMinLength = 4;
+        int passwordMinLength = 8;
 
         boolean mailIsBlank = user.getMail().isBlank();
         if (mailIsBlank) {
@@ -106,5 +137,31 @@ public class UserService {
         }
 
         return false;
+    }
+
+    private void trimFields(User user) {
+
+        user.setMail(user.getMail().trim());
+        user.setFirstName(user.getFirstName().trim());
+        user.setLastName(user.getLastName().trim());
+    }
+
+    private String getRandomString(int numBytes) {
+        byte[] bytes = generateRandomBytes(numBytes);
+
+        //convert byte array to string
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+
+        return sb.toString();
+    }
+
+    private byte[] generateRandomBytes(int numBytes) {
+        byte[] ref = new byte[numBytes];
+        new SecureRandom().nextBytes(ref);
+        return ref;
     }
 }

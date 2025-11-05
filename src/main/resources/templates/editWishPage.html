@@ -2,10 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Wish</title>
+    <title th:text="#{editWish.header}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
+    <script th:src="@{/js/deleteWarning.js}" async></script>
 </head>
 <body>
 <header th:replace="~{fragments/_commonElements :: header}"></header>
@@ -14,30 +15,37 @@
     <form th:action="@{/wishlist/edit}" th:object="${wish}" method="post">
 
         <div>
-            <h2>Edit Wish</h2>
+            <h2 th:text="#{editWish.header}"></h2>
         </div>
+
+        <!-- Error messages -->
+        <div th:if="${error}" class="form-error-container">
+            <label th:if="${invalidField == 'link'}" th:text="#{form.error.link}"></label>
+            <label th:if="${invalidField == 'description'}" th:text="#{form.error.description.blank}"></label>
+        </div>
+
 
         <!-- INPUTS -->
         <div class="row">
-            <label for="name">Description:</label>
-            <input type="text" id="name" th:field="*{name}" th:value="*{name}"/>
+            <label for="name" th:text="#{form.wish.label.description}"></label>
+            <input type="text" id="name" th:field="*{name}" th:value="*{name}" maxlength="70" required pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <div class="row">
-            <label for="link">Link:</label>
-            <input type="text" id="link" th:field="*{link}" th:value="*{link}"/>
+            <label for="link" th:text="#{form.wish.label.link}"></label>
+            <input type="text" id="link" th:field="*{link}" th:value="*{link}" required pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <!-- BUTTONS -->
 
         <div class="row">
-            <a class="button" href="/wishlist/">Back</a>
-            <button type="submit">Save</button>
+            <a class="button" href="/wishlist/view" th:text="#{form.button.back}"></a>
+            <button class="button" type="submit" th:text="#{form.button.save}"></button>
         </div>
     </form>
     <!-- DELETE BUTTON -->
-    <form onsubmit="return confirm('Do you want to permanently delete this wish?');" th:action="@{/wishlist/edit/delete}" method="post" th:object="${wish}">
-        <button id="delete-button" type="submit">Delete Wish</button>
+    <form class="button-container-form" onsubmit="return confirm(deleteWarning);" th:action="@{/wishlist/edit/delete}" method="post" th:object="${wish}">
+        <button class="button" id="delete-button" type="submit" th:text="#{form.button.delete.wish}"></button>
     </form>
 </main>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>

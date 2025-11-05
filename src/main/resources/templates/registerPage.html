@@ -2,10 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title th:text="#{title.register}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
     <link rel="stylesheet" th:href="@{/style/custom.css}">
+    <script th:src="@{/js/passwordConfirmation.js}" async></script>
 </head>
 
 <body>
@@ -14,34 +15,45 @@
 
     <form action="#" th:object="${newUser}" th:action="@{/user/register}" method="post">
         <div>
-            <h2>Register</h2>
+            <h2 th:text="#{register.header}"></h2>
+        </div>
+
+        <!-- Error messages -->
+        <div th:if="${error}" class="form-error-container">
+            <label th:if="${invalidField == 'mail'}" th:text="#{form.error.duplicateMail}"></label>
+            <label th:if="${invalidField == 'names'}" th:text="#{form.error.blankName}"></label>
         </div>
 
         <!-- INPUTS -->
         <div class="row">
-            <label for="email" class="form-label">Email</label>
-            <input id="email" type="email" th:field="*{mail}" placeholder="Email" required>
+            <label for="email" class="form-label" th:text="#{form.user.label.mail}"></label>
+            <input id="email" type="email" th:field="*{mail}" th:placeholder="#{form.user.label.mail}" required pattern=".*\S.*" th:title="#{form.warning.empty}">
         </div>
 
         <div class="row">
-            <label for="first-name" class="form-label">First Name</label>
-            <input id="first-name" type="text" th:field="*{firstName}" placeholder="First Name" maxlength="50" required pattern="\S(.*\S)?" title="This field cannot be empty">
+            <label for="first-name" class="form-label" th:text="#{form.user.label.firstName}"></label>
+            <input id="first-name" type="text" th:field="*{firstName}" th:placeholder="#{form.user.label.firstName}" maxlength="50" required pattern=".*\S.*" th:title="#{form.warning.empty}">
         </div>
 
         <div class="row">
-            <label for="last-name" class="form-label">Last Name</label>
-            <input id="last-name" type="text" th:field="*{lastName}" placeholder="Last Name" maxlength="50" required pattern="\S(.*\S)?" title="This field cannot be empty">
+            <label for="last-name" class="form-label" th:text="#{form.user.label.lastName}"></label>
+            <input id="last-name" type="text" th:field="*{lastName}" th:placeholder="#{form.user.label.lastName}" maxlength="50" required pattern=".*\S.*" th:title="#{form.warning.empty}">
         </div>
 
         <div class="row">
-            <label for="password" class="form-label">Password (8 character minimum)</label>
-            <input id="password" type="password" th:field="*{password}" placeholder="Password" required minlength="8" maxlength="20">
+            <label for="password" class="form-label" th:text="#{form.user.label.password.withMinimum}"></label>
+            <input id="password" type="password" th:field="*{password}" th:placeholder="#{form.user.label.password}" required minlength="8" maxlength="20" th:title="#{form.warning.empty}" onchange="onChange()">
+        </div>
+
+        <div class="row">
+            <label for="confirm-password" class="form-label" th:text="#{form.user.label.password.repeat}"></label>
+            <input id="confirm-password" type="password" th:placeholder="#{form.user.label.password.repeat}" required th:title="#{form.warning.empty}" onchange="onChange()">
         </div>
 
         <!-- BUTTONS -->
         <div class="row">
-            <a class="button" href="/">Back</a>
-            <button type="submit">Submit</button>
+            <a class="button" href="/" th:text="#{form.button.back}"></a>
+            <button class="button" type="submit" th:text="#{form.button.submit}"></button>
         </div>
     </form>
 </main>

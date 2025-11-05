@@ -5,10 +5,8 @@ import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
-import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +63,7 @@ class WishlistControllerTest {
     void shouldShowNewWishPage() throws Exception {
 
         //Mocks the static isLoggedIn method in SessionUtils as true.
-        try (MockedStatic<SessionUtils> mockedStatic = Mockito.mockStatic(SessionUtils.class)) {
+        MockedStatic<SessionUtils> mockedStatic = Mockito.mockStatic(SessionUtils.class);
             mockedStatic.when(() -> SessionUtils.isLoggedIn(session))
                     .thenReturn(true);
 
@@ -74,7 +72,8 @@ class WishlistControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(view().name("wishPage"))
                     .andExpect(model().attribute("wish", instanceOf(Wish.class)));
-        }
+
+        mockedStatic.close();
     }
     /*
     ===========================================
@@ -88,19 +87,18 @@ class WishlistControllerTest {
         Mockito.when(session.getAttribute("user")).thenReturn(user);
 
         //Mocks the static isLoggedIn method in SessionUtils as true.
-        try (MockedStatic<SessionUtils> mockedStatic = Mockito.mockStatic(SessionUtils.class)) {
+        MockedStatic<SessionUtils> mockedStatic = Mockito.mockStatic(SessionUtils.class);
             mockedStatic.when(() -> SessionUtils.isLoggedIn(session))
                     .thenReturn(true);
 
             Integer userId = user.getId();
 
-            Mockito.when(service.isInvalid(newWish)).thenReturn(true);
             Mockito.when(service.addWish(newWish, userId)).thenReturn(newWish);
 
             mvc.perform(post("/wishlist/add").session(session))
                     .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/wishlist/"))
+                    .andExpect(redirectedUrl("/wishlist/view"))
                     .andExpect(flash().attributeCount(0));
-        }
+        mockedStatic.close();
     }
 }

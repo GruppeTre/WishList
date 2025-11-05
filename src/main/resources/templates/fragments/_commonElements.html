@@ -4,25 +4,29 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-
 <body>
+
+<!--HEADER -->
 <header th:fragment="header" class="u-full-width">
-    <a th:href="${session == null or session.get('user') == null} ? '/' : '/wishlist/'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
+    <a th:href="${session == null or session.get('user') == null} ? '/' : '/wishlist/view'"><h1 class="header-title"><strong>WISHLIST</strong></h1></a>
     <div class="header-buttons">
-        <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/register">Register</a>
-        <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/login">Login</a>
+        <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/register" th:text="#{header.button.register}"></a>
+        <a class="button button-primary" th:if="${session == null or session.get('user') == null}" href="/user/login" th:text="#{header.button.login}"></a>
         <div id="profile_dropdown" th:if="${session != null and session.get('user') != null}">
             <div class="inline">
-                <a class="button button-primary" href="#">Profile</a>
+                <a class="button button-primary" href="#" th:text="#{header.button.profile}"></a>
             </div>
             <div id="show_dropdown">
                 <ul>
                     <li>
-                        <a class="button button-primary" th:href="@{/user/profile}">Details</a>
+                        <a class="button button-primary" th:href="@{/user/profile}" th:text="#{header.button.details}"></a>
+                    </li>
+                    <li>
+                        <a class="button button-primary" th:href="@{/wishlist/view/{id}(id=${session.user.id})}" th:text="#{header.button.wishlist}"></a>
                     </li>
                     <li>
                         <form class="button-container-form" th:action="@{/user/profile/logout}" method="post">
-                            <input class="button-primary" type="submit" value="Log Out">
+                            <input class="button-primary" type="submit" th:value="#{header.button.logout}">
                         </form>
                     </li>
                 </ul>
@@ -31,8 +35,24 @@
     </div>
 </header>
 
-<footer th:fragment="footer">
+<!--ERROR BOX -->
+<dialog id="error-box" th:fragment="errorBox(message)" open>
+    <form>
+        <p th:text="${message}"></p>
+        <button>OK</button>
+    </form>
+</dialog>
 
+<!-- FOOTER -->
+<footer th:fragment="footer">
+    <div class="footer-item">
+        <a class="footer-link" href="#" th:text="#{link.cookies} + ' |'"></a>
+        <a class="footer-link" href="#" th:text="#{link.terms} + ' |'"></a>
+        <a class="footer-link" href="#" th:text="#{link.about}"></a>
+    </div>
+    <p class="footer-item" id="business-info">
+        OnlineØnsker ApS | Guldbergsgade 29, 2200 København N | CVR-Nummer 00000000
+    </p>
 </footer>
 
 </body>

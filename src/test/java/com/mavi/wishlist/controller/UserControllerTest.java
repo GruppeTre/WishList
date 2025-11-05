@@ -1,6 +1,7 @@
 package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.model.User;
+import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.hamcrest.Matchers.instanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -77,7 +80,7 @@ class UserControllerTest {
                 //Checks that it redirects
                 .andExpect(status().is3xxRedirection())
                 //Checks that the redirected url is /wishlist
-                .andExpect(redirectedUrl("/wishlist/"))
+                .andExpect(redirectedUrl("/wishlist/view"))
                 //Checks that no attributes are left behind
                 .andExpect(flash().attributeCount(0))
                 //Checks that it sets a new session
@@ -95,12 +98,9 @@ class UserControllerTest {
                         //Sets the parameters of mail and passwordHash
                         .param("mail", wrongMail)
                         .param("passwordHash", wrongPassword))
-                //Checks that it redirects
-                .andExpect(status().is3xxRedirection())
-                //Checks that the redirected url is /user/login
-                .andExpect(redirectedUrl("/user/login"))
-                //Checks that one attributes are left behind
-                .andExpect(flash().attributeCount(1))
-                .andExpect(flash().attributeExists("badCredentials"));
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("loginPage"))
+                .andExpect(model().attribute("error", true))
+                .andExpect(model().attribute("userLogin", instanceOf(User.class)));
     }
 }

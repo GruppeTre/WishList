@@ -33,4 +33,5 @@ public class Wish {
     public void setLink(String link) {
         this.link = link;
     }
+
 }

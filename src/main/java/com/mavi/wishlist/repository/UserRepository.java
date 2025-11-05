@@ -1,6 +1,8 @@
 package com.mavi.wishlist.repository;
 
+import ch.qos.logback.core.joran.conditional.IfAction;
 import com.mavi.wishlist.model.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -33,17 +35,49 @@ public class  UserRepository {
 
     //Get user object by mail
     public User getUser(String mail){
-        String checkUser = "SELECT * FROM User WHERE mail = ?";
+        String query = "SELECT * FROM account WHERE mail = ?";
 
         try{
-            return jdbcTemplate.queryForObject(checkUser, userRowMapper, mail);
+            return jdbcTemplate.queryForObject(query, userRowMapper, mail);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    public User addUser(User user) {
-        String query = "INSERT IGNORE INTO User (password, mail, firstname, lastName) VALUES (?,?,?,?)";
+    //Get user object by id
+    public User getUserById(int id){
+        String query = "SELECT * FROM account WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(query, userRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    //get user from given refString
+    public Integer getUserIdFromRefString(String refString) {
+        String query = "SELECT id FROM account WHERE refString = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(query, Integer.class, refString);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public String getRefStringFromId(Integer id) {
+        String query = "SELECT refString FROM account WHERE id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(query, String.class, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public User addUser(User user, String urlReference) {
+
+        String query = "INSERT IGNORE INTO account (password, mail, firstname, lastName, refString) VALUES (?,?,?,?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         try{
@@ -53,6 +87,8 @@ public class  UserRepository {
                 ps.setString(2, user.getMail());
                 ps.setString(3, user.getFirstName());
                 ps.setString(4, user.getLastName());
+                //Hex key insert
+                ps.setString(5, urlReference);
                 return ps;
             }, keyHolder);
         } catch (Exception e) {
@@ -69,7 +105,7 @@ public class  UserRepository {
     }
 
     public User updateUser(User user) {
-        String query = "UPDATE User SET firstname = ?, lastname = ? WHERE id = ?";
+        String query = "UPDATE account SET firstname = ?, lastname = ? WHERE id = ?";
 
         int rowsAffected = jdbcTemplate.update(query, user.getFirstName(), user.getLastName(), user.getId());
 
@@ -84,16 +120,16 @@ public class  UserRepository {
         return user;
     }
 
-    public User deleteUser(User userToDelete) {
-        String query = "DELETE FROM User WHERE id = ?";
+    public User deleteUser(User user) {
+        String query = "DELETE FROM account WHERE id = ?";
 
-        int rowsAffected = jdbcTemplate.update(query, userToDelete.getId());
+        int rowsAffected = jdbcTemplate.update(query, user.getId());
 
         if (rowsAffected == 0) {
             return null;
         }
 
-        return userToDelete;
+        return user;
     }
 
 }
