@@ -1,6 +1,5 @@
 package com.mavi.wishlist.repository;
 
-import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.Wish;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

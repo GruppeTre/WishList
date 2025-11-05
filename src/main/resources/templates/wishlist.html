@@ -58,9 +58,32 @@
             </div>
         </div>
         <!--Text to be copied to clipboard -->
+        <label for="listLink"></label>
         <input th:value="'http://localhost:8080/wishlist/view/' + ${listRef}" type="text" id="listLink" hidden="hidden">
     </div>
 </main>
+<script>
+    function copyUrl() {
+        // Get the text field
+        let copyText = document.getElementById("listLink");
+
+        // Select the text field
+        copyText.select();
+
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+
+        let alertText = "";
+        if(navigator.language.includes("da")) {
+            alertText = "Link kopieret: "
+        } else{
+            alertText = "Copied to clipboard: "
+        }
+
+        // Alert the copxied text
+        alert(alertText + copyText.value);
+    }
+</script>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>
 </body>
 </html>
