@@ -4,8 +4,10 @@ import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.model.Wish;
+import com.mavi.wishlist.repository.WishRepository;
 import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,12 +60,15 @@ public class WishlistController {
         List<Integer> reservationsByUser = wishService.getReservationListByUserId(sessionId);
         listRef = userService.getRefStringFromId(ownerId);
 
+        List<Integer> reservedWishes = wishService.getReservedWishes(ownerId);
+
         model.addAttribute("listRef", listRef);
         model.addAttribute("ownerName", userService.getUserById(ownerId).getFirstName());
         model.addAttribute("ownerId", ownerId);
         model.addAttribute("wishes", wishes);
         model.addAttribute("reservationsByUser", reservationsByUser);
         model.addAttribute("user", session.getAttribute("user"));
+        model.addAttribute("reservedWishes", reservedWishes);
 
         return "wishlist";
     }
@@ -109,7 +114,7 @@ public class WishlistController {
 
     //Adds a new wish
     @PostMapping("/add")
-    public String addWish(@ModelAttribute Wish newWish, RedirectAttributes redirectAttributes, HttpSession session){
+    public String addWish(@ModelAttribute Wish newWish, Model model, HttpSession session, HttpServletResponse response){
 
         //Checks if a session is set
         if (!SessionUtils.isLoggedIn(session)) {
@@ -121,8 +126,11 @@ public class WishlistController {
             Integer userId = ((User) session.getAttribute("user")).getId();
             wishService.addWish(newWish, userId);
         } catch (InvalidFieldsException e) {
-            redirectAttributes.addFlashAttribute("error", true);
-            return "redirect:/wishlist/add";
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            model.addAttribute("error", true);
+            model.addAttribute("invalidField", e.getIncorrectField());
+            model.addAttribute("wish", newWish);
+            return "wishPage";
         }
 
         return "redirect:/wishlist/view";
@@ -130,7 +138,7 @@ public class WishlistController {
 
     //Edits a wish
     @PostMapping("/edit")
-    public String editWish(@ModelAttribute Wish editedWish, RedirectAttributes redirectAttributes, HttpSession session){
+    public String editWish(@ModelAttribute Wish editedWish, RedirectAttributes redirectAttributes, HttpSession session, HttpServletResponse response){
 
         //Check if a session is set
         if (!SessionUtils.isLoggedIn(session)) {
@@ -144,7 +152,9 @@ public class WishlistController {
         try {
             wishService.editWish(editedWish);
         } catch (InvalidFieldsException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
             return "redirect:/wishlist/edit/" + editedWish.getId();
         }
 
@@ -181,8 +191,15 @@ public class WishlistController {
         //get id of current user
         int userId = ((User) session.getAttribute("user")).getId();
 
-        wishService.toggleWishReservation(wishToReserve, userId);
+        if(wishService.isReserved(wishToReserve)) {
+            wishService.unreserveWish(wishToReserve);
+        }
+        else {
+            wishService.reserveWish(wishToReserve, userId);
+        }
 
-        return "redirect:/wishlist/view/" + ownerId;
+        String redirectRef = this.userService.getRefStringFromId(ownerId);
+
+        return "redirect:/wishlist/view/" + redirectRef;
     }
 }

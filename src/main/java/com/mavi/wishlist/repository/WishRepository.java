@@ -19,7 +19,6 @@ public class WishRepository {
         wish.setId(rs.getInt("id"));
         wish.setName(rs.getString("name"));
         wish.setLink(rs.getString("link"));
-        wish.setReserved(rs.getBoolean("isReserved"));
         return wish;
     };
 
@@ -39,7 +38,7 @@ public class WishRepository {
 
     //Inserts wish into database
     public Wish insertWish(Wish wish) {
-        String query = "INSERT INTO wish (name, link, isReserved) VALUES (?, ?, ?)";
+        String query = "INSERT IGNORE INTO wish (name, link) VALUES (?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         //Uses a prepared statement and maps ids for keyholder
@@ -48,7 +47,6 @@ public class WishRepository {
                 PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, wish.getName());
                 ps.setString(2, wish.getLink());
-                ps.setBoolean(3, wish.isReserved());
                 return ps;
             }, keyHolder);
         } catch (Exception e) {
@@ -95,7 +93,7 @@ public class WishRepository {
 
     //Gets wishlist by user id
     public List<Wish> getWishlistByUser(int userId) {
-        String query = "SELECT w.id, w.name, w.link, w.isReserved FROM Wish w JOIN wishlist wl ON w.id = wl.wish_id WHERE wl.user_id = ?";
+        String query = "SELECT w.id, w.name, w.link FROM Wish w JOIN wishlist wl ON w.id = wl.wish_id WHERE wl.user_id = ?";
 
         return jdbcTemplate.query(query, rowMapper, userId);
     }
@@ -107,11 +105,30 @@ public class WishRepository {
         return jdbcTemplate.queryForList(query, Integer.class, userId);
     }
 
+    public boolean isReserved(Wish wish) {
+        String query = "SELECT COUNT(wish_id) FROM reservation WHERE wish_id = ?";
+        Integer count = jdbcTemplate.queryForObject(query, Integer.class, wish.getId());
+        return count != null && count > 0;
+    }
+
+    public List<Integer> getReservedWishes(int userId) {
+        String query = """
+                        SELECT r.wish_id
+                        FROM reservation r
+                        JOIN wishlist wl ON r.wish_id = wl.wish_id
+                        WHERE wl.user_id = ?;
+                        """;
+
+        return jdbcTemplate.queryForList(query, Integer.class, userId);
+    }
+
+
     //Updates wish by wish id
     public Wish editWish(Wish wish){
-        String query = "UPDATE Wish SET name = ?, link = ?, isReserved = ? WHERE id = ?";
 
-        int rowsAffected = jdbcTemplate.update(query, wish.getName(), wish.getLink(), wish.isReserved(), wish.getId());
+        String query = "UPDATE Wish SET name = ?, link = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(query, wish.getName(), wish.getLink(), wish.getId());
 
         //Checks if rows were affected
         if (rowsAffected != 1) {

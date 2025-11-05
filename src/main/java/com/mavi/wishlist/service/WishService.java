@@ -31,12 +31,15 @@ public class WishService {
     @Transactional
     public Wish addWish(Wish wish, Integer userId) {
 
-        //new wishes are never reserved
-        wish.setReserved(false);
+        trimFields(wish);
+
+        if (!linkContainsHttp(wish)) {
+            throw new InvalidFieldsException("Invalid fields in Wish", "link");
+        }
 
         //Checks if there's invalid fields
         if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
+            throw new InvalidFieldsException("Invalid fields in Wish", "description");
         }
 
         Wish insertedWish = repository.insertWish(wish);
@@ -64,9 +67,15 @@ public class WishService {
     //Edits a wish
     public Wish editWish(Wish wish) {
 
+        trimFields(wish);
+
+        //Checks for invalid http links
+        if (!linkContainsHttp(wish)) {
+            throw new InvalidFieldsException("Invalid fields in Wish", "link");
+        }
         //Checks for invalid fields
         if(isInvalid(wish)){
-            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
+            throw new InvalidFieldsException("Invalid fields in Wish", "description");
         }
 
         return repository.editWish(wish);
@@ -97,6 +106,11 @@ public class WishService {
         return this.repository.getReservationListByUserId(userId);
     }
 
+    //Gets reserved wishes
+    public List<Integer> getReservedWishes(int userId) {
+        return this.repository.getReservedWishes(userId);
+    }
+
     //Deletes wish
     public Wish deleteWish(Wish wishToDelete) {
         int rowsAffected = repository.deleteWish(wishToDelete);
@@ -104,7 +118,7 @@ public class WishService {
     }
 
     //Unreserve a wish through toggle
-    private Wish unreserveWish(Wish wish) {
+    public Wish unreserveWish(Wish wish) {
 
         int rowsAffected = this.repository.deleteWishReservation(wish.getId());
 
@@ -115,13 +129,11 @@ public class WishService {
         } else if (rowsAffected > 1) {
             throw new RuntimeException("Multiple lines in reservation junction were affected!");
         }
-
-        wish.setReserved(false);
-        return repository.editWish(wish);
+        return wish;
     }
 
     //Reserves a wish through the toggle
-    private Wish reserveWish(Wish wish, int userId) {
+    public Wish reserveWish(Wish wish, int userId) {
 
         int rowsAffected = this.repository.insertToReservationJunction(wish.getId(), userId);
 
@@ -132,9 +144,11 @@ public class WishService {
         } else if (rowsAffected > 1) {
             throw new RuntimeException("Multiple lines in reservation junction were affected!");
         }
+        return wish;
+    }
 
-        wish.setReserved(true);
-        return repository.editWish(wish);
+    public boolean isReserved(Wish wish) {
+        return this.repository.isReserved(wish);
     }
 
     //Invalid field logic
@@ -162,5 +176,10 @@ public class WishService {
         Matcher matcher = pattern.matcher(wish.getLink());
 
         return matcher.find();
+    }
+
+    private void trimFields(Wish wish) {
+        wish.setName(wish.getName().trim());
+        wish.setLink(wish.getLink().trim());
     }
 }

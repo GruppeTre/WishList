@@ -19,7 +19,8 @@
 
         <!-- Error messages -->
         <div th:if="${error}" class="form-error-container">
-            <label th:text="#{form.error.fields.blank}"></label>
+            <label th:if="${invalidField == 'link'}" th:text="#{form.error.link}"></label>
+            <label th:if="${invalidField == 'description'}" th:text="#{form.error.description.blank}"></label>
         </div>
 
         <!-- INPUTS -->
@@ -36,9 +37,8 @@
         <!-- BUTTONS -->
         <div class="row">
             <a class="button" href="/wishlist/view" th:text="#{form.button.back}"></a>
-            <button type="submit" th:text="#{form.button.addWish}"></button>
+            <button class="button" type="submit" th:text="#{form.button.addWish}"></button>
         </div>
-
     </form>
 </main>
 <footer th:replace="~{fragments/_commonElements :: footer}"></footer>

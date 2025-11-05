@@ -4,6 +4,7 @@ import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,16 +73,18 @@ public class UserController {
 
     //Registers a new user
     @PostMapping("/register")
-    public String addNewUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User newUser) {
+    public String addNewUser(HttpSession session, Model model, @ModelAttribute User newUser, HttpServletResponse response) {
 
         //Check to see if all fields are filled correctly
         try{
             newUser = service.registerUser(newUser);
             session.setAttribute("user", newUser);
         } catch (InvalidFieldsException e) {
-            redirectAttributes.addFlashAttribute("error", true);
-            redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
-            return "redirect:/user/register";
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            model.addAttribute("error", true);
+            model.addAttribute("invalidField", e.getIncorrectField());
+            model.addAttribute("newUser", newUser);
+            return "registerPage";
         }
 
         return "redirect:/wishlist/view";
@@ -89,12 +92,14 @@ public class UserController {
 
     //Log the user in
     @PostMapping("/login")
-    public String postLogin(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User user){
+    public String postLogin(HttpSession session, Model model, @ModelAttribute User user, HttpServletResponse response){
 
         //if credentials are invalid, return to login-form
         if(!service.userLogin(user)) {
-            redirectAttributes.addFlashAttribute("error", true);
-            return "redirect:/user/login";
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            model.addAttribute("error", true);
+            model.addAttribute("userLogin", user);
+            return "loginPage";
         }
 
         //if credentials are valid, update user object with all fields including ID
@@ -108,7 +113,7 @@ public class UserController {
 
     //Updates a user profile
     @PostMapping("/profile/update")
-    public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser){
+    public String updateUser(HttpSession session, RedirectAttributes redirectAttributes, @ModelAttribute User updatedUser, HttpServletResponse response){
 
         //If there is no session, redirect to login form.
         if (!SessionUtils.isLoggedIn(session)) {
@@ -122,6 +127,7 @@ public class UserController {
             updatedUser = service.updateUser(updatedUser);
             session.setAttribute("user", updatedUser);
         } catch (InvalidFieldsException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             redirectAttributes.addFlashAttribute("error", true);
             redirectAttributes.addFlashAttribute("invalidField", e.getIncorrectField());
         }
@@ -132,6 +138,10 @@ public class UserController {
     //Deletes the profile
     @PostMapping("profile/delete")
     public String deleteUser(HttpSession session, @ModelAttribute User userToDelete) {
+
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
 
         userToDelete.setId(this.getUserIdFromSession(session));
 
@@ -145,6 +155,11 @@ public class UserController {
     //Logout
     @PostMapping("profile/logout")
     public String logout(HttpSession session){
+
+        if (!SessionUtils.isLoggedIn(session)) {
+            return "redirect:/";
+        }
+
         session.invalidate();
         return "redirect:/";
     }
