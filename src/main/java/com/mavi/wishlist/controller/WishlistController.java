@@ -4,7 +4,6 @@ import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.model.Wish;
-import com.mavi.wishlist.repository.WishRepository;
 import com.mavi.wishlist.service.UserService;
 import com.mavi.wishlist.service.WishService;
 import jakarta.servlet.http.HttpServletResponse;

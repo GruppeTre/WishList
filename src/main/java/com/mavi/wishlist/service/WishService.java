@@ -81,26 +81,6 @@ public class WishService {
         return repository.editWish(wish);
     }
 
-    //Toggles reservation for wishes
-    public Wish toggleWishReservation(Wish wish, int userId) {
-
-        //check if wish is valid
-        if (isInvalid(wish)) {
-            throw new InvalidFieldsException("Invalid fields in Wish", "fields");
-        }
-
-        //get all reservations by userID
-        List<Integer> reservedByUser = this.getReservationListByUserId(userId);
-
-        //if wish is reserved, check if current user owns reservation and unreserve it, otherwise return null
-        if (wish.isReserved()) {
-           return reservedByUser.contains(wish.getId()) ? this.unreserveWish(wish) : null;
-        }
-
-        //if wish is not already reserved, the current user reserves it
-        return this.reserveWish(wish, userId);
-    }
-
     //Gets reservation list by user id
     public List<Integer> getReservationListByUserId(int userId) {
         return this.repository.getReservationListByUserId(userId);
@@ -113,7 +93,7 @@ public class WishService {
 
     //Deletes wish
     public Wish deleteWish(Wish wishToDelete) {
-        int rowsAffected = repository.deleteWish(wishToDelete);
+        repository.deleteWish(wishToDelete);
         return wishToDelete;
     }
 

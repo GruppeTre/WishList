@@ -58,13 +58,14 @@
             </div>
         </div>
         <!--Text to be copied to clipboard -->
+        <label for="listLink"></label>
         <input th:value="'http://localhost:8080/wishlist/view/' + ${listRef}" type="text" id="listLink" hidden="hidden">
     </div>
 </main>
 <script>
     function copyUrl() {
         // Get the text field
-        var copyText = document.getElementById("listLink");
+        let copyText = document.getElementById("listLink");
 
         // Select the text field
         copyText.select();

@@ -1,8 +1,6 @@
 package com.mavi.wishlist.repository;
 
-import ch.qos.logback.core.joran.conditional.IfAction;
 import com.mavi.wishlist.model.User;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
