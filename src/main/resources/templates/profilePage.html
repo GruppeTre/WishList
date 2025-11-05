@@ -33,12 +33,12 @@
 
         <div class="row">
             <label for="firstName" th:text="#{form.user.label.firstName}"></label>
-            <input type="text" id="firstName" th:field="*{firstName}" th:readonly="${viewMode == 'view'}" pattern=".*\S.*" th:title="#{form.warning.empty}"/>
+            <input type="text" id="firstName" th:field="*{firstName}" th:readonly="${viewMode == 'view'}" required pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <div class="row">
             <label for="lastName" th:text="#{form.user.label.lastName}"></label>
-            <input type="text" id="lastName" th:field="*{lastName}" th:readonly="${viewMode == 'view'}" pattern=".*\S.*" th:title="#{form.warning.empty}"/>
+            <input type="text" id="lastName" th:field="*{lastName}" th:readonly="${viewMode == 'view'}" required pattern=".*\S.*" th:title="#{form.warning.empty}"/>
         </div>
 
         <!-- BUTTONS -->
