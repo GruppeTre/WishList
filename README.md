@@ -20,3 +20,6 @@ Kombineret:
 **Test Bruger:**
 - Brugernavn: admin@admin
 - Password: admin
+
+**Deployment**
+https://wishlist-hdf6cre8hucaadgr.swedencentral-01.azurewebsites.net/
