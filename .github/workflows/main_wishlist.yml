@@ -4,10 +4,10 @@
 name: Build and deploy JAR app to Azure Web App - wishlist
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
