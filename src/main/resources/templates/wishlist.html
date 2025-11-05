@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:if="${session.user.id != ownerId}" th:text="${ownerName} + '\s Wish List'"></title>
+    <title th:if="${session.user.id != ownerId}" th:text="${ownerName} + #{title.wishlist.other}"></title>
     <title th:if="${session.user.id == ownerId}" th:text="#{title.wishlist.owner}"></title>
     <link rel="stylesheet" th:href="@{/style/normalize.css}">
     <link rel="stylesheet" th:href="@{/style/skeleton.css}">
@@ -16,7 +16,7 @@
 
     <div class="wishlist-panel">
         <!-- Headers -->
-        <h2 th:if="${session.user.id != ownerId}" th:text="${ownerName} + '\'s Wishlist'"></h2>
+        <h2 th:if="${session.user.id != ownerId}" th:text="${ownerName} + #{title.wishlist.other}"></h2>
         <h2 th:if="${session.user.id == ownerId}" th:text="#{title.wishlist.owner}"></h2>
         <a th:if="${session.user.id == ownerId}" class="button button-primary" th:href="@{/wishlist/add}" th:text="#{form.button.addWish}"></a>
 
