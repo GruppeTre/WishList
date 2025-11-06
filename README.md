@@ -14,6 +14,6 @@
 [**Besøg siden her**](https://wishlist-hdf6cre8hucaadgr.swedencentral-01.azurewebsites.net/)\
 SQL scripts og diagrammer findes i ``/docs`` folderen
 
-Vores CI/CD workflow inkluderer 35 tests og en Qodona-rapport:
+Vores CI/CD workflow inkluderer 35 tests og en Qodana-rapport:
 
 ![Qodana-rapport](/docs/Qodana_inspection.png)
