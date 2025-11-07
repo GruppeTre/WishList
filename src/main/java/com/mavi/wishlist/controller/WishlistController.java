@@ -2,6 +2,7 @@ package com.mavi.wishlist.controller;
 
 import com.mavi.wishlist.controller.utils.SessionUtils;
 import com.mavi.wishlist.exceptions.InvalidFieldsException;
+import com.mavi.wishlist.exceptions.PageNotFoundException;
 import com.mavi.wishlist.model.User;
 import com.mavi.wishlist.model.Wish;
 import com.mavi.wishlist.service.UserService;
@@ -47,6 +48,10 @@ public class WishlistController {
 
         //get refString from ownerID
         Integer ownerId = userService.getOwnerIdFromRefString(listRef);
+
+        if (listRef != null && ownerId == null) {
+            throw new PageNotFoundException("Not Found", "Wish list not found");
+        }
 
         //redirect to endpoint with no pathVariable in URL if user goes to /view/{id} endpoint of wishlist they own
         if (ownerId != null && ownerId == sessionId) {
